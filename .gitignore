@@ -141,7 +141,3 @@ tmp/
 
 # Ignore Poetry lock
 poetry.lock
-
-# Ignore folder tests
-tests/
-
