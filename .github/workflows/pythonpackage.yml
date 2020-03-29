@@ -21,7 +21,7 @@ jobs:
         poetry install
     - name: Lint with black
       run: |
-        poetry run black zshpower/ --check
+        poetry run black dotctrl/ --check
     - name: Test with Tox
       run: |
         poetry run tox
