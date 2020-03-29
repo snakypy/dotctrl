@@ -3,6 +3,7 @@
     :align: center
     :alt: Dotctrl
 
+
 .. image:: https://github.com/snakypy/dotctrl/workflows/Python%20package/badge.svg
     :target: https://github.com/snakypy/dotctrl
 

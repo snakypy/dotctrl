@@ -1,3 +1,0 @@
-snakypy==0.3.4
-tomlkit==0.5.11
-docopt==0.6.2
