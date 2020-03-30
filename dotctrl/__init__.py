@@ -19,7 +19,7 @@ from dotctrl import __name__
 
 
 # Version
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 # Path current
 ROOT = os.getcwd()
 # HOME user
