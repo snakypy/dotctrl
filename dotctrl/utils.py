@@ -121,3 +121,18 @@ def exists_levels(src, dst, arguments):
         return 1
     elif not exists(src) and exists(dst):
         return 2
+
+
+def listing_files(directory, only_rc=False):
+    data = []
+    if only_rc:
+        for file in glob(join(directory, ".*rc"), recursive=False):
+            if isfile(file) and not islink(file):
+                data.append(file.split("/")[-1])
+        return data
+    for r, d, f in os.walk(directory):
+        for file in f:
+            elem = os.path.join(r, file)
+            elem = elem.replace(f"{directory}/", "")
+            data.append(elem)
+    return data
