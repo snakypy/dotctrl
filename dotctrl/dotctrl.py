@@ -72,7 +72,8 @@ class Utils(Data):
     def __init__(self, root, home):
         Data.__init__(self, root, home)
 
-    def path_creation(self, root, item):
+    @staticmethod
+    def path_creation(root, item):
         """Create repository for file with a path"""
         # if not islink(join(self.HOME, item)) and exists(join(self.HOME, item)):
         path_split = item.split("/")[:-1]
