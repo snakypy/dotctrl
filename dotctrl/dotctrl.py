@@ -16,7 +16,7 @@ from dotctrl import utils, config
 
 
 # # Debug
-# from pdb import set_trace
+from pdb import set_trace
 
 
 class Data:
@@ -72,15 +72,15 @@ class Utils(Data):
     def __init__(self, root, home):
         Data.__init__(self, root, home)
 
-    def path_creation(self, item):
+    def path_creation(self, root, item):
         """Create repository for file with a path"""
-        if not islink(join(self.HOME, item)) and exists(join(self.HOME, item)):
-            path_split = item.split("/")[:-1]
-            path_str = "/".join(path_split)
-            path = join(self.repo, path_str)
-            snakypy.path.create(path)
-            return path
-        return
+        # if not islink(join(self.HOME, item)) and exists(join(self.HOME, item)):
+        path_split = item.split("/")[:-1]
+        path_str = "/".join(path_split)
+        path = join(root, path_str)
+        snakypy.path.create(path)
+        return path
+        # return
 
     def pull_link_action(
         self,
@@ -95,16 +95,17 @@ class Utils(Data):
         and linking with links to them"""
         for item in data:
             if use_move and use_path_creation:
-                # if path := self.path_creation(item):
-                if self.path_creation(item) is not None:
-                    utils.to_move(
-                        join(self.HOME, item),
-                        join(self.repo, self.path_creation(item)),
-                        force=force,
-                    )
+                # if path := self.path_creation(self.repo, item):
+                # if self.path_creation(self.repo, item) is not None:
+                utils.to_move(
+                    join(self.HOME, item),
+                    join(self.repo, self.path_creation(self.repo, item)),
+                    force=force,
+                )
             elif use_move and not use_path_creation:
                 utils.to_move(join(self.HOME, item), join(self.repo, item), force=force)
             if use_link:
+                self.path_creation(self.HOME, item)
                 utils.create_symlink(
                     join(self.repo, item), join(self.HOME, item), force=force
                 )
