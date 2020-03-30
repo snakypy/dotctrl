@@ -1,0 +1,7 @@
+[] Comando "dotctrl list" deve listar arquivos do repo e não da lista elements = [].
+
+[] Colocar opção de "dotctrl unlink --file=.config/foo.conf". Deve remover o link da HOME.
+
+[] Colocar opção de "dotctrl remove --file=.config/foo.conf". Deve remover o link da HOME
+   e remover o elemento da lista "elments = []"
+[] 
