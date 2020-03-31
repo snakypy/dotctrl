@@ -119,11 +119,11 @@ USAGE:
     {__pkginfo__['executable']} init
     {__pkginfo__['executable']} check
     {__pkginfo__['executable']} list
-    {__pkginfo__['executable']} pull [--element=<path>]
-    {__pkginfo__['executable']} link [--element=<path>]
-    {__pkginfo__['executable']} unlink [--element=<path>]
+    {__pkginfo__['executable']} pull [--element=<object>]
+    {__pkginfo__['executable']} link [--element=<object>]
+    {__pkginfo__['executable']} unlink [--element=<object>]
     {__pkginfo__['executable']} config (--open | --view)
-    {__pkginfo__['executable']} restore [--element=<path>] [--force]
+    {__pkginfo__['executable']} restore [--element=<object>] [--force]
     {__pkginfo__['executable']} --help
     {__pkginfo__['executable']} --version
     {__pkginfo__['executable']} --credits
@@ -145,12 +145,15 @@ ARGUMENTS:
                      default source location.
 
 OPTIONS:
-    {FG.BLUE}--help{NONE} --------- Show this screen.
-    {FG.BLUE}--open{NONE} --------- Open the configuration file in edit mode and
-                     perform the automatic update when you exit.
-    {FG.BLUE}--view{NONE} --------- View the configuration file on the terminal.
-    {FG.BLUE}--version{NONE} ------ Show version.
-    {FG.BLUE}--credits{NONE} ------ Show credits.
+    {FG.BLUE}--help{NONE} ---------------- Show this screen.
+    {FG.BLUE}--element=<object>{NONE} ---- Receive an object where, have the absolute
+                            path to a {FG.MAGENTA}file{NONE} or {FG.MAGENTA}folder{NONE},
+                            always from the HOME directory.
+    {FG.BLUE}--open{NONE} ---------------- Open the configuration file in edit mode and
+                            perform the automatic update when you exit.
+    {FG.BLUE}--view{NONE} ---------------- View the configuration file on the terminal.
+    {FG.BLUE}--version{NONE} ------------- Show version.
+    {FG.BLUE}--credits{NONE} ------------- Show credits.
         """
         return opts
 
