@@ -136,3 +136,15 @@ def listing_files(directory, only_rc=False):
             elem = elem.replace(f"{directory}/", "")
             data.append(elem)
     return data
+
+
+def clean_config(repo, home, config):
+    parsed = snakypy.json.read(config)
+    elements = parsed["dotctrl"]["elements"]
+    new_elements = []
+    for item in elements:
+        if exists(join(repo, item)) or exists(join(home, item)):
+            new_elements.append(item)
+    parsed["dotctrl"]["elements"] = new_elements
+    snakypy.json.create(parsed, config, force=True)
+    return
