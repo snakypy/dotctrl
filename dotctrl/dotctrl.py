@@ -89,7 +89,6 @@ class Utils(Data):
         """Method lists the dotfiles in the repository and checks whether
         they are linked."""
         listing_data = list()
-        # data = (*utils.listing_rc(self.repo), *self.data)
         data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
         # data = self.data
         for item in data:
@@ -170,10 +169,7 @@ OPTIONS:
             exit(0)
         snakypy.path.create(self.repo)
         snakypy.json.create(config.config_rc_content, self.config)
-        # utils.create_file(config.config_rc_content, self.config, config_toml=True)
-        # utils.create_file(config.gitignore_content, self.gitignore)
         snakypy.file.create(config.gitignore_content, self.gitignore)
-        # utils.create_file(config.readme_content, self.readme)
         snakypy.file.create(config.readme_content, self.readme)
         printer(
             f"Initialized {__pkginfo__['name']} repository in {self.repo}",
@@ -246,13 +242,10 @@ OPTIONS:
         """Method to unlink point files from the repository
         with their place of origin."""
         utils.cheking_init(self.ROOT)
-        # check = set()
         element_value = self.arguments()["--element"]
         if element_value:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
-            # if islink(file_home) and exists(file_repo):
-            # check.add(True)
             with suppress(Exception):
                 os.remove(file_home)
         else:
@@ -260,34 +253,19 @@ OPTIONS:
             for item in data:
                 file_home = join(self.HOME, item)
                 # file_repo = join(self.repo, item)
-                # if islink(file_home) and exists(file_repo):
-                # check.add(True)
                 with suppress(Exception):
                     os.remove(file_home)
-        # status = len(list(check))
-        # if status:
-        #     return printer("Done! Unlinked repository file(s).", foreground=FG.FINISH)
-        # printer("Nothing to do.", foreground=FG.FINISH)
 
     def pull_command(self, force=False):
         utils.cheking_init(self.ROOT)
-        utils.clean_config(self.HOME, self.repo, self.config)
+        utils.clear_config_garbage(self.HOME, self.repo, self.config)
         element_value = self.arguments()["--element"]
         if element_value:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
             if "/" in element_value:
                 self.path_creation(self.repo, element_value)
-            parsed = snakypy.json.read(self.config)
-            if (
-                element_value
-                not in parsed["dotctrl"]["elements"]
-                and not element_value[-2:] == "rc"
-            ):
-                lst = list(parsed["dotctrl"]["elements"])
-                lst.append(element_value)
-                parsed["dotctrl"]["elements"] = lst
-                snakypy.json.create(parsed, self.config, force=True)
+            utils.add_element_config(element_value, self.config)
             utils.to_move(file_home, file_repo, force=force)
         else:
             for item in self.data:

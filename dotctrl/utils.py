@@ -2,11 +2,10 @@
 import os
 import shutil
 import contextlib
-import tomlkit
 import snakypy
 from sys import exit
 from glob import glob
-from os.path import join, exists, islink, isfile, isdir
+from os.path import join, exists, islink, isfile
 from snakypy import printer, FG
 from dotctrl import __pkginfo__
 
@@ -31,17 +30,6 @@ def cheking_init(root):
             foreground=FG.WARNING,
         )
         exit(1)
-
-
-# def create_file(content, file_path, config_toml=False, force=False):
-#     """Function to create configuration file and common."""
-#     if not exists(file_path) or force:
-#         if config_toml:
-#             parsed_toml = tomlkit.parse(content)
-#             content = tomlkit.dumps(parsed_toml)
-#         snakypy.file.create(content, file_path, force=force)
-#         return True
-#     return
 
 
 def to_move(src, dst, *, force=False):
@@ -83,24 +71,6 @@ def create_symlink(src, dst, *, force=False):
             os.symlink(src, dst)
 
 
-# def listing_rc(path):
-#     """Intelligently lists all rc files."""
-#     resources_file = []
-#     for file in glob(join(path, ".*rc"), recursive=False):
-#         if isfile(file) and not islink(file):
-#             resources_file.append(file.split("/")[-1])
-#     return resources_file
-
-
-# def append_dir_file(path, item, lst1: list, lst2: list):
-#     """Function to check if a path is a directory and add it
-#     to a list, if not, add it to another list."""
-#     if isdir(path):
-#         lst1.append(item)
-#     else:
-#         lst2.append(item)
-
-
 def rm_objects(obj):
     """Removes objects according to the type of folder,
     file or symbolic link."""
@@ -138,7 +108,7 @@ def listing_files(directory, only_rc=False):
     return data
 
 
-def clean_config(repo, home, config):
+def clear_config_garbage(repo, home, config):
     parsed = snakypy.json.read(config)
     elements = parsed["dotctrl"]["elements"]
     new_elements = []
@@ -147,4 +117,15 @@ def clean_config(repo, home, config):
             new_elements.append(item)
     parsed["dotctrl"]["elements"] = new_elements
     snakypy.json.create(parsed, config, force=True)
-    return
+
+
+def add_element_config(element, config):
+    parsed = snakypy.json.read(config)
+    if element not in parsed["dotctrl"]["elements"]:
+        if element[-2:] == "rc" and "/" not in element:
+            pass
+        else:
+            lst = list(parsed["dotctrl"]["elements"])
+            lst.append(element)
+            parsed["dotctrl"]["elements"] = lst
+            snakypy.json.create(parsed, config, force=True)
