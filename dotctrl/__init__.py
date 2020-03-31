@@ -30,7 +30,7 @@ __pkginfo__ = {
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
     "pkg_name": __name__,
     "executable": __name__,
-    "config": "dotctrl.toml",
+    "config": "dotctrl.json",
     "home_page": "https://github.com/snakypy/dotctrl",
     "organization_name": "Snakypy",
     "author": {
