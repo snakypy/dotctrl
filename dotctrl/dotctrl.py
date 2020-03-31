@@ -294,7 +294,7 @@ OPTIONS:
                 # if not islink(item):
                 # check.add(True)
                 if "/" in item:
-                    if not islink(file_home):
+                    if not islink(file_home) and exists(file_home):
                         self.path_creation(self.repo, item)
                 utils.to_move(file_home, file_repo, force=force)
         # status = len(list(check))
