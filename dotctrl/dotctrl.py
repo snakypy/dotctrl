@@ -1,4 +1,5 @@
 """Dotctrl main module, where everything happens."""
+# Quick and Dirty, then refinery. :)
 import os
 import pydoc
 import shutil
@@ -121,7 +122,7 @@ USAGE:
     {__pkginfo__['executable']} link [--element=<path>]
     {__pkginfo__['executable']} unlink [--element=<path>]
     {__pkginfo__['executable']} config (--open | --view)
-    {__pkginfo__['executable']} restore [--force]
+    {__pkginfo__['executable']} restore [--element=<path>] [--force]
     {__pkginfo__['executable']} --help
     {__pkginfo__['executable']} --version
     {__pkginfo__['executable']} --credits
@@ -268,44 +269,61 @@ OPTIONS:
 
     def pull_command(self, force=False):
         utils.cheking_init(self.ROOT)
+        check = set()
         element_value = self.arguments()["--element"]
         if element_value:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
-            if "/" in element_value:
-                self.path_creation(self.repo, element_value)
-            parsed = snakypy.json.read(self.config)
-            if element_value not in parsed["dotctrl"]["elements"]:
-                lst = list(parsed["dotctrl"]["elements"])
-                lst.append(element_value)
-                parsed["dotctrl"]["elements"] = lst
-                snakypy.json.create(parsed, self.config, force=True)
-            utils.to_move(file_home, file_repo, force=force)
+            if exists(file_home) and not islink(file_home):
+                check.add(True)
+                if "/" in element_value:
+                    self.path_creation(self.repo, element_value)
+                parsed = snakypy.json.read(self.config)
+                if element_value not in parsed["dotctrl"]["elements"]:
+                    lst = list(parsed["dotctrl"]["elements"])
+                    lst.append(element_value)
+                    parsed["dotctrl"]["elements"] = lst
+                    snakypy.json.create(parsed, self.config, force=True)
+                utils.to_move(file_home, file_repo, force=force)
         else:
             for item in self.data:
-                if "/" in item:
-                    self.path_creation(self.repo, item)
-                file_home = join(self.HOME, item)
-                file_repo = join(self.repo, item)
-                utils.to_move(file_home, file_repo, force=force)
+                if exists(item) and not islink(item):
+                    check.add(True)
+                    if "/" in item:
+                        self.path_creation(self.repo, item)
+                    file_home = join(self.HOME, item)
+                    file_repo = join(self.repo, item)
+                    utils.to_move(file_home, file_repo, force=force)
+        status = len(list(check))
+        if status:
+            return printer("Done! File(s) pulled.", foreground=FG.FINISH)
+        printer("Nothing to do.", foreground=FG.FINISH)
 
     def link_command(self, force=False):
         utils.cheking_init(self.ROOT)
+        check = set()
         element_value = self.arguments()["--element"]
         if element_value:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
-            if "/" in element_value:
-                self.path_creation(self.HOME, element_value)
-            utils.create_symlink(file_repo, file_home, force=force)
+            if not islink(file_home):
+                check.add(True)
+                if "/" in element_value:
+                    self.path_creation(self.HOME, element_value)
+                utils.create_symlink(file_repo, file_home, force=force)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
-                if "/" in item:
-                    self.path_creation(self.HOME, item)
-                file_home = join(self.HOME, item)
-                file_repo = join(self.repo, item)
-                utils.create_symlink(file_repo, file_home, force=force)
+                if not islink(item):
+                    if "/" in item:
+                        self.path_creation(self.HOME, item)
+                    file_home = join(self.HOME, item)
+                    file_repo = join(self.repo, item)
+                    utils.create_symlink(file_repo, file_home, force=force)
+        status = len(list(check))
+        if status:
+            return printer("Done! Linked file(s).", foreground=FG.FINISH)
+        printer("Nothing to do.", foreground=FG.FINISH)
 
     def restore_command(self):
         """Method to restore dotfiles from the repository to their
@@ -316,6 +334,25 @@ OPTIONS:
         if element_value:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
+            if "/" in element_value:
+                self.path_creation(self.HOME, element_value)
+            if utils.exists_levels(file_home, file_repo, self.arguments) == 0:
+                printer(
+                    "The files match the repository and the drive. " "User --force.",
+                    foreground=FG.WARNING,
+                )
+                exit(0)
+
+            if utils.exists_levels(file_home, file_repo, self.arguments) == 1:
+                check.add(True)
+                utils.rm_objects(file_home)
+                shutil.move(file_repo, file_home)
+                snakypy.os.rmdir_blank(self.repo)
+
+            if utils.exists_levels(file_home, file_repo, self.arguments) == 2:
+                check.add(True)
+                shutil.move(file_repo, file_home)
+                snakypy.os.rmdir_blank(self.repo)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
