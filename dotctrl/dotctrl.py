@@ -87,7 +87,7 @@ class Utils(Data):
         they are linked."""
         listing_data = list()
         # data = (*utils.listing_rc(self.repo), *self.data)
-        data = (*utils.listing_files(self.repo),)
+        data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
         for item in data:
             if check_islink:
                 if exists(join(self.repo, item)) and not islink(join(self.HOME, item)):
