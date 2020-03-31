@@ -265,7 +265,7 @@ OPTIONS:
             file_repo = join(self.repo, element_value)
             if "/" in element_value:
                 self.path_creation(self.repo, element_value)
-            utils.add_element_config(element_value, self.config)
+            utils.add_element_config(file_home, element_value, self.config)
             utils.to_move(file_home, file_repo, force=force)
         else:
             for item in self.data:

@@ -119,13 +119,14 @@ def clear_config_garbage(repo, home, config):
     snakypy.json.create(parsed, config, force=True)
 
 
-def add_element_config(element, config):
+def add_element_config(src, element, config):
     parsed = snakypy.json.read(config)
     if element not in parsed["dotctrl"]["elements"]:
         if element[-2:] == "rc" and "/" not in element:
             pass
         else:
-            lst = list(parsed["dotctrl"]["elements"])
-            lst.append(element)
-            parsed["dotctrl"]["elements"] = lst
-            snakypy.json.create(parsed, config, force=True)
+            if exists(src):
+                lst = list(parsed["dotctrl"]["elements"])
+                lst.append(element)
+                parsed["dotctrl"]["elements"] = lst
+                snakypy.json.create(parsed, config, force=True)
