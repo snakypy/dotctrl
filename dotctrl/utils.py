@@ -33,15 +33,15 @@ def cheking_init(root):
         exit(1)
 
 
-def create_file(content, file_path, config_toml=False, force=False):
-    """Function to create configuration file and common."""
-    if not exists(file_path) or force:
-        if config_toml:
-            parsed_toml = tomlkit.parse(content)
-            content = tomlkit.dumps(parsed_toml)
-        snakypy.file.create(content, file_path, force=force)
-        return True
-    return
+# def create_file(content, file_path, config_toml=False, force=False):
+#     """Function to create configuration file and common."""
+#     if not exists(file_path) or force:
+#         if config_toml:
+#             parsed_toml = tomlkit.parse(content)
+#             content = tomlkit.dumps(parsed_toml)
+#         snakypy.file.create(content, file_path, force=force)
+#         return True
+#     return
 
 
 def to_move(src, dst, *, force=False):
@@ -83,22 +83,22 @@ def create_symlink(src, dst, *, force=False):
             os.symlink(src, dst)
 
 
-def listing_rc(path):
-    """Intelligently lists all rc files."""
-    resources_file = []
-    for file in glob(join(path, ".*rc"), recursive=False):
-        if isfile(file) and not islink(file):
-            resources_file.append(file.split("/")[-1])
-    return resources_file
+# def listing_rc(path):
+#     """Intelligently lists all rc files."""
+#     resources_file = []
+#     for file in glob(join(path, ".*rc"), recursive=False):
+#         if isfile(file) and not islink(file):
+#             resources_file.append(file.split("/")[-1])
+#     return resources_file
 
 
-def append_dir_file(path, item, lst1: list, lst2: list):
-    """Function to check if a path is a directory and add it
-    to a list, if not, add it to another list."""
-    if isdir(path):
-        lst1.append(item)
-    else:
-        lst2.append(item)
+# def append_dir_file(path, item, lst1: list, lst2: list):
+#     """Function to check if a path is a directory and add it
+#     to a list, if not, add it to another list."""
+#     if isdir(path):
+#         lst1.append(item)
+#     else:
+#         lst2.append(item)
 
 
 def rm_objects(obj):

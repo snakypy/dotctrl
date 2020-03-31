@@ -17,12 +17,14 @@ def init():
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "pull")
 def pull():
-    dotctrl_inst.pull_link_command(use_move=True, force=True)
+    # dotctrl_inst.pull_link_command(use_move=True, force=True)
+    dotctrl_inst.pull_command(force=True)
 
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "link")
 def link():
-    dotctrl_inst.pull_link_command(use_link=True, force=True)
+    # dotctrl_inst.pull_link_command(use_link=True, force=True)
+    dotctrl_inst.link_command(force=True)
 
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "unlink")

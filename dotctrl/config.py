@@ -1,19 +1,36 @@
 from datetime import datetime
 from dotctrl import __version__, __pkginfo__
 
-config_rc_content = f"""# << {__pkginfo__['name']} configuration >>
-# Datetime: {datetime.today().isoformat()}
-# Version: {__version__}
-# -----------------------------------------------------
-# For more information, see: {__pkginfo__['home_page']}#configuration
+# config_rc_content_old = f"""# << {__pkginfo__['name']} configuration >>
+# # Datetime: {datetime.today().isoformat()}
+# # Version: {__version__}
+# # -----------------------------------------------------
+# # For more information, see: {__pkginfo__['home_page']}#configuration
+#
+# [dotctrl]
+# elements = []
+#
+# [dotctrl.smart]
+# rc.enable = true
+# text_editors.enable = true
+# """
 
-[dotctrl]
-elements = []
-
-[dotctrl.smart]
-rc.enable = true
-text_editors.enable = true
-"""
+config_rc_content = {
+    "dotctrl": {
+        "config": {
+            "editor": ""
+        },
+        "elements": [],
+        "smart": {
+            "rc": {
+                "enable": True
+            },
+            "text_editors": {
+                "enable": True
+            }
+        }
+    }
+}
 
 gitignore_content = f"""# {__pkginfo__['name']}: Ignored by default.
 

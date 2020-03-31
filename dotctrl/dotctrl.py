@@ -4,7 +4,6 @@ import pydoc
 import shutil
 import subprocess
 import snakypy
-import tomlkit
 from sys import exit
 from os.path import join, exists, islink
 from docopt import docopt
@@ -42,8 +41,9 @@ class Data:
 
         if exists(self.config):
             try:
-                self.config_rc = snakypy.file.read(self.config)
-                self.parsed = tomlkit.parse(self.config_rc)
+                # self.config_rc = snakypy.file.read(self.config)
+                # self.parsed = tomlkit.parse(self.config_rc)
+                self.parsed = snakypy.json.read(self.config)
                 self.elements = [*self.parsed["dotctrl"]["elements"]]
                 self.rc_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
                 self.text_editors_status = self.parsed["dotctrl"]["smart"][
@@ -51,13 +51,13 @@ class Data:
                 ]["enable"]
             except Exception as err:
                 printer(
-                    "An error occurred while reading the configuration" "file.",
+                    "An error occurred while reading the configuration file.",
                     err,
                     foreground=FG.ERROR,
                 )
                 exit(1)
 
-            rc = utils.listing_rc(self.HOME)
+            rc = utils.listing_files(self.HOME, only_rc=True)
             if self.rc_status and self.text_editors_status:
                 self.data = rc + self.text_editors + self.elements
             elif self.rc_status and not self.text_editors_status:
@@ -72,50 +72,22 @@ class Utils(Data):
     def __init__(self, root, home):
         Data.__init__(self, root, home)
 
-    @staticmethod
-    def path_creation(root, item):
+    def path_creation(self, root, item):
         """Create repository for file with a path"""
-        # if not islink(join(self.HOME, item)) and exists(join(self.HOME, item)):
-        path_split = item.split("/")[:-1]
-        path_str = "/".join(path_split)
-        path = join(root, path_str)
-        snakypy.path.create(path)
-        return path
-        # return
-
-    def pull_link_action(
-        self,
-        data,
-        *,
-        use_move=False,
-        use_link=False,
-        use_path_creation=False,
-        force=False,
-    ):
-        """Method with action of moving dotfiles to the repository
-        and linking with links to them"""
-        for item in data:
-            if use_move and use_path_creation:
-                # if path := self.path_creation(self.repo, item):
-                # if self.path_creation(self.repo, item) is not None:
-                utils.to_move(
-                    join(self.HOME, item),
-                    join(self.repo, self.path_creation(self.repo, item)),
-                    force=force,
-                )
-            elif use_move and not use_path_creation:
-                utils.to_move(join(self.HOME, item), join(self.repo, item), force=force)
-            if use_link:
-                self.path_creation(self.HOME, item)
-                utils.create_symlink(
-                    join(self.repo, item), join(self.HOME, item), force=force
-                )
+        if not islink(join(self.HOME, item)) and exists(join(self.HOME, item)):
+            path_split = item.split("/")[:-1]
+            path_str = "/".join(path_split)
+            path = join(root, path_str)
+            snakypy.path.create(path)
+            return str(path)
+        return
 
     def listing_repo(self, check_islink=False):
         """Method lists the dotfiles in the repository and checks whether
         they are linked."""
         listing_data = list()
-        data = (*utils.listing_rc(self.repo), *self.data)
+        # data = (*utils.listing_rc(self.repo), *self.data)
+        data = (*utils.listing_files(self.repo),)
         for item in data:
             if check_islink:
                 if exists(join(self.repo, item)) and not islink(join(self.HOME, item)):
@@ -144,9 +116,9 @@ USAGE:
     {__pkginfo__['executable']} init
     {__pkginfo__['executable']} check
     {__pkginfo__['executable']} list
-    {__pkginfo__['executable']} pull
-    {__pkginfo__['executable']} link
-    {__pkginfo__['executable']} unlink
+    {__pkginfo__['executable']} pull [--element=<path>]
+    {__pkginfo__['executable']} link [--element=<path>]
+    {__pkginfo__['executable']} unlink [--element=<path>]
     {__pkginfo__['executable']} config (--open | --view)
     {__pkginfo__['executable']} restore [--force]
     {__pkginfo__['executable']} --help
@@ -157,7 +129,8 @@ ARGUMENTS:
     {FG.CYAN}init{NONE} ----------- Creates the dotfiles repository.
     {FG.CYAN}check{NONE} ---------- Checks whether the dotfiles in the
                      repository are linked to the place of origin or not.
-    {FG.CYAN}list{NONE} ----------- Lists all dot files in the repository.
+    {FG.CYAN}list{NONE} ----------- Lists all files present in the repository
+                     and in the configuration.
     {FG.CYAN}pull{NONE} ----------- Pulls the dotfiles from the source location
                      on the machine to the repository.
     {FG.CYAN}link{NONE} ----------- Links the repository's dotfiles to the source
@@ -192,9 +165,12 @@ OPTIONS:
             printer("Repository is already defined.", foreground=FG.FINISH)
             exit(0)
         snakypy.path.create(self.repo)
-        utils.create_file(config.config_rc_content, self.config, config_toml=True)
-        utils.create_file(config.gitignore_content, self.gitignore)
-        utils.create_file(config.readme_content, self.readme)
+        snakypy.json.create(config.config_rc_content, self.config)
+        # utils.create_file(config.config_rc_content, self.config, config_toml=True)
+        # utils.create_file(config.gitignore_content, self.gitignore)
+        snakypy.file.create(config.gitignore_content, self.gitignore)
+        # utils.create_file(config.readme_content, self.readme)
+        snakypy.file.create(config.readme_content, self.readme)
         printer(
             f"Initialized {__pkginfo__['name']} repository in {self.repo}",
             foreground=FG.FINISH,
@@ -206,15 +182,24 @@ OPTIONS:
         utils.cheking_init(self.ROOT)
 
         if self.arguments()["--open"]:
-            editors = ["vim", "nano", "emacs"]
-            for editor in editors:
-                if shutil.which(editor):
-                    get_editor = os.environ.get("EDITOR", editor)
+            edt = self.parsed["dotctrl"]["config"]["editor"]
+            if edt:
+                if shutil.which(edt):
+                    get_editor = os.environ.get("EDITOR", edt)
                     with open(self.config) as f:
                         subprocess.call([get_editor, f.name])
                         printer("Done!", foreground=FG.FINISH)
                     return True
-            return
+            else:
+                editors = ["vim", "nano", "emacs", "micro"]
+                for editor in editors:
+                    if shutil.which(editor):
+                        get_editor = os.environ.get("EDITOR", editor)
+                        with open(self.config) as f:
+                            subprocess.call([get_editor, f.name])
+                            printer("Done!", foreground=FG.FINISH)
+                        return True
+                return
 
         if self.arguments()["--view"]:
             read_config = snakypy.file.read(self.config)
@@ -259,61 +244,69 @@ OPTIONS:
         utils.cheking_init(self.ROOT)
 
         check = set()
-        data = (*utils.listing_rc(self.repo), *self.data)
-        for item in data:
-            file_home = join(self.HOME, item)
-            file_repo = join(self.repo, item)
+
+        if self.arguments()["--element"]:
+            element_value = self.arguments()["--element"]
+            file_home = join(self.HOME, element_value)
+            file_repo = join(self.repo, element_value)
             if islink(file_home) and exists(file_repo):
                 check.add(True)
                 with suppress(Exception):
                     os.remove(file_home)
+        else:
+            data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
+            for item in data:
+                file_home = join(self.HOME, item)
+                file_repo = join(self.repo, item)
+                if islink(file_home) and exists(file_repo):
+                    check.add(True)
+                    with suppress(Exception):
+                        os.remove(file_home)
         status = len(list(check))
         if status:
-            return printer("Done! Unlinked repository files.", foreground=FG.FINISH)
+            return printer("Done! Unlinked repository file(s).", foreground=FG.FINISH)
         printer("Nothing to do.", foreground=FG.FINISH)
 
-    def pull_link_command(self, *, use_link=False, use_move=False, force=False):
-        """Method that pulls the files from the source to the repository and also
-        links the files from the repository with the source location."""
+    def pull_command(self, force=False):
         utils.cheking_init(self.ROOT)
+        if self.arguments()["--element"]:
+            element_value = self.arguments()["--element"]
+            file_home = join(self.HOME, element_value)
+            file_repo = join(self.repo, element_value)
+            if "/" in element_value:
+                self.path_creation(self.repo, element_value)
+                parsed = snakypy.json.read(self.config)
+                if element_value not in parsed["dotctrl"]["elements"]:
+                    lst = list(parsed["dotctrl"]["elements"])
+                    lst.append(element_value)
+                    parsed["dotctrl"]["elements"] = lst
+                    snakypy.json.create(parsed, self.config, force=True)
+            utils.to_move(file_home, file_repo, force=force)
+        else:
+            for item in self.data:
+                if "/" in item:
+                    self.path_creation(self.repo, item)
+                file_home = join(self.HOME, item)
+                file_repo = join(self.repo, item)
+                utils.to_move(file_home, file_repo, force=force)
 
-        only_element = []
-        only_folder = []
-        elements_subdir = []
-        directory_subdir = []
-        data = [*utils.listing_rc(self.repo), *self.data]
-        for item in data:
-            if "/" in item:
-                utils.append_dir_file(
-                    join(self.HOME, item), item, directory_subdir, elements_subdir
-                )
-            else:
-                utils.append_dir_file(
-                    join(self.HOME, item), item, only_folder, only_element
-                )
-        self.pull_link_action(
-            only_element, use_move=use_move, use_link=use_link, force=force
-        )
-        self.pull_link_action(
-            only_folder, use_move=use_move, use_link=use_link, force=force
-        )
-        self.pull_link_action(
-            elements_subdir,
-            use_move=use_move,
-            use_link=use_link,
-            force=force,
-            use_path_creation=True,
-        )
-        self.pull_link_action(
-            directory_subdir,
-            use_move=use_move,
-            use_link=use_link,
-            force=force,
-            use_path_creation=True,
-        )
-        if len(os.listdir(self.repo)) == 0:
-            return printer("Nothing to do.", foreground=FG.FINISH)
-        printer("Done!", foreground=FG.FINISH)
+    def link_command(self, force=False):
+        utils.cheking_init(self.ROOT)
+        if self.arguments()["--element"]:
+            element_value = self.arguments()["--element"]
+            file_home = join(self.HOME, element_value)
+            file_repo = join(self.repo, element_value)
+            if "/" in element_value:
+                self.path_creation(self.repo, element_value)
+            utils.create_symlink(file_repo, file_home, force=force)
+        else:
+            for item in self.data:
+                if "/" in item:
+                    self.path_creation(self.repo, item)
+                file_home = join(self.HOME, item)
+                file_repo = join(self.repo, item)
+                utils.to_move(file_home, file_repo, force=force)
+                utils.create_symlink(file_repo, file_home, force=force)
 
     def restore_command(self):
         """Method to restore dotfiles from the repository to their
@@ -321,7 +314,7 @@ OPTIONS:
         utils.cheking_init(self.ROOT)
 
         check = set()
-        data = (*utils.listing_rc(self.repo), *self.data)
+        data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
         for item in data:
             file_home = join(self.HOME, item)
             file_repo = join(self.repo, item)
