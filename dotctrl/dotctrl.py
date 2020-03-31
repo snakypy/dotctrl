@@ -91,6 +91,7 @@ class Utils(Data):
         listing_data = list()
         # data = (*utils.listing_rc(self.repo), *self.data)
         data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
+        # data = self.data
         for item in data:
             if check_islink:
                 if exists(join(self.repo, item)) and not islink(join(self.HOME, item)):
@@ -232,7 +233,7 @@ OPTIONS:
             return printer("Nothing to do.", foreground=FG.FINISH)
         listing_data = self.listing_repo(check_islink=True)
         if len(list(listing_data)) == 0:
-            return printer("Everything is OK.", foreground=FG.FINISH)
+            return printer("Nothing to link.", foreground=FG.FINISH)
         printer(
             f"\nListing in: ./{self.repo.split('/')[-1]}\n\nElements:",
             foreground=FG.CYAN,
@@ -271,17 +272,18 @@ OPTIONS:
     def pull_command(self, force=False):
         utils.cheking_init(self.ROOT)
         utils.clean_config(self.HOME, self.repo, self.config)
-        # check = set()
         element_value = self.arguments()["--element"]
         if element_value:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
-            # if exists(file_home) and not islink(file_home):
-            # check.add(True)
             if "/" in element_value:
                 self.path_creation(self.repo, element_value)
             parsed = snakypy.json.read(self.config)
-            if element_value not in parsed["dotctrl"]["elements"]:
+            if (
+                element_value
+                not in parsed["dotctrl"]["elements"]
+                and not element_value[-2:] == "rc"
+            ):
                 lst = list(parsed["dotctrl"]["elements"])
                 lst.append(element_value)
                 parsed["dotctrl"]["elements"] = lst
@@ -291,26 +293,17 @@ OPTIONS:
             for item in self.data:
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
-                # if not islink(item):
-                # check.add(True)
                 if "/" in item:
                     if not islink(file_home) and exists(file_home):
                         self.path_creation(self.repo, item)
                 utils.to_move(file_home, file_repo, force=force)
-        # status = len(list(check))
-        # if status:
-        #     return printer("Done! File(s) pulled.", foreground=FG.FINISH)
-        # printer("Nothing to do.", foreground=FG.FINISH)
 
     def link_command(self, force=False):
         utils.cheking_init(self.ROOT)
-        # check = set()
         element_value = self.arguments()["--element"]
         if element_value:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
-            # if not islink(file_home):
-            # check.add(True)
             if "/" in element_value:
                 self.path_creation(self.HOME, element_value)
             utils.create_symlink(file_repo, file_home, force=force)
@@ -321,19 +314,12 @@ OPTIONS:
                     self.path_creation(self.HOME, item)
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
-                # if not islink(file_home):
-                # check.add(True)
                 utils.create_symlink(file_repo, file_home, force=force)
-        # status = len(list(check))
-        # if status == 1:
-        #     return printer("Done! Linked file(s).", foreground=FG.FINISH)
-        # printer("Nothing to do.", foreground=FG.FINISH)
 
     def restore_command(self):
         """Method to restore dotfiles from the repository to their
         original location."""
         utils.cheking_init(self.ROOT)
-        # check = set()
         element_value = self.arguments()["--element"]
         if element_value:
             file_home = join(self.HOME, element_value)
@@ -348,13 +334,11 @@ OPTIONS:
                 exit(0)
 
             if utils.exists_levels(file_home, file_repo, self.arguments) == 1:
-                # check.add(True)
                 utils.rm_objects(file_home)
                 shutil.move(file_repo, file_home)
                 snakypy.os.rmdir_blank(self.repo)
 
             if utils.exists_levels(file_home, file_repo, self.arguments) == 2:
-                # check.add(True)
                 shutil.move(file_repo, file_home)
                 snakypy.os.rmdir_blank(self.repo)
         else:
@@ -371,17 +355,10 @@ OPTIONS:
                     exit(0)
 
                 if utils.exists_levels(file_home, file_repo, self.arguments) == 1:
-                    # check.add(True)
                     utils.rm_objects(file_home)
                     shutil.move(file_repo, file_home)
                     snakypy.os.rmdir_blank(self.repo)
 
                 if utils.exists_levels(file_home, file_repo, self.arguments) == 2:
-                    # check.add(True)
                     shutil.move(file_repo, file_home)
                     snakypy.os.rmdir_blank(self.repo)
-
-            # status = len(list(check))
-            # if status:
-            #     return printer("Done! Everything was reset.", foreground=FG.FINISH)
-            # printer("Nothing to do.", foreground=FG.FINISH)
