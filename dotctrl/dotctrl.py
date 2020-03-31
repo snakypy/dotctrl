@@ -72,15 +72,16 @@ class Utils(Data):
     def __init__(self, root, home):
         Data.__init__(self, root, home)
 
-    def path_creation(self, root, item):
+    @staticmethod
+    def path_creation(root, item):
         """Create repository for file with a path"""
-        if not islink(join(self.HOME, item)) and exists(join(self.HOME, item)):
-            path_split = item.split("/")[:-1]
-            path_str = "/".join(path_split)
-            path = join(root, path_str)
-            snakypy.path.create(path)
-            return str(path)
-        return
+        # if not islink(join(self.HOME, item)) and exists(join(self.HOME, item)):
+        path_split = item.split("/")[:-1]
+        path_str = "/".join(path_split)
+        path = join(root, path_str)
+        snakypy.path.create(path)
+        return str(path)
+        # return
 
     def listing_repo(self, check_islink=False):
         """Method lists the dotfiles in the repository and checks whether
@@ -242,11 +243,9 @@ OPTIONS:
         """Method to unlink point files from the repository
         with their place of origin."""
         utils.cheking_init(self.ROOT)
-
         check = set()
-
-        if self.arguments()["--element"]:
-            element_value = self.arguments()["--element"]
+        element_value = self.arguments()["--element"]
+        if element_value:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
             if islink(file_home) and exists(file_repo):
@@ -297,13 +296,13 @@ OPTIONS:
             file_home = join(self.HOME, element_value)
             file_repo = join(self.repo, element_value)
             if "/" in element_value:
-                self.path_creation(self.repo, element_value)
+                self.path_creation(self.HOME, element_value)
             utils.create_symlink(file_repo, file_home, force=force)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
                 if "/" in item:
-                    self.path_creation(self.repo, item)
+                    self.path_creation(self.HOME, item)
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
                 utils.create_symlink(file_repo, file_home, force=force)
@@ -312,32 +311,36 @@ OPTIONS:
         """Method to restore dotfiles from the repository to their
         original location."""
         utils.cheking_init(self.ROOT)
-
         check = set()
-        data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
-        for item in data:
-            file_home = join(self.HOME, item)
-            file_repo = join(self.repo, item)
+        element_value = self.arguments()["--element"]
+        if element_value:
+            file_home = join(self.HOME, element_value)
+            file_repo = join(self.repo, element_value)
+        else:
+            data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
+            for item in data:
+                file_home = join(self.HOME, item)
+                file_repo = join(self.repo, item)
 
-            if utils.exists_levels(file_home, file_repo, self.arguments) == 0:
-                printer(
-                    "The files match the repository and the drive. " "User --force.",
-                    foreground=FG.WARNING,
-                )
-                exit(0)
+                if utils.exists_levels(file_home, file_repo, self.arguments) == 0:
+                    printer(
+                        "The files match the repository and the drive. " "User --force.",
+                        foreground=FG.WARNING,
+                    )
+                    exit(0)
 
-            if utils.exists_levels(file_home, file_repo, self.arguments) == 1:
-                check.add(True)
-                utils.rm_objects(file_home)
-                shutil.move(file_repo, file_home)
-                snakypy.os.rmdir_blank(self.repo)
+                if utils.exists_levels(file_home, file_repo, self.arguments) == 1:
+                    check.add(True)
+                    utils.rm_objects(file_home)
+                    shutil.move(file_repo, file_home)
+                    snakypy.os.rmdir_blank(self.repo)
 
-            if utils.exists_levels(file_home, file_repo, self.arguments) == 2:
-                check.add(True)
-                shutil.move(file_repo, file_home)
-                snakypy.os.rmdir_blank(self.repo)
+                if utils.exists_levels(file_home, file_repo, self.arguments) == 2:
+                    check.add(True)
+                    shutil.move(file_repo, file_home)
+                    snakypy.os.rmdir_blank(self.repo)
 
-        status = len(list(check))
-        if status:
-            return printer("Done! Everything was reset.", foreground=FG.FINISH)
-        printer("Nothing to do.", foreground=FG.FINISH)
+            status = len(list(check))
+            if status:
+                return printer("Done! Everything was reset.", foreground=FG.FINISH)
+            printer("Nothing to do.", foreground=FG.FINISH)
