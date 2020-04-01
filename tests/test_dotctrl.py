@@ -42,10 +42,13 @@ def dotfiles_tests(base, create=True):
 def update_config_elements(base, *files):
     parsed = class_dotctrl(base).parsed
     parsed["dotctrl"]["elements"] = [*files]
-    # snakypy.file.create(parsed, class_dotctrl(base).config, force=True)
+    parsed["dotctrl"]["smart"]["rc"]["enable"] = True
+    parsed["dotctrl"]["smart"]["text_editors"]["enable"] = True
     snakypy.json.update(class_dotctrl(base).config, parsed)
     new_parsed = class_dotctrl(base).parsed
     assert new_parsed["dotctrl"]["elements"] == [*files]
+    assert new_parsed["dotctrl"]["smart"]["rc"]["enable"] is True
+    assert new_parsed["dotctrl"]["smart"]["text_editors"]["enable"] is True
 
 
 def test_cli(base):
@@ -74,47 +77,47 @@ def test_cli(base):
             if not exists(join(class_dotctrl(base).repo, item)):
                 assert False
 
-    # @decorators.assign_cli(class_dotctrl(base).arguments(argv=["check"]), "check")
-    # def check():
-    #     class_dotctrl(base).check_command()
-    #
-    # @decorators.assign_cli(class_dotctrl(base).arguments(argv=["link"]), "link")
-    # def link():
-    #     class_dotctrl(base).link_command(force=True)
-    #     for item in dotfiles_tests(base, create=False):
-    #         if not islink(join(class_dotctrl(base).HOME, item)):
-    #             assert False
-    #     for item in class_dotctrl(base).text_editors:
-    #         if not islink(join(class_dotctrl(base).HOME, item)):
-    #             assert False
-    #
-    # @decorators.assign_cli(class_dotctrl(base).arguments(argv=["unlink"]), "unlink")
-    # def unlink():
-    #     class_dotctrl(base).unlink_command()
-    #     for item in dotfiles_tests(base, create=False):
-    #         if islink(join(class_dotctrl(base).HOME, item)):
-    #             assert False
-    #     for item in class_dotctrl(base).text_editors:
-    #         if islink(join(class_dotctrl(base).HOME, item)):
-    #             assert False
-    #
-    # @decorators.assign_cli(class_dotctrl(base).arguments(argv=["restore"]), "restore")
-    # def restore():
-    #     class_dotctrl(base).restore_command()
-    #     for item in dotfiles_tests(base, create=False):
-    #         if exists(join(class_dotctrl(base).repo, item)):
-    #             assert False
-    #     for item in class_dotctrl(base).text_editors:
-    #         if exists(join(class_dotctrl(base).repo, item)):
-    #             assert False
-    #     for item in class_dotctrl(base).text_editors:
-    #         if islink(join(class_dotctrl(base).HOME, item)):
-    #             assert False
-    #
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["check"]), "check")
+    def check():
+        class_dotctrl(base).check_command()
+
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["link"]), "link")
+    def link():
+        class_dotctrl(base).link_command(force=True)
+        for item in dotfiles_tests(base, create=False):
+            if not islink(join(class_dotctrl(base).HOME, item)):
+                assert False
+        for item in class_dotctrl(base).text_editors:
+            if not islink(join(class_dotctrl(base).HOME, item)):
+                assert False
+
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["unlink"]), "unlink")
+    def unlink():
+        class_dotctrl(base).unlink_command()
+        for item in dotfiles_tests(base, create=False):
+            if islink(join(class_dotctrl(base).HOME, item)):
+                assert False
+        for item in class_dotctrl(base).text_editors:
+            if islink(join(class_dotctrl(base).HOME, item)):
+                assert False
+
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["restore"]), "restore")
+    def restore():
+        class_dotctrl(base).restore_command()
+        for item in dotfiles_tests(base, create=False):
+            if exists(join(class_dotctrl(base).repo, item)):
+                assert False
+        for item in class_dotctrl(base).text_editors:
+            if exists(join(class_dotctrl(base).repo, item)):
+                assert False
+        for item in class_dotctrl(base).text_editors:
+            if islink(join(class_dotctrl(base).HOME, item)):
+                assert False
+
     init()
     credence()
-    # pull()
-    # link()
-    # unlink()
-    # check()
-    # restore()
+    pull()
+    link()
+    unlink()
+    check()
+    restore()
