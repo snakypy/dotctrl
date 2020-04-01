@@ -1,34 +1,10 @@
-from datetime import datetime
-from dotctrl import __version__, __pkginfo__
-
-# config_rc_content_old = f"""# << {__pkginfo__['name']} configuration >>
-# # Datetime: {datetime.today().isoformat()}
-# # Version: {__version__}
-# # -----------------------------------------------------
-# # For more information, see: {__pkginfo__['home_page']}#configuration
-#
-# [dotctrl]
-# elements = []
-#
-# [dotctrl.smart]
-# rc.enable = true
-# text_editors.enable = true
-# """
+from dotctrl import __pkginfo__
 
 config_rc_content = {
     "dotctrl": {
-        "config": {
-            "editor": ""
-        },
+        "config": {"editor": ""},
         "elements": [],
-        "smart": {
-            "rc": {
-                "enable": False
-            },
-            "text_editors": {
-                "enable": False
-            }
-        }
+        "smart": {"rc": {"enable": False}, "text_editors": {"enable": False}},
     }
 }
 

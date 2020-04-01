@@ -62,7 +62,9 @@ def test_cli(base):
         if not exists(class_dotctrl(base).repo):
             assert False
 
-    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["--credits"]), "--credits")
+    @decorators.assign_cli(
+        class_dotctrl(base).arguments(argv=["--credits"]), "--credits"
+    )
     def credence():
         class_dotctrl(base).credence()
 

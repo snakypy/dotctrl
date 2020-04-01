@@ -257,8 +257,7 @@ OPTIONS:
         if len(list(listing_data)) == 0:
             return printer("Nothing to link.", foreground=FG.FINISH)
         printer(
-            f"\nObjects in: ./{self.repo.split('/')[-1]}",
-            foreground=FG.CYAN,
+            f"\nObjects in: ./{self.repo.split('/')[-1]}", foreground=FG.CYAN,
         )
         for item in listing_data:
             status = f"{FG.YELLOW}[Not linked]{NONE}"
