@@ -42,8 +42,6 @@ class Data:
 
         if exists(self.config):
             try:
-                # self.config_rc = snakypy.file.read(self.config)
-                # self.parsed = tomlkit.parse(self.config_rc)
                 self.parsed = snakypy.json.read(self.config)
                 self.elements = [*self.parsed["dotctrl"]["elements"]]
                 self.rc_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
@@ -216,7 +214,8 @@ OPTIONS:
                 get_editor = os.environ.get("EDITOR", editor_terminal)
                 with open(self.config) as f:
                     subprocess.call([get_editor, f.name])
-                return True
+                    exit(0)
+            return
 
         if self.arguments()["--open"]:
             editor = self.parsed["dotctrl"]["config"]["editor"]
@@ -226,7 +225,6 @@ OPTIONS:
                 editors = ["vim", "nano", "emacs", "micro"]
                 for editor in editors:
                     action(editor)
-                return
 
         if self.arguments()["--view"]:
             read_config = snakypy.file.read(self.config)
