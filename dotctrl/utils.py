@@ -121,6 +121,7 @@ def clear_config_garbage(repo, home, config):
 
 def add_element_config(src, element, config):
     parsed = snakypy.json.read(config)
+    # rc_status = parsed["dotctrl"]["smart"]["rc"]["enable"]
     if element not in parsed["dotctrl"]["elements"]:
         if element[-2:] == "rc" and "/" not in element:
             pass

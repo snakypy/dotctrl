@@ -343,3 +343,4 @@ OPTIONS:
                 if utils.exists_levels(file_home, file_repo, self.arguments) == 2:
                     shutil.move(file_repo, file_home)
                     snakypy.os.rmdir_blank(self.repo)
+        utils.clear_config_garbage(self.HOME, self.repo, self.config)
