@@ -327,6 +327,8 @@ OPTIONS:
             for item in data:
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
+                if "/" in item:
+                    self.path_creation(self.HOME, item)
 
                 if utils.exists_levels(file_home, file_repo, self.arguments) == 0:
                     printer(
