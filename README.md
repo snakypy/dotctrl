@@ -80,7 +80,7 @@ $ dotctrl init
 
 ## Configuration
 
-`Dotctrl` works on top of a configuration file created in the Dotctrl repository, which is the **dotctrl.toml** file.
+`Dotctrl` works on top of a configuration file created in the Dotctrl repository, which is the **dotctrl.json** file.
 
 You can open the `Dotctrl` configuration file in the terminal itself using the command:
 
@@ -88,52 +88,109 @@ You can open the `Dotctrl` configuration file in the terminal itself using the c
 $ dotctrl config --open
 ```
 
-### Understanding each section  `dotctrl.toml`:
+### Understanding each section  `dotctrl.json`:
 
-**Section `dotctrl`:**
+**Section `config`:**
 
-```toml
-[dotctrl]
-elements = []
+* In the **editor** key, you can choose an editor of your choice. You must enter the publisher's binary, for example: **vim**, **nano**, etc. If you leave it blank, **Dotctrl** will select one of these terminal text editors: **vim**, **nano**, **emacs**, and **micro**.
+
+```json
+{
+    "dotctrl": {
+        "config": {
+            "editor": ""
+        }
+    }
+}
 ```
+
+**Section `elements`:**
+
 * **elements**: As the name says, "*elements*" will store the absolute path of the elements you want to place inside the `Dotctrl` repository in a **list**. Examples:
 
-```toml
-elements = [".config/foo/foo.conf",
-            ".config/bar/bar.conf",
-            ".foo.conf"]
+```json
+{
+    "dotctrl": {
+        "elements": [".config/foo/foo.conf",
+                     ".config/bar/bar.conf",
+                     ".foo.conf"]
+    }
+}
 ```
 
 The `elements` option also accepts complete folders instead of just files:
 
-```toml
-elements = [".config/foo",
-            ".config/bar"]
+```json
+{
+    "dotctrl": {
+        "elements": [".config/foo",
+                     ".config/bar"]
+    }
+}
 ```
 
 For madness but true, `Dotctrl` also manages files and folders without points:
 
-```toml
-elements = ["Documents/foo.txt",
-            "Images/bar.jpg"]
+```json
+{
+    "dotctrl": {
+        "elements": ["Documents/foo.txt",
+                     "Images/bar.jpg"]
+    }
+}
 ```
 
 You must place files (<u>or folders</u>) that are inside the user's **HOME**, as this is how `Dotctrl` works, only with elements in the user's HOME.
 
 
 
-**Section `dotctrl.smart`:**
+**Section `smart`:**
 
 This section is very cool. It is the smart section of `Dotctrl`, where you will find configuration files and dotfiles for certain applications. :)
 
-```toml
-[dotctrl.smart]
-rc.enable = true
-text_editors.enable = true
+```json
+{
+    "dotctrl": {
+        "smart": {
+            "rc": {
+                "enable": true
+            },
+            "text_editors": {
+                "enable": false
+            }
+        }
+    }
+}
 ```
 
 * **rc.enable:** Option: `true`|`false`. If this option is `true`, ` Dotctrl` will search for all dotfiles in the user's *HOME* directory containing *rc* at the end. `Default:`*true*
 * **text_editors.enable:** Option: `true`|`false`. If this option is `true`, ` Dotctrl` will search for the main dotfiles of the following text editors: [Atom](https://atom.io), [Sublime Text](https://www.sublimetext.com/), and [Visual Studio Code](https://code.visualstudio.com/).
+
+**Example configuration file:**
+
+```json
+{
+    "dotctrl": {
+        "config": {
+            "editor": "vim"
+        },
+        "elements": [
+            ".config/flake8",
+            ".bash_profile",
+            ".gitconfig",
+            ".config/xfce4/terminal/terminalrc"
+        ],
+        "smart": {
+            "rc": {
+                "enable": true
+            },
+            "text_editors": {
+                "enable": false
+            }
+        }
+    }
+}
+```
 
 ## Upgrading
 
