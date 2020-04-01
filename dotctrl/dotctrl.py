@@ -238,7 +238,7 @@ OPTIONS:
 
         listing_data = self.listing_repo()
         if len(list(listing_data)) == 0:
-            return printer("Repository is empty. No dotfiles.", foreground=FG.YELLOW)
+            return printer("Repository is empty. No elements.", foreground=FG.YELLOW)
         printer(
             f"\nListing in: ./{self.repo.split('/')[-1]}\n\nObjects:",
             foreground=FG.CYAN,
@@ -334,4 +334,3 @@ OPTIONS:
                     self.path_creation(self.HOME, item)
                 self.restore_core(file_home, file_repo, self.arguments)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
-
