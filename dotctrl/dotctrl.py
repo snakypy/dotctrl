@@ -264,13 +264,12 @@ OPTIONS:
             status = f"{FG.YELLOW}[Not linked]{NONE}"
             print(f"{FG.CYAN}➜{NONE} {item} {status}")
 
-    def unlink_command(self):
+    def unlink_command(self, opt_element=None):
         """Method to unlink point files from the repository
         with their place of origin."""
         utils.cheking_init(self.ROOT)
-        element_value = self.arguments()["--element"]
-        if element_value:
-            file_home = join(self.HOME, element_value)
+        if opt_element:
+            file_home = join(self.HOME, opt_element)
             with suppress(Exception):
                 os.remove(file_home)
         else:
@@ -280,16 +279,15 @@ OPTIONS:
                 with suppress(Exception):
                     os.remove(file_home)
 
-    def pull_command(self, force=False):
+    def pull_command(self, opt_element=None, force=False):
         utils.cheking_init(self.ROOT)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
-        element_value = self.arguments()["--element"]
-        if element_value:
-            file_home = join(self.HOME, element_value)
-            file_repo = join(self.repo, element_value)
-            if "/" in element_value:
-                self.path_creation(self.repo, element_value)
-            utils.add_element_config(file_home, element_value, self.config)
+        if opt_element:
+            file_home = join(self.HOME, opt_element)
+            file_repo = join(self.repo, opt_element)
+            if "/" in opt_element:
+                self.path_creation(self.repo, opt_element)
+            utils.add_element_config(file_home, opt_element, self.config)
             utils.to_move(file_home, file_repo, force=force)
         else:
             for item in self.data:
@@ -300,14 +298,13 @@ OPTIONS:
                         self.path_creation(self.repo, item)
                 utils.to_move(file_home, file_repo, force=force)
 
-    def link_command(self, force=False):
+    def link_command(self, opt_element=None, force=False):
         utils.cheking_init(self.ROOT)
-        element_value = self.arguments()["--element"]
-        if element_value:
-            file_home = join(self.HOME, element_value)
-            file_repo = join(self.repo, element_value)
-            if "/" in element_value:
-                self.path_creation(self.HOME, element_value)
+        if opt_element:
+            file_home = join(self.HOME, opt_element)
+            file_repo = join(self.repo, opt_element)
+            if "/" in opt_element:
+                self.path_creation(self.HOME, opt_element)
             utils.create_symlink(file_repo, file_home, force=force)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
@@ -318,16 +315,15 @@ OPTIONS:
                 file_repo = join(self.repo, item)
                 utils.create_symlink(file_repo, file_home, force=force)
 
-    def restore_command(self):
+    def restore_command(self, opt_element=None):
         """Method to restore dotfiles from the repository to their
         original location."""
         utils.cheking_init(self.ROOT)
-        element_value = self.arguments()["--element"]
-        if element_value:
-            file_home = join(self.HOME, element_value)
-            file_repo = join(self.repo, element_value)
-            if "/" in element_value:
-                self.path_creation(self.HOME, element_value)
+        if opt_element:
+            file_home = join(self.HOME, opt_element)
+            file_repo = join(self.repo, opt_element)
+            if "/" in opt_element:
+                self.path_creation(self.HOME, opt_element)
             self.restore_core(file_home, file_repo, self.arguments)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)

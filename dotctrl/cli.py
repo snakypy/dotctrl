@@ -8,6 +8,7 @@ from dotctrl import utils
 
 # Creating instance Dotctrl class
 dotctrl_inst = Dotctrl(ROOT, HOME)
+opt_element = dotctrl_inst.arguments()["--element"]
 
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "init")
@@ -17,19 +18,17 @@ def init():
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "pull")
 def pull():
-    # dotctrl_inst.pull_link_command(use_move=True, force=True)
-    dotctrl_inst.pull_command(force=True)
+    dotctrl_inst.pull_command(opt_element=opt_element, force=True)
 
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "link")
 def link():
-    # dotctrl_inst.pull_link_command(use_link=True, force=True)
-    dotctrl_inst.link_command(force=True)
+    dotctrl_inst.link_command(opt_element=opt_element, force=True)
 
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "unlink")
 def unlink():
-    dotctrl_inst.unlink_command()
+    dotctrl_inst.unlink_command(opt_element=opt_element)
 
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "config")
@@ -49,7 +48,7 @@ def list_():
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "restore")
 def restore():
-    dotctrl_inst.restore_command()
+    dotctrl_inst.restore_command(opt_element=opt_element)
 
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "--credits")
