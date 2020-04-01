@@ -54,14 +54,7 @@ def restore():
 
 @decorators.assign_cli(dotctrl_inst.arguments(), "--credits")
 def credence():
-    utils.show_billboard()
-    snakypy.console.credence(
-        __pkginfo__["name"],
-        __version__,
-        __pkginfo__["home_page"],
-        __pkginfo__,
-        foreground=FG.CYAN,
-    )
+    dotctrl_inst.credence()
 
 
 @snakypy.decorators.only_for_linux
