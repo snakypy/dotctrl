@@ -186,9 +186,10 @@ OPTIONS:
             printer("Repository is already defined.", foreground=FG.FINISH)
             exit(0)
         snakypy.path.create(self.repo)
-        snakypy.json.create(config.config_rc_content, self.config)
-        snakypy.file.create(config.gitignore_content, self.gitignore)
-        snakypy.file.create(config.readme_content, self.readme)
+        snakypy.json.create(config.config_rc_content, self.config, force=True)
+        snakypy.file.create(config.readme_content, self.readme, force=True)
+        snakypy.file.create(config.gitignore_content, self.gitignore, force=True)
+        utils.git_init()
         printer(
             f"Initialized {__pkginfo__['name']} repository in {self.repo}",
             foreground=FG.FINISH,

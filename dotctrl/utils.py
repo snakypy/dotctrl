@@ -2,10 +2,11 @@
 import os
 import shutil
 import contextlib
+import subprocess
 import snakypy
 from sys import exit
 from glob import glob
-from os.path import join, exists, islink, isfile
+from os.path import join, exists, islink, isfile, isdir
 from snakypy import printer, FG
 from dotctrl import __pkginfo__
 
@@ -18,6 +19,11 @@ def show_billboard():
         __pkginfo__["organization_name"], justify="center", foreground=FG.YELLOW
     )
     printer(f"copyright (c) since 2020\n".center(100), foreground=FG.GREEN)
+
+
+def git_init():
+    if shutil.which("git") and not isdir(".git"):
+        subprocess.call(["git", "init"], stdout=subprocess.PIPE)
 
 
 def cheking_init(root):
