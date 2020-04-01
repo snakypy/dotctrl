@@ -180,6 +180,17 @@ OPTIONS:
         data = docopt(self.menu_opts(), argv=argv, version=formatted_version)
         return data
 
+    @staticmethod
+    def credence():
+        utils.show_billboard()
+        snakypy.console.credence(
+            __pkginfo__["name"],
+            __version__,
+            __pkginfo__["home_page"],
+            __pkginfo__,
+            foreground=FG.CYAN,
+        )
+
     def init_command(self):
         """Base repository method."""
         if exists(self.config):
@@ -327,3 +338,4 @@ OPTIONS:
                     self.path_creation(self.HOME, item)
                 self.restore_core(file_home, file_repo, self.arguments)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
+
