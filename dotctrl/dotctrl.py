@@ -100,6 +100,21 @@ class Utils(Data):
                     listing_data.append(item)
         return listing_data
 
+    def restore_core(self, src, dst, arguments):
+        if utils.exists_levels(src, dst, arguments) == 0:
+            printer(
+                "The files match the repository and the drive. " "User --force.",
+                foreground=FG.WARNING,
+            )
+            exit(0)
+        if utils.exists_levels(src, dst, arguments) == 1:
+            utils.rm_objects(src)
+            shutil.move(dst, src)
+            snakypy.os.rmdir_blank(self.repo)
+        if utils.exists_levels(src, dst, arguments) == 2:
+            shutil.move(dst, src)
+            snakypy.os.rmdir_blank(self.repo)
+
 
 class Dotctrl(Utils):
     """Main class Dotctrl"""
@@ -191,7 +206,6 @@ OPTIONS:
                     get_editor = os.environ.get("EDITOR", edt)
                     with open(self.config) as f:
                         subprocess.call([get_editor, f.name])
-                        printer("Done!", foreground=FG.FINISH)
                     return True
             else:
                 editors = ["vim", "nano", "emacs", "micro"]
@@ -200,7 +214,6 @@ OPTIONS:
                         get_editor = os.environ.get("EDITOR", editor)
                         with open(self.config) as f:
                             subprocess.call([get_editor, f.name])
-                            printer("Done!", foreground=FG.FINISH)
                         return True
                 return
 
@@ -216,7 +229,7 @@ OPTIONS:
         if len(list(listing_data)) == 0:
             return printer("Repository is empty. No dotfiles.", foreground=FG.YELLOW)
         printer(
-            f"\nListing in: ./{self.repo.split('/')[-1]}\n\nElements:",
+            f"\nListing in: ./{self.repo.split('/')[-1]}\n\nObjects:",
             foreground=FG.CYAN,
         )
         for item in listing_data:
@@ -224,17 +237,16 @@ OPTIONS:
 
     def check_command(self):
         """Method to check if the repository's dotfiles are linked
-        with their place of origin. If there is no list and information, the message
-        "Not linked"""
+            with their place of origin. If there is no list and information,
+            the message Not linked"""
         utils.cheking_init(self.ROOT)
-
         if len(os.listdir(self.repo)) == 0:
             return printer("Nothing to do.", foreground=FG.FINISH)
         listing_data = self.listing_repo(check_islink=True)
         if len(list(listing_data)) == 0:
             return printer("Nothing to link.", foreground=FG.FINISH)
         printer(
-            f"\nListing in: ./{self.repo.split('/')[-1]}\n\nElements:",
+            f"\nObjects in: ./{self.repo.split('/')[-1]}",
             foreground=FG.CYAN,
         )
         for item in listing_data:
@@ -248,14 +260,12 @@ OPTIONS:
         element_value = self.arguments()["--element"]
         if element_value:
             file_home = join(self.HOME, element_value)
-            file_repo = join(self.repo, element_value)
             with suppress(Exception):
                 os.remove(file_home)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
                 file_home = join(self.HOME, item)
-                # file_repo = join(self.repo, item)
                 with suppress(Exception):
                     os.remove(file_home)
 
@@ -307,21 +317,7 @@ OPTIONS:
             file_repo = join(self.repo, element_value)
             if "/" in element_value:
                 self.path_creation(self.HOME, element_value)
-            if utils.exists_levels(file_home, file_repo, self.arguments) == 0:
-                printer(
-                    "The files match the repository and the drive. " "User --force.",
-                    foreground=FG.WARNING,
-                )
-                exit(0)
-
-            if utils.exists_levels(file_home, file_repo, self.arguments) == 1:
-                utils.rm_objects(file_home)
-                shutil.move(file_repo, file_home)
-                snakypy.os.rmdir_blank(self.repo)
-
-            if utils.exists_levels(file_home, file_repo, self.arguments) == 2:
-                shutil.move(file_repo, file_home)
-                snakypy.os.rmdir_blank(self.repo)
+            self.restore_core(file_home, file_repo, self.arguments)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
@@ -329,20 +325,5 @@ OPTIONS:
                 file_repo = join(self.repo, item)
                 if "/" in item:
                     self.path_creation(self.HOME, item)
-
-                if utils.exists_levels(file_home, file_repo, self.arguments) == 0:
-                    printer(
-                        "The files match the repository and the drive. " "User --force.",
-                        foreground=FG.WARNING,
-                    )
-                    exit(0)
-
-                if utils.exists_levels(file_home, file_repo, self.arguments) == 1:
-                    utils.rm_objects(file_home)
-                    shutil.move(file_repo, file_home)
-                    snakypy.os.rmdir_blank(self.repo)
-
-                if utils.exists_levels(file_home, file_repo, self.arguments) == 2:
-                    shutil.move(file_repo, file_home)
-                    snakypy.os.rmdir_blank(self.repo)
+                self.restore_core(file_home, file_repo, self.arguments)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
