@@ -23,10 +23,10 @@ config_rc_content = {
         "elements": [],
         "smart": {
             "rc": {
-                "enable": True
+                "enable": False
             },
             "text_editors": {
-                "enable": True
+                "enable": False
             }
         }
     }
