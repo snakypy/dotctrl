@@ -1,9 +1,7 @@
 """CLI Dotctrl"""
 import snakypy
-from snakypy import FG
-from dotctrl import ROOT, HOME, __version__, __pkginfo__, decorators
+from dotctrl import ROOT, HOME, decorators
 from dotctrl.dotctrl import Dotctrl
-from dotctrl import utils
 
 
 # Creating instance Dotctrl class
