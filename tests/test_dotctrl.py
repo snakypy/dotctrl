@@ -95,7 +95,9 @@ def test_cli(base):
 
     @decorators.assign_cli(class_dotctrl(base).arguments(argv=["unlink"]), "unlink")
     def unlink():
-        class_dotctrl(base).unlink_command(class_dotctrl(base).arguments(argv=["unlink"]))
+        class_dotctrl(base).unlink_command(
+            class_dotctrl(base).arguments(argv=["unlink"])
+        )
         for item in dotfiles_tests(base, create=False):
             if islink(join(class_dotctrl(base).HOME, item)):
                 assert False
@@ -105,7 +107,9 @@ def test_cli(base):
 
     @decorators.assign_cli(class_dotctrl(base).arguments(argv=["restore"]), "restore")
     def restore():
-        class_dotctrl(base).restore_command(class_dotctrl(base).arguments(argv=["restore"]))
+        class_dotctrl(base).restore_command(
+            class_dotctrl(base).arguments(argv=["restore"])
+        )
         for item in dotfiles_tests(base, create=False):
             if exists(join(class_dotctrl(base).repo, item)):
                 assert False
