@@ -9,7 +9,7 @@ dotfiles.
 
 For more information, access: 'https://github.com/snakypy/dotctrl'
 
-:copyright: Copyright 2020-2020 by Snakypy team, see AUTHORS.
+:copyright: Copyright 2020-present by Snakypy team, see AUTHORS.
 :license: MIT license, see LICENSE for details.
 """
 

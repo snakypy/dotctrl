@@ -27,7 +27,7 @@ readme_content = f"""# {__pkginfo__['name']}
 **Brief description:**
 
 All *dotfiles* files are kept in the **dotctrl** repository/folder.
-Depending on what you add to the configuration file (`dotctrl.toml`), many will be
+Depending on what you add to the configuration file (`{__pkginfo__['config']}`), many will be
 stored in the repository with a dot (.) to maintain compatibility with directories
 and files on your machine's drive, that is, all files and paths of the repository
 **dotctrl**, are compatible with those belonging to the **$HOME**.
