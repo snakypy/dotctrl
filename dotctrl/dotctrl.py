@@ -134,8 +134,8 @@ USAGE:
     {__pkginfo__['executable']} init
     {__pkginfo__['executable']} check
     {__pkginfo__['executable']} list
-    {__pkginfo__['executable']} pull [--element=<object>]
-    {__pkginfo__['executable']} link [--element=<object>]
+    {__pkginfo__['executable']} pull [--element=<object>] [--force]
+    {__pkginfo__['executable']} link [--element=<object>] [--force]
     {__pkginfo__['executable']} unlink [--element=<object>]
     {__pkginfo__['executable']} config (--open | --view)
     {__pkginfo__['executable']} restore [--element=<object>] [--force]
@@ -263,12 +263,12 @@ OPTIONS:
             status = f"{FG.YELLOW}[Not linked]{NONE}"
             print(f"{FG.CYAN}➜{NONE} {item} {status}")
 
-    def unlink_command(self, opt_element=None):
+    def unlink_command(self, arguments=None):
         """Method to unlink point files from the repository
         with their place of origin."""
         utils.cheking_init(self.ROOT)
-        if opt_element:
-            file_home = join(self.HOME, opt_element)
+        if arguments["--element"]:
+            file_home = join(self.HOME, arguments["--element"])
             with suppress(Exception):
                 os.remove(file_home)
         else:
@@ -278,16 +278,16 @@ OPTIONS:
                 with suppress(Exception):
                     os.remove(file_home)
 
-    def pull_command(self, opt_element=None, force=False):
+    def pull_command(self, arguments=None):
         utils.cheking_init(self.ROOT)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
-        if opt_element:
-            file_home = join(self.HOME, opt_element)
-            file_repo = join(self.repo, opt_element)
-            if "/" in opt_element:
-                self.path_creation(self.repo, opt_element)
-            utils.add_element_config(file_home, opt_element, self.config)
-            utils.to_move(file_home, file_repo, force=force)
+        if arguments["--element"]:
+            file_home = join(self.HOME, arguments["--element"])
+            file_repo = join(self.repo, arguments["--element"])
+            if "/" in arguments["--element"]:
+                self.path_creation(self.repo, arguments["--element"])
+            utils.add_element_config(file_home, arguments["--element"], self.config)
+            utils.to_move(file_home, file_repo, arguments["--force"])
         else:
             for item in self.data:
                 file_home = join(self.HOME, item)
@@ -295,16 +295,16 @@ OPTIONS:
                 if "/" in item:
                     if not islink(file_home) and exists(file_home):
                         self.path_creation(self.repo, item)
-                utils.to_move(file_home, file_repo, force=force)
+                utils.to_move(file_home, file_repo, arguments["--force"])
 
-    def link_command(self, opt_element=None, force=False):
+    def link_command(self, arguments=None):
         utils.cheking_init(self.ROOT)
-        if opt_element:
-            file_home = join(self.HOME, opt_element)
-            file_repo = join(self.repo, opt_element)
-            if "/" in opt_element:
-                self.path_creation(self.HOME, opt_element)
-            utils.create_symlink(file_repo, file_home, force=force)
+        if arguments["--element"]:
+            file_home = join(self.HOME, arguments["--element"])
+            file_repo = join(self.repo, arguments["--element"])
+            if "/" in arguments["--element"]:
+                self.path_creation(self.HOME, arguments["--element"])
+            utils.create_symlink(file_repo, file_home, arguments["--force"])
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
@@ -312,17 +312,17 @@ OPTIONS:
                     self.path_creation(self.HOME, item)
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
-                utils.create_symlink(file_repo, file_home, force=force)
+                utils.create_symlink(file_repo, file_home, arguments["--force"])
 
-    def restore_command(self, opt_element=None):
+    def restore_command(self, arguments=None):
         """Method to restore dotfiles from the repository to their
         original location."""
         utils.cheking_init(self.ROOT)
-        if opt_element:
-            file_home = join(self.HOME, opt_element)
-            file_repo = join(self.repo, opt_element)
-            if "/" in opt_element:
-                self.path_creation(self.HOME, opt_element)
+        if arguments["--element"]:
+            file_home = join(self.HOME, arguments["--element"])
+            file_repo = join(self.repo, arguments["--element"])
+            if "/" in arguments["--element"]:
+                self.path_creation(self.HOME, arguments["--element"])
             self.restore_core(file_home, file_repo, self.arguments)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)

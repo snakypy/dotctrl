@@ -8,7 +8,7 @@ from sys import exit
 from glob import glob
 from os.path import join, exists, islink, isfile, isdir
 from snakypy import printer, FG
-from dotctrl import __pkginfo__
+from dotctrl import __pkginfo__, decorators
 
 
 def show_billboard():
@@ -38,13 +38,13 @@ def cheking_init(root):
         exit(1)
 
 
-def to_move(src, dst, *, force=False):
+def to_move(src, dst, arguments):
     """Moves the dot files from the drive to the repository
     src = local source
     dst = repository
     """
     if not islink(src):
-        if exists(src) and exists(dst) and not force:
+        if exists(src) and exists(dst) and not arguments:
             printer(
                 'The same files were found in the repository and "dotctrl" '
                 "on the machine. Use --force",
@@ -58,14 +58,14 @@ def to_move(src, dst, *, force=False):
     return
 
 
-def create_symlink(src, dst, *, force=False):
+def create_symlink(src, dst, arguments):
     """Creates symbolic links. In this case, the "src" is the
     repository for dotctrl.
     src = repository
     dst = local source
     """
     if exists(src):
-        if islink(dst) and not force:
+        if islink(dst) and not arguments:
             printer(
                 "Symbolic links have already been found. Use --force",
                 foreground=FG.WARNING,
