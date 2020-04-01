@@ -100,7 +100,7 @@ class Utils(Data):
                     listing_data.append(item)
         return listing_data
 
-    def restore_core(self, src, dst, arguments):
+    def restore_conditions(self, src, dst, arguments):
         if utils.exists_levels(src, dst, arguments) == 0:
             printer(
                 "The files match the repository and the drive. " "User --force.",
@@ -323,7 +323,7 @@ OPTIONS:
             file_repo = join(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
                 self.path_creation(self.HOME, arguments["--element"])
-            self.restore_core(file_home, file_repo, self.arguments)
+            self.restore_conditions(file_home, file_repo, self.arguments)
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
@@ -331,5 +331,5 @@ OPTIONS:
                 file_repo = join(self.repo, item)
                 if "/" in item:
                     self.path_creation(self.HOME, item)
-                self.restore_core(file_home, file_repo, self.arguments)
+                self.restore_conditions(file_home, file_repo, self.arguments)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
