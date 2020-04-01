@@ -8,7 +8,7 @@ from sys import exit
 from glob import glob
 from os.path import join, exists, islink, isfile, isdir
 from snakypy import printer, FG
-from dotctrl import __pkginfo__, decorators
+from dotctrl import __pkginfo__
 
 
 def show_billboard():
@@ -129,7 +129,6 @@ def clear_config_garbage(repo, home, config):
 
 def add_element_config(src, element, config):
     parsed = snakypy.json.read(config)
-    # rc_status = parsed["dotctrl"]["smart"]["rc"]["enable"]
     if element not in parsed["dotctrl"]["elements"]:
         if element[-2:] == "rc" and "/" not in element:
             pass
