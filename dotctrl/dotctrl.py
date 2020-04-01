@@ -199,22 +199,21 @@ OPTIONS:
 
         utils.cheking_init(self.ROOT)
 
+        def action(editor_terminal):
+            if shutil.which(editor_terminal):
+                get_editor = os.environ.get("EDITOR", editor_terminal)
+                with open(self.config) as f:
+                    subprocess.call([get_editor, f.name])
+                return True
+
         if self.arguments()["--open"]:
-            edt = self.parsed["dotctrl"]["config"]["editor"]
-            if edt:
-                if shutil.which(edt):
-                    get_editor = os.environ.get("EDITOR", edt)
-                    with open(self.config) as f:
-                        subprocess.call([get_editor, f.name])
-                    return True
+            editor = self.parsed["dotctrl"]["config"]["editor"]
+            if editor:
+                action(editor)
             else:
                 editors = ["vim", "nano", "emacs", "micro"]
                 for editor in editors:
-                    if shutil.which(editor):
-                        get_editor = os.environ.get("EDITOR", editor)
-                        with open(self.config) as f:
-                            subprocess.call([get_editor, f.name])
-                        return True
+                    action(editor)
                 return
 
         if self.arguments()["--view"]:
