@@ -6,49 +6,55 @@ from dotctrl.dotctrl import Dotctrl
 
 # Creating instance Dotctrl class
 dotctrl_inst = Dotctrl(ROOT, HOME)
+arguments = dotctrl_inst.arguments()
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "init")
+@decorators.assign_cli(arguments, "init")
 def init():
-    dotctrl_inst.init_command()
+    dotctrl_inst.init_command(arguments)
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "pull")
+@decorators.assign_cli(arguments, "pull")
 def pull():
-    dotctrl_inst.pull_command(dotctrl_inst.arguments())
+    dotctrl_inst.pull_command(arguments)
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "link")
+@decorators.assign_cli(arguments, "link")
 def link():
-    dotctrl_inst.link_command(dotctrl_inst.arguments())
+    dotctrl_inst.link_command(arguments)
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "unlink")
+@decorators.assign_cli(arguments, "unlink")
 def unlink():
-    dotctrl_inst.unlink_command(dotctrl_inst.arguments())
+    dotctrl_inst.unlink_command(arguments)
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "config")
+@decorators.assign_cli(arguments, "config")
 def config():
-    dotctrl_inst.config_command()
+    dotctrl_inst.config_command(arguments)
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "check")
+@decorators.assign_cli(arguments, "check")
 def check():
     dotctrl_inst.check_command()
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "list")
+@decorators.assign_cli(arguments, "list")
 def list_():
     dotctrl_inst.list_command()
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "restore")
+@decorators.assign_cli(arguments, "restore")
 def restore():
-    dotctrl_inst.restore_command(dotctrl_inst.arguments())
+    dotctrl_inst.restore_command(arguments)
 
 
-@decorators.assign_cli(dotctrl_inst.arguments(), "--credits")
+@decorators.assign_cli(arguments, "remove")
+def remove():
+    dotctrl_inst.remove_command(arguments)
+
+
+@decorators.assign_cli(arguments, "--credits")
 def credence():
     dotctrl_inst.credence()
 
@@ -64,5 +70,6 @@ def main():
         list_(),
         config(),
         restore(),
+        remove(),
         credence(),
     )
