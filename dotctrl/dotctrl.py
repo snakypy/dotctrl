@@ -137,6 +137,7 @@ USAGE:
     {__pkginfo__['executable']} unlink [--element=<object>]
     {__pkginfo__['executable']} config (--open | --view)
     {__pkginfo__['executable']} restore [--element=<object>] [--force]
+    {__pkginfo__['executable']} remove (--element=<object> | --all)
     {__pkginfo__['executable']} --help
     {__pkginfo__['executable']} --version
     {__pkginfo__['executable']} --credits
@@ -156,6 +157,8 @@ ARGUMENTS:
     {FG.CYAN}config{NONE} --------- Open or view settings.
     {FG.CYAN}restore{NONE} -------- Moves all dotfiles from the repository to the
                      default source location.
+    {FG.CYAN}remove{NONE} --------- {FG.YELLOW}DANGER!{NONE} Removes the elements
+                     in the repository and the source location.
 
 OPTIONS:
     {FG.BLUE}--help{NONE} ---------------- Show this screen.
@@ -164,6 +167,8 @@ OPTIONS:
     {FG.BLUE}--open{NONE} ---------------- Open the configuration file in edit mode and
                             perform the automatic update when you exit.
     {FG.BLUE}--view{NONE} ---------------- View the configuration file on the terminal.
+    {FG.BLUE}--force{NONE} --------------- Complete the command regardless of whether or
+                            not files exist.
     {FG.BLUE}--version{NONE} ------------- Show version.
     {FG.BLUE}--credits{NONE} ------------- Show credits.
         """
