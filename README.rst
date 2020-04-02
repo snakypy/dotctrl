@@ -31,7 +31,7 @@
     :target: https://github.com/snakypy/dotctrl/blob/master/LICENSE
 
 
-`Dotctrl` is a package for managing your dot files on Linux. `Dotctrl` works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
+`Dotctrl` is a package for managing your "dotfiles" on Linux. `Dotctrl` works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
 
 Features
 --------
