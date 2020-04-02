@@ -76,7 +76,12 @@ def create_symlink(src, dst, arguments):
         else:
             with contextlib.suppress(Exception):
                 os.remove(dst)
-            os.symlink(src, dst)
+            try:
+                os.symlink(src, dst)
+            except PermissionError as p:
+                printer("User without permission to create the symbolic link.",
+                        p,
+                        foreground=FG.ERROR)
 
 
 def rm_objects(obj):
