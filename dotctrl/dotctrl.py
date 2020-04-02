@@ -160,8 +160,7 @@ ARGUMENTS:
 OPTIONS:
     {FG.BLUE}--help{NONE} ---------------- Show this screen.
     {FG.BLUE}--element=<object>{NONE} ---- Receive an object where, have the absolute
-                            path to a {FG.MAGENTA}file{NONE} or {FG.MAGENTA}folder{NONE},
-                            always from the HOME directory.
+                            path to a file or folder, always from the HOME directory.
     {FG.BLUE}--open{NONE} ---------------- Open the configuration file in edit mode and
                             perform the automatic update when you exit.
     {FG.BLUE}--view{NONE} ---------------- View the configuration file on the terminal.
