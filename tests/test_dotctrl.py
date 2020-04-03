@@ -1,8 +1,6 @@
-    from os.path import exists, islink, join
-
 import pytest
 import snakypy
-
+from os.path import exists, islink, join
 from dotctrl import decorators
 from dotctrl.dotctrl import Dotctrl
 
