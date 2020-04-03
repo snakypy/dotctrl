@@ -29,13 +29,17 @@
 <br>
 <br>
 
-`Dotctrl` is a package for managing your "dotfiles" on Linux. `Dotctrl` works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
+**Dotctrl** is a package for managing your "dotfiles" on Linux. **Dotctrl** works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
 
 ## Features
 
-* Automatically manages dotfiles ending with rc in the user's HOME;
+* Stay free to create manual links;
+* Automatically manages dotfiles ending with rc in the user's `$HOME`;
 * Automatically manages the main configuration files of the editors: Atom, Sublime Text, Visual Studio Code;
-* The `Dotctrl` repository stores the same path structure as the configuration files with the user's HOME files;
+* The **Dotctrl** repository stores the same path structure as its original location;
+* Manage single or bulk elements;
+* Restores the elements of the repository to their original location with a single command;
+* And much more :)
 
 ## Requirements
 
@@ -48,9 +52,9 @@ To work correctly, you will first need:
 
 ## Installing
 
-**1** - It's time to install `Dotctrl`. To do this, do:
+It's time to install **Dotctrl**. To do this, do:
 
-Globally:
+**Globally:**
 
 ```shell
 # pip install dotctrl
@@ -61,7 +65,7 @@ or
 $ sudo pip install dotctrl
 ```
 
-For the user:
+**For the user:**
 
 ```shell
 $ pip install dotctrl --user
@@ -82,13 +86,13 @@ $ dotctrl init
 
 **Pull**
 
-Pull an element into the `Dotctrl` repository:
+Pull an element into the **Dotctrl** repository:
 
 ```shell
 $ dotctrl pull --element=".config/flake8"
 ```
 
-> Note: You must enter the path of the element from the `HOME` directory.
+> Note: You must enter the path of the element from the `$HOME` directory.
 
 If you want to perform a massive **pull**, do:
 
@@ -106,7 +110,7 @@ After pulling the element(s), create symbolic links to them in their original lo
 $ dotctrl link --element=".config/flake8"
 ```
 
-> Note: You must enter the path of the element from the `HOME` directory.
+> Note: You must enter the path of the element from the `$HOME` directory.
 
 If you want to perform a massive **link**, do:
 
@@ -114,7 +118,7 @@ If you want to perform a massive **link**, do:
 $ dotctrl link
 ```
 
-> Note: If there is a link already created, `Dotctrl` will inform you to use the` --force` option.
+> Note: If there is a link already created, **Dotctrl** will inform you to use the `--force` option.
 
 **Check**
 
@@ -150,15 +154,15 @@ $ dotctrl unlink
 
 ## Configuration
 
-`Dotctrl` works on top of a configuration file created in the Dotctrl repository, which is the **dotctrl.json** file.
+**Dotctrl** works on top of a configuration file created in the Dotctrl repository, which is the **dotctrl.json** file.
 
-You can open the `Dotctrl` configuration file in the terminal itself using the command:
+You can open the **Dotctrl** configuration file in the terminal itself using the command:
 
 ```shel
 $ dotctrl config --open
 ```
 
-### Understanding each section  `dotctrl.json`:
+### Understanding each section `dotctrl.json`:
 
 #### Section `config`:
 
@@ -176,7 +180,7 @@ $ dotctrl config --open
 
 #### Section `elements`:
 
-* **elements**: As the name says, "*elements*" will store the absolute path of the elements you want to place inside the `Dotctrl` repository in a **list**. Examples:
+* **elements**: As the name says, "*elements*" will store the absolute path of the elements you want to place inside the **Dotctrl** repository in a **list**. Examples:
 
 ```json
 {
@@ -199,7 +203,7 @@ The `elements` option also accepts complete folders instead of just files:
 }
 ```
 
-For madness but true, `Dotctrl` also manages files and folders without points:
+For madness but true, **Dotctrl** also manages files and folders without points:
 
 ```json
 {
@@ -210,13 +214,13 @@ For madness but true, `Dotctrl` also manages files and folders without points:
 }
 ```
 
-You must place files (<u>or folders</u>) that are inside the user's **HOME**, as this is how `Dotctrl` works, only with elements in the user's HOME.
+You must place files (<u>or folders</u>) that are inside the user's **$HOME**, as this is how **Dotctrl** works, only with elements in the user's $HOME.
 
 
 
 #### Section `smart`:
 
-This section is very cool. It is the smart section of `Dotctrl`, where you will find configuration files and dotfiles for certain applications. :)
+This section is very cool. It is the smart section of **Dotctrl**, where you will find configuration files and dotfiles for certain applications. :)
 
 ```json
 {
@@ -226,15 +230,15 @@ This section is very cool. It is the smart section of `Dotctrl`, where you will 
                 "enable": true
             },
             "text_editors": {
-                "enable": false
+                "enable": true
             }
         }
     }
 }
 ```
 
-* **rc.enable:** Option: `true`|`false`. If this option is `true`, ` Dotctrl` will search for all dotfiles in the user's *HOME* directory containing *rc* at the end. `Default:`*true*
-* **text_editors.enable:** Option: `true`|`false`. If this option is `true`, ` Dotctrl` will search for the main dotfiles of the following text editors: [Atom](https://atom.io), [Sublime Text](https://www.sublimetext.com/), and [Visual Studio Code](https://code.visualstudio.com/).
+* **rc.enable:** Option: `true`|`false`. If this option is `true`, **Dotctrl** will search for all dotfiles in the user's *$HOME* directory containing *rc* at the end. **Default:** `false`
+* **text_editors.enable:** Option: `true`|`false`. If this option is `true`, **Dotctrl** will search for the main dotfiles of the following text editors: [Atom](https://atom.io), [Sublime Text](https://www.sublimetext.com/), and [Visual Studio Code](https://code.visualstudio.com/). **Default:** `false`
 
 **Example configuration file:**
 
@@ -264,7 +268,7 @@ This section is very cool. It is the smart section of `Dotctrl`, where you will 
 
 ## Upgrading
 
-If `Dotctrl` has any new features, please update the command line below:
+If **Dotctrl** has any new features, please update the command line below:
 
 Globally:
 
