@@ -32,28 +32,21 @@ class Data:
             ".atom/config.cson",
             ".atom/github.cson",
             ".atom/snippets.cson",
-            ".config/sublime-text-3/Packages/User/"
-            "Preferences.sublime-settings",
-            ".config/sublime-text-3/Packages/User/"
-            "Package Control.sublime-settings",
-            ".config/sublime-text-3/Packages/User/"
-            "Distraction Free.sublime-settings",
+            ".config/sublime-text-3/Packages/User/" "Preferences.sublime-settings",
+            ".config/sublime-text-3/Packages/User/" "Package Control.sublime-settings",
+            ".config/sublime-text-3/Packages/User/" "Distraction Free.sublime-settings",
         ]
 
         if exists(self.config):
             try:
                 self.parsed = snakypy.json.read(self.config)
                 self.elements = [*self.parsed["dotctrl"]["elements"]]
-                self.rc_status = self.parsed["dotctrl"]["smart"]["rc"][
-                    "enable"
-                ]
+                self.rc_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
                 self.text_editors_status = self.parsed["dotctrl"]["smart"][
                     "text_editors"
                 ]["enable"]
             except FileNotFoundError as f:
-                printer(
-                    f"Configuration file not found.", f, foreground=FG.ERROR
-                )
+                printer(f"Configuration file not found.", f, foreground=FG.ERROR)
             except Exception as e:
                 printer(
                     "An error occurred while reading the configuration file.",
@@ -97,9 +90,7 @@ class Utils(Data):
         # data = self.data
         for item in data:
             if check_islink:
-                if exists(join(self.repo, item)) and not islink(
-                    join(self.HOME, item)
-                ):
+                if exists(join(self.repo, item)) and not islink(join(self.HOME, item)):
                     listing_data.append(item)
             else:
                 if exists(join(self.repo, item)):
@@ -109,8 +100,7 @@ class Utils(Data):
     def restore_conditions(self, src, dst, arguments):
         if utils.exists_levels(src, dst, arguments) == 0:
             printer(
-                "The files match the repository and the drive. "
-                "User --force.",
+                "The files match the repository and the drive. " "User --force.",
                 foreground=FG.WARNING,
             )
             exit(0)
@@ -126,14 +116,13 @@ class Utils(Data):
         utils.cheking_init(self.ROOT)
         data = [*utils.listing_files(self.repo, only_rc=True), *self.data]
         if len(data) <= 0:
-            printer("Nothing to do.")
+            printer("Nothing to do.", foreground=FG.GREEN)
             exit(0)
         else:
             printer(
                 "ATTENTION! This choice is permanent, there will be no going back.",
                 foreground=FG.WARNING,
             )
-
             if arguments["--all"]:
                 reply = snakypy.pick(
                     "Do you really want to destroy ALL elements of the repository?",
@@ -144,7 +133,6 @@ class Utils(Data):
                 if reply == "yes":
                     return "all", data
                 return
-
             reply = snakypy.pick(
                 "Choose the element you want to remove from the repository:",
                 [*data, "Cancel"],
@@ -153,7 +141,6 @@ class Utils(Data):
             if reply == "Cancel":
                 printer("Aborted by user", foreground=FG.WARNING)
                 exit(0)
-
             if not arguments["--noconfirm"]:
                 confirm = snakypy.pick(
                     f'Really want to destroy the "{reply}"?',
@@ -163,7 +150,6 @@ class Utils(Data):
                 if confirm == "yes":
                     return reply, data
                 return
-
             return reply, data
 
 
@@ -257,9 +243,7 @@ OPTIONS:
         snakypy.file.create(config.readme_content, self.readme, force=True)
         if arguments["--git"]:
             utils.git_init()
-            snakypy.file.create(
-                config.gitignore_content, self.gitignore, force=True
-            )
+            snakypy.file.create(config.gitignore_content, self.gitignore, force=True)
         printer(
             f"Initialized {__pkginfo__['name']} repository in {self.repo}",
             foreground=FG.FINISH,
@@ -297,12 +281,9 @@ OPTIONS:
 
         listing_data = self.listing_repo()
         if len(list(listing_data)) == 0:
-            return printer(
-                "Repository is empty. No elements.", foreground=FG.YELLOW
-            )
+            return printer("Repository is empty. No elements.", foreground=FG.YELLOW)
         printer(
-            f"\nListing in: ./{self.repo.split('/')[-1]}\n\nObjects:",
-            foreground=FG.CYAN,
+            f"\nElements(s):", foreground=FG.CYAN,
         )
         for item in listing_data:
             print(f"{FG.CYAN}➜{NONE} {item}")
@@ -318,7 +299,7 @@ OPTIONS:
         if len(list(listing_data)) == 0:
             return printer("Nothing to link.", foreground=FG.FINISH)
         printer(
-            f"\nObjects in: ./{self.repo.split('/')[-1]}", foreground=FG.CYAN,
+            f"\nElement(s):", foreground=FG.CYAN,
         )
         for item in listing_data:
             status = f"{FG.YELLOW}[Not linked]{NONE}"
@@ -346,9 +327,7 @@ OPTIONS:
             file_repo = join(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
                 self.path_creation(self.repo, arguments["--element"])
-            utils.add_element_config(
-                file_home, arguments["--element"], self.config
-            )
+            utils.add_element_config(file_home, arguments["--element"], self.config)
             utils.to_move(file_home, file_repo, arguments["--force"])
         else:
             for item in self.data:
@@ -375,9 +354,7 @@ OPTIONS:
                     self.path_creation(self.HOME, item)
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
-                utils.create_symlink(
-                    file_repo, file_home, arguments["--force"]
-                )
+                utils.create_symlink(file_repo, file_home, arguments["--force"])
 
     def restore_command(self, arguments=None):
         """Method to restore dotfiles from the repository to their
@@ -410,11 +387,11 @@ OPTIONS:
 
         option = self.remove_options(arguments)
         if option is None:
-            printer("Operation aborted.", foreground=FG.YELLOW)
+            printer("Aborted by user.", foreground=FG.WARNING)
         elif option and option[0] != "all":
             destroy(self.HOME, self.repo, option[0])
         elif option and option[0] == "all":
-            for item in option[1]:
-                destroy(self.HOME, self.repo, item)
+            for i in option[1]:
+                destroy(self.HOME, self.repo, i)
             snakypy.os.rmdir_blank(self.repo)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
