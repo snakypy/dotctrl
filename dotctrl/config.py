@@ -1,6 +1,7 @@
+"""Module to store the skeleton of the files to be created."""
 from dotctrl import __pkginfo__
 
-config_rc_content = {
+config_content = {
     "dotctrl": {
         "config": {"editor": ""},
         "elements": [],

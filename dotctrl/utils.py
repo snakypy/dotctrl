@@ -22,6 +22,7 @@ def show_billboard():
 
 
 def git_init():
+    """Function to start a Git repository in the Dotctrl repository."""
     if shutil.which("git") and not isdir(".git"):
         subprocess.call(["git", "init"], stdout=subprocess.PIPE)
 
@@ -39,9 +40,9 @@ def cheking_init(root):
 
 
 def to_move(src, dst, arguments):
-    """Moves the dot files from the drive to the repository
-    src = local source
-    dst = repository
+    """Moves the dot files from the drive to the repository.
+    :param src: Element source location
+    :param dst: Dotctrl repository location
     """
     if not islink(src):
         if exists(src) and exists(dst) and not arguments:
@@ -60,9 +61,10 @@ def to_move(src, dst, arguments):
 
 def create_symlink(src, dst, arguments):
     """Creates symbolic links. In this case, the "src" is the
-    repository for dotctrl.
-    src = repository
-    dst = local source
+        repository for dotctrl.
+    :param src: Dotctrl repository location
+    :param dst: Element source location
+    :param arguments: Receive a Docopt dictionary
     """
     if exists(src):
         if islink(dst) and not arguments:
@@ -79,14 +81,18 @@ def create_symlink(src, dst, arguments):
             try:
                 os.symlink(src, dst)
             except PermissionError as p:
-                printer("User without permission to create the symbolic link.",
-                        p,
-                        foreground=FG.ERROR)
+                printer(
+                    "User without permission to create the symbolic link.",
+                    p,
+                    foreground=FG.ERROR,
+                )
 
 
 def rm_objects(obj):
     """Removes objects according to the type of folder,
-    file or symbolic link."""
+    file or symbolic link.
+    :param obj: Object to be removed (files or folders).
+    """
     if isfile(obj) or islink(obj):
         with contextlib.suppress(Exception):
             os.remove(obj)
@@ -107,6 +113,7 @@ def exists_levels(src, dst, arguments):
 
 
 def listing_files(directory, only_rc=False):
+    """Lists files from a specific directory."""
     data = []
     if only_rc:
         for file in glob(join(directory, ".*rc"), recursive=False):
@@ -122,6 +129,8 @@ def listing_files(directory, only_rc=False):
 
 
 def clear_config_garbage(repo, home, config):
+    """Deletes elements in the configuration file that is
+    neither in the Dotctrl repository nor in the source location."""
     parsed = snakypy.json.read(config)
     elements = parsed["dotctrl"]["elements"]
     new_elements = []
@@ -133,6 +142,8 @@ def clear_config_garbage(repo, home, config):
 
 
 def add_element_config(src, element, config):
+    """Function that adds element to the configuration file
+    when using the "pull --element=<object>" option."""
     parsed = snakypy.json.read(config)
     if element not in parsed["dotctrl"]["elements"]:
         if element[-2:] == "rc" and "/" not in element:
