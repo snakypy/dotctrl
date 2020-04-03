@@ -208,6 +208,7 @@ OPTIONS:
     {FG.BLUE}--git{NONE} ----------------- Create a Git repository.
     {FG.BLUE}--force{NONE} --------------- Complete the command regardless of whether or
                             not files exist.
+    {FG.BLUE}--all{NONE} ----------------- Perform a mass action.
     {FG.BLUE}--version{NONE} ------------- Show version.
     {FG.BLUE}--credits{NONE} ------------- Show credits.
     {FG.BLUE}--help{NONE} ---------------- Show this screen.
