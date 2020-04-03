@@ -170,11 +170,11 @@ $ dotctrl config --open
 
 ```json
 {
-    "dotctrl": {
+
         "config": {
             "editor": ""
         }
-    }
+
 }
 ```
 
@@ -184,11 +184,11 @@ $ dotctrl config --open
 
 ```json
 {
-    "dotctrl": {
+
         "elements": [".config/foo/foo.conf",
                      ".config/bar/bar.conf",
                      ".foo.conf"]
-    }
+
 }
 ```
 
@@ -196,10 +196,10 @@ The `elements` option also accepts complete folders instead of just files:
 
 ```json
 {
-    "dotctrl": {
+
         "elements": [".config/foo",
                      ".config/bar"]
-    }
+
 }
 ```
 
@@ -207,10 +207,10 @@ For madness but true, **Dotctrl** also manages files and folders without points:
 
 ```json
 {
-    "dotctrl": {
+
         "elements": ["Documents/foo.txt",
                      "Images/bar.jpg"]
-    }
+
 }
 ```
 
@@ -224,7 +224,7 @@ This section is very cool. It is the smart section of **Dotctrl**, where you wil
 
 ```json
 {
-    "dotctrl": {
+
         "smart": {
             "rc": {
                 "enable": true
@@ -233,7 +233,7 @@ This section is very cool. It is the smart section of **Dotctrl**, where you wil
                 "enable": true
             }
         }
-    }
+
 }
 ```
 
