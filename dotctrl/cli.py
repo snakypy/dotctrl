@@ -6,6 +6,8 @@ from dotctrl.dotctrl import Dotctrl
 
 # Creating instance Dotctrl class
 dotctrl_inst = Dotctrl(ROOT, HOME)
+
+# Get arguments CLI
 arguments = dotctrl_inst.arguments()
 
 
@@ -61,15 +63,13 @@ def credence():
 
 @snakypy.decorators.only_for_linux
 def main():
-    (
-        init(),
-        pull(),
-        link(),
-        unlink(),
-        check(),
-        list_(),
-        config(),
-        restore(),
-        remove(),
-        credence(),
-    )
+    init()
+    pull()
+    link()
+    unlink()
+    check()
+    list_()
+    config()
+    restore()
+    remove()
+    credence()
