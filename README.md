@@ -33,6 +33,7 @@
 
 ## Features
 
+* Create multiple repositories for your files;
 * Stay free to create manual links;
 * Automatically manages dotfiles ending with rc in the user's `$HOME`;
 * Automatically manages the main configuration files of the editors: Atom, Sublime Text, Visual Studio Code;
