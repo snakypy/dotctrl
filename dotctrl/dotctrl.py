@@ -4,14 +4,16 @@ import os
 import pydoc
 import shutil
 import subprocess
-import snakypy
-from textwrap import dedent
 from contextlib import suppress
 from os.path import exists, islink, join
 from sys import exit
+from textwrap import dedent
+
+import snakypy
 from docopt import docopt
 from snakypy import FG, printer
 from snakypy.ansi import NONE
+
 from dotctrl import __pkginfo__, __version__, config, utils
 
 
@@ -196,8 +198,8 @@ class Dotctrl(Utils):
             {FG.CYAN}config{NONE} --------- Open or view settings.
             {FG.CYAN}restore{NONE} -------- Moves all dotfiles from the repository to the
                              default source location.
-            {FG.CYAN}remove{NONE} --------- {FG.YELLOW}DANGER!{NONE} Removes the elements
-                             in the repository and symbolic link in the source location.
+            {FG.CYAN}remove{NONE} --------- {FG.YELLOW}DANGER!{NONE} Removes the elements in the
+                             repository and symbolic link in the source location.
 
         OPTIONS:
             {FG.BLUE}--element=<object>{NONE} ---- Receive an object where, have the absolute
