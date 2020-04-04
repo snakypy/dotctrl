@@ -4,17 +4,67 @@ import os
 import pydoc
 import shutil
 import subprocess
+import snakypy
 from contextlib import suppress
 from os.path import exists, islink, join
 from sys import exit
-from textwrap import dedent
-
-import snakypy
 from docopt import docopt
 from snakypy import FG, printer
 from snakypy.ansi import NONE
-
 from dotctrl import __pkginfo__, __version__, config, utils
+
+
+menu_opts = f"""
+{__pkginfo__['name']} version: {FG.CYAN}{__version__}{NONE}
+
+{__pkginfo__['name']} - Managing your dotfiles on Linux.
+
+USAGE:
+    {__pkginfo__['executable']} init [--git]
+    {__pkginfo__['executable']} check
+    {__pkginfo__['executable']} list
+    {__pkginfo__['executable']} pull [--element=<object>] [--force]
+    {__pkginfo__['executable']} link [--element=<object>] [--force]
+    {__pkginfo__['executable']} unlink [--element=<object>]
+    {__pkginfo__['executable']} config (--open | --view)
+    {__pkginfo__['executable']} restore [--element=<object>] [--force]
+    {__pkginfo__['executable']} remove [--all] [--noconfirm]
+    {__pkginfo__['executable']} --help
+    {__pkginfo__['executable']} --version
+    {__pkginfo__['executable']} --credits
+
+ARGUMENTS:
+    {FG.CYAN}init{NONE} ----------- Creates the dotfiles repository.
+    {FG.CYAN}pull{NONE} ----------- Pulls the dotfiles from the source location
+                     on the machine to the repository.
+    {FG.CYAN}link{NONE} ----------- Links the repository's dotfiles to the source
+                     location on the machine.
+    {FG.CYAN}check{NONE} ---------- Checks whether the dotfiles in the
+                     repository are linked to the place of origin or not.
+    {FG.CYAN}list{NONE} ----------- Lists all files present in the repository
+                     and in the configuration.
+    {FG.CYAN}unlink{NONE} --------- Unlink the dotfiles from the repository with
+                     the original location on the machine.
+    {FG.CYAN}config{NONE} --------- Open or view settings.
+    {FG.CYAN}restore{NONE} -------- Moves all dotfiles from the repository to the
+                     default source location.
+    {FG.CYAN}remove{NONE} --------- {FG.YELLOW}DANGER!{NONE} Removes the elements in the
+                     repository and symbolic link in the source location.
+
+OPTIONS:
+    {FG.BLUE}--element=<object>{NONE} ---- Receive an object where, have the absolute
+                            path to a file or folder, always from the HOME directory.
+    {FG.BLUE}--open{NONE} ---------------- Open the configuration file in edit mode and
+                            perform the automatic update when you exit.
+    {FG.BLUE}--view{NONE} ---------------- View the configuration file on the terminal.
+    {FG.BLUE}--git{NONE} ----------------- Create a Git repository.
+    {FG.BLUE}--force{NONE} --------------- Complete the command regardless of whether or
+                            not files exist.
+    {FG.BLUE}--all{NONE} ----------------- Perform a mass action.
+    {FG.BLUE}--version{NONE} ------------- Show version.
+    {FG.BLUE}--credits{NONE} ------------- Show credits.
+    {FG.BLUE}--help{NONE} ---------------- Show this screen.
+"""
 
 
 class Data:
@@ -115,7 +165,7 @@ class Utils(Data):
             shutil.move(dst, src)
             snakypy.os.rmdir_blank(self.repo)
 
-    def remove_options(self, arguments=None):
+    def remove_options(self, arguments):
         """Method presents the possibilities of options for removing
         the elements."""
         utils.cheking_init(self.ROOT)
@@ -163,66 +213,14 @@ class Dotctrl(Utils):
 
     def __init__(self, root, home):
         Utils.__init__(self, root, home)
-        self.menu_opts = dedent(
-            f"""
-        {__pkginfo__['name']} version: {FG.CYAN}{__version__}{NONE}
 
-        {__pkginfo__['name']} - Managing your dotfiles on Linux.
-
-        USAGE:
-            {__pkginfo__['executable']} init [--git]
-            {__pkginfo__['executable']} check
-            {__pkginfo__['executable']} list
-            {__pkginfo__['executable']} pull [--element=<object>] [--force]
-            {__pkginfo__['executable']} link [--element=<object>] [--force]
-            {__pkginfo__['executable']} unlink [--element=<object>]
-            {__pkginfo__['executable']} config (--open | --view)
-            {__pkginfo__['executable']} restore [--element=<object>] [--force]
-            {__pkginfo__['executable']} remove [--all] [--noconfirm]
-            {__pkginfo__['executable']} --help
-            {__pkginfo__['executable']} --version
-            {__pkginfo__['executable']} --credits
-
-        ARGUMENTS:
-            {FG.CYAN}init{NONE} ----------- Creates the dotfiles repository.
-            {FG.CYAN}pull{NONE} ----------- Pulls the dotfiles from the source location
-                             on the machine to the repository.
-            {FG.CYAN}link{NONE} ----------- Links the repository's dotfiles to the source
-                             location on the machine.
-            {FG.CYAN}check{NONE} ---------- Checks whether the dotfiles in the
-                             repository are linked to the place of origin or not.
-            {FG.CYAN}list{NONE} ----------- Lists all files present in the repository
-                             and in the configuration.
-            {FG.CYAN}unlink{NONE} --------- Unlink the dotfiles from the repository with
-                             the original location on the machine.
-            {FG.CYAN}config{NONE} --------- Open or view settings.
-            {FG.CYAN}restore{NONE} -------- Moves all dotfiles from the repository to the
-                             default source location.
-            {FG.CYAN}remove{NONE} --------- {FG.YELLOW}DANGER!{NONE} Removes the elements in the
-                             repository and symbolic link in the source location.
-
-        OPTIONS:
-            {FG.BLUE}--element=<object>{NONE} ---- Receive an object where, have the absolute
-                                    path to a file or folder, always from the HOME directory.
-            {FG.BLUE}--open{NONE} ---------------- Open the configuration file in edit mode and
-                                    perform the automatic update when you exit.
-            {FG.BLUE}--view{NONE} ---------------- View the configuration file on the terminal.
-            {FG.BLUE}--git{NONE} ----------------- Create a Git repository.
-            {FG.BLUE}--force{NONE} --------------- Complete the command regardless of whether or
-                                    not files exist.
-            {FG.BLUE}--all{NONE} ----------------- Perform a mass action.
-            {FG.BLUE}--version{NONE} ------------- Show version.
-            {FG.BLUE}--credits{NONE} ------------- Show credits.
-            {FG.BLUE}--help{NONE} ---------------- Show this screen.
-                    """
-        )
-
-    def arguments(self, argv=None):
+    @staticmethod
+    def arguments(argv=None):
         """Function to return the option menu arguments."""
         formatted_version = (
             f"{__pkginfo__['name']} version: " f"{FG.CYAN}{__version__}{NONE}"
         )
-        data = docopt(self.menu_opts, argv=argv, version=formatted_version)
+        data = docopt(menu_opts, argv=argv, version=formatted_version)
         return data
 
     @staticmethod
@@ -236,7 +234,7 @@ class Dotctrl(Utils):
             foreground=FG.CYAN,
         )
 
-    def init_command(self, arguments=None):
+    def init_command(self, arguments):
         """Base repository method."""
         if exists(self.config):
             printer("Repository is already defined.", foreground=FG.FINISH)
@@ -252,26 +250,26 @@ class Dotctrl(Utils):
             foreground=FG.FINISH,
         )
 
-    def config_command(self, arguments=None):
+    def config_command(self, arguments):
         """Method for opening or viewing the configuration file."""
         utils.cheking_init(self.ROOT)
 
-        def action(editor_terminal):
-            if shutil.which(editor_terminal):
-                get_editor = os.environ.get("EDITOR", editor_terminal)
+        def action(editor):
+            if shutil.which(editor):
+                get_editor = os.environ.get("EDITOR", editor)
                 with open(self.config) as f:
                     subprocess.call([get_editor, f.name])
                     exit(0)
             return
 
         if arguments["--open"]:
-            editor = self.parsed["dotctrl"]["config"]["editor"]
-            if editor:
-                action(editor)
+            editor_conf = self.parsed["dotctrl"]["config"]["editor"]
+            if editor_conf:
+                action(editor_conf)
             else:
                 editors = ["vim", "nano", "emacs", "micro"]
-                for editor in editors:
-                    action(editor)
+                for edt in editors:
+                    action(edt)
 
         if arguments["--view"]:
             read_config = snakypy.file.read(self.config)
@@ -305,7 +303,7 @@ class Dotctrl(Utils):
             status = f"{FG.YELLOW}[Not linked]{NONE}"
             print(f"{FG.CYAN}➜{NONE} {item} {status}")
 
-    def unlink_command(self, arguments=None):
+    def unlink_command(self, arguments):
         """Method to unlink point files from the repository
         with their place of origin."""
         utils.cheking_init(self.ROOT)
@@ -320,7 +318,7 @@ class Dotctrl(Utils):
                 with suppress(Exception):
                     os.remove(file_home)
 
-    def pull_command(self, arguments=None):
+    def pull_command(self, arguments):
         """Method responsible for pulling the elements from the
         place of origin to the repository."""
         utils.cheking_init(self.ROOT)
@@ -341,7 +339,7 @@ class Dotctrl(Utils):
                 utils.to_move(file_home, file_repo, arguments["--force"])
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
 
-    def link_command(self, arguments=None):
+    def link_command(self, arguments):
         """Method responsible for creating symbolic links from the
         repository to the place of origin of the elements."""
         utils.cheking_init(self.ROOT)
@@ -360,7 +358,7 @@ class Dotctrl(Utils):
                 file_repo = join(self.repo, item)
                 utils.create_symlink(file_repo, file_home, arguments["--force"])
 
-    def restore_command(self, arguments=None):
+    def restore_command(self, arguments):
         """Method to restore dotfiles from the repository to their
         original location."""
         utils.cheking_init(self.ROOT)
@@ -380,7 +378,7 @@ class Dotctrl(Utils):
                 self.restore_conditions(file_home, file_repo, self.arguments)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
 
-    def remove_command(self, arguments=None):
+    def remove_command(self, arguments):
         """Method of removing elements from the repository and
         symbolic links linked to them. Calls other methods and functions
         that also perform other actions."""
