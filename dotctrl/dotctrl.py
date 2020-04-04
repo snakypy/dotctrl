@@ -185,7 +185,9 @@ class Utils(Data):
                 return
             reply = snakypy.pick(
                 "Choose the element you want to remove from the repository:",
-                data, colorful=True, ctrl_c_message=True
+                data,
+                colorful=True,
+                ctrl_c_message=True,
             )
             exit(0) if reply is None else None
             if not arguments["--noconfirm"]:
