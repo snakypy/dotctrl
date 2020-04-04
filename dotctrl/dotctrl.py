@@ -185,13 +185,9 @@ class Utils(Data):
                 return
             reply = snakypy.pick(
                 "Choose the element you want to remove from the repository:",
-                [*data, "Cancel"],
-                colorful=True,
+                data, colorful=True, ctrl_c_message=True
             )
             exit(0) if reply is None else None
-            if reply == "Cancel":
-                printer("Aborted by user", foreground=FG.WARNING)
-                exit(0)
             if not arguments["--noconfirm"]:
                 confirm = snakypy.pick(
                     f'Really want to destroy the "{reply}"?',
