@@ -13,7 +13,7 @@ from snakypy import FG, printer
 from snakypy.ansi import NONE
 from dotctrl import __pkginfo__, __version__, config, utils
 
-DANGER = f"{FG.YELLOW}DANGER!{NONE}"
+
 menu_opts = f"""
 {__pkginfo__['name']} version: {FG.CYAN}{__version__}{NONE}
 
@@ -43,8 +43,8 @@ ARGUMENTS:
     {FG.CYAN}unlink{NONE} --------- Unlink the dotfiles from the repository with the original location on the machine.
     {FG.CYAN}config{NONE} --------- Handles the configuration file.
     {FG.CYAN}restore{NONE} -------- Moves all dotfiles from the repository to the default source location.
-    {FG.CYAN}remove{NONE} --------- {DANGER} Removes the elements in the repository and symbolic link in the source
-                     location.
+    {FG.CYAN}remove{NONE} --------- {FG.YELLOW}DANGER!{NONE} Removes the elements in the repository and symbolic link
+                     in the source location.
 
 OPTIONS:
     {FG.BLUE}--element=<object>{NONE} ---- Receive an object where, have the absolute path to a file or folder,
