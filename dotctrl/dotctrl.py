@@ -188,6 +188,7 @@ class Utils(Data):
                 [*data, "Cancel"],
                 colorful=True,
             )
+            exit(0) if reply is None else None
             if reply == "Cancel":
                 printer("Aborted by user", foreground=FG.WARNING)
                 exit(0)
@@ -197,6 +198,7 @@ class Utils(Data):
                     ["yes", "no"],
                     colorful=True,
                 )
+                exit(0) if confirm is None else None
                 if confirm == "yes":
                     return reply, data
                 return
