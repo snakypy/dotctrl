@@ -3,6 +3,10 @@ from snakypy import FG
 from snakypy.ansi import NONE
 from dotctrl import __pkginfo__, __version__
 
+# Messages colorful
+DANGER = f"{FG.YELLOW}DANGER!{NONE}"
+
+# Menu options and arguments.
 menu_opts = f"""
 {__pkginfo__['name']} version: {FG.CYAN}{__version__}{NONE}
 
@@ -35,8 +39,8 @@ ARGUMENTS:
                      on the machine.
     {FG.CYAN}config{NONE} --------- Handles the configuration file.
     {FG.CYAN}restore{NONE} -------- Moves all dotfiles from the repository to the default source location.
-    {FG.CYAN}remove{NONE} --------- {FG.YELLOW}DANGER!{NONE} Removes the elements in the repository
-                     and symbolic link in the source location.
+    {FG.CYAN}remove{NONE} --------- {DANGER} Removes the elements in the repository and symbolic link in
+                     the source location.
 
 OPTIONS:
     {FG.BLUE}--element=<object>{NONE} ---- Receive an object where, have the absolute path to a file or
@@ -46,7 +50,7 @@ OPTIONS:
     {FG.BLUE}--git{NONE} ----------------- Create a Git repository.
     {FG.BLUE}--force{NONE} --------------- Complete the command regardless of whether or not files exist.
     {FG.BLUE}--all{NONE} ----------------- Perform a mass action.
-    {FG.BLUE}--noconfirm{NONE} ----------- Perform an action without calling a confirmation.
+    {FG.BLUE}--noconfirm{NONE} ----------- {DANGER} Perform an action without calling a confirmation.
     {FG.BLUE}--version{NONE} ------------- Show version.
     {FG.BLUE}--credits{NONE} ------------- Show credits.
     {FG.BLUE}--help{NONE} ---------------- Show this screen.
