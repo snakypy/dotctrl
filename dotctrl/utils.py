@@ -219,9 +219,7 @@ def remove_opts(root, repo, data, arguments):
         exit(0) if reply is None else None
         if not arguments["--noconfirm"]:
             confirm = snakypy.pick(
-                f'Really want to destroy the "{reply}"?',
-                ["yes", "no"],
-                colorful=True,
+                f'Really want to destroy the "{reply}"?', ["yes", "no"], colorful=True,
             )
             exit(0) if confirm is None else None
             if confirm == "yes":
