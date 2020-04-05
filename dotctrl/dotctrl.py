@@ -12,202 +12,15 @@ from docopt import docopt
 from snakypy import FG, printer
 from snakypy.ansi import NONE
 from dotctrl import __pkginfo__, __version__, config, utils
+from dotctrl.ransom import Ransom
+from dotctrl.menu import menu_opts
 
 
-menu_opts = f"""
-{__pkginfo__['name']} version: {FG.CYAN}{__version__}{NONE}
-
-{__pkginfo__['name']} - Managing your dotfiles on Linux.
-
-USAGE:
-    {__pkginfo__['executable']} init [--git]
-    {__pkginfo__['executable']} check
-    {__pkginfo__['executable']} list
-    {__pkginfo__['executable']} pull [--element=<object>] [--force]
-    {__pkginfo__['executable']} link [--element=<object>] [--force]
-    {__pkginfo__['executable']} unlink [--element=<object>]
-    {__pkginfo__['executable']} config (--open | --view)
-    {__pkginfo__['executable']} restore [--element=<object>] [--force]
-    {__pkginfo__['executable']} remove [--all] [--noconfirm]
-    {__pkginfo__['executable']} --help
-    {__pkginfo__['executable']} --version
-    {__pkginfo__['executable']} --credits
-
-ARGUMENTS:
-    {FG.CYAN}init{NONE} ----------- Creates the dotfiles repository.
-    {FG.CYAN}pull{NONE} ----------- Pulls the dotfiles from the source location on the machine to the repository.
-    {FG.CYAN}link{NONE} ----------- Links the repository's dotfiles to the source location on the machine.
-    {FG.CYAN}check{NONE} ---------- Checks whether the dotfiles in the repository are linked to the place of
-                     origin or not.
-    {FG.CYAN}list{NONE} ----------- Lists all files present in the repository and in the configuration.
-    {FG.CYAN}unlink{NONE} --------- Unlink the dotfiles from the repository with the original location on the machine.
-    {FG.CYAN}config{NONE} --------- Handles the configuration file.
-    {FG.CYAN}restore{NONE} -------- Moves all dotfiles from the repository to the default source location.
-    {FG.CYAN}remove{NONE} --------- {FG.YELLOW}DANGER!{NONE} Removes the elements in the repository and symbolic link
-                     in the source location.
-
-OPTIONS:
-    {FG.BLUE}--element=<object>{NONE} ---- Receive an object where, have the absolute path to a file or folder,
-                            always from the HOME directory.
-    {FG.BLUE}--open{NONE} ---------------- Open the configuration file in edit mode and perform the automatic update
-                            when you exit.
-    {FG.BLUE}--view{NONE} ---------------- View the configuration file on the terminal.
-    {FG.BLUE}--git{NONE} ----------------- Create a Git repository.
-    {FG.BLUE}--force{NONE} --------------- Complete the command regardless of whether or not files exist.
-    {FG.BLUE}--all{NONE} ----------------- Perform a mass action.
-    {FG.BLUE}--noconfirm{NONE} ----------- Perform an action without calling a confirmation.
-    {FG.BLUE}--version{NONE} ------------- Show version.
-    {FG.BLUE}--credits{NONE} ------------- Show credits.
-    {FG.BLUE}--help{NONE} ---------------- Show this screen.
-"""
-
-
-class Data:
-    """Class to store data"""
-
-    def __init__(self, root, home):
-        self.ROOT = root
-        self.HOME = home
-        self.repo = join(self.ROOT, "dotctrl")
-        self.config = join(self.ROOT, __pkginfo__["config"])
-        self.gitignore = join(self.ROOT, ".gitignore")
-        self.readme = join(self.ROOT, "README.md")
-        self.text_editors = [
-            ".config/Code/User/settings.json",
-            ".config/Code/User/locale.json",
-            ".atom/config.cson",
-            ".atom/github.cson",
-            ".atom/snippets.cson",
-            ".config/sublime-text-3/Packages/User/" "Preferences.sublime-settings",
-            ".config/sublime-text-3/Packages/User/" "Package Control.sublime-settings",
-            ".config/sublime-text-3/Packages/User/" "Distraction Free.sublime-settings",
-        ]
-
-        if exists(self.config):
-            try:
-                self.parsed = snakypy.json.read(self.config)
-                self.elements = [*self.parsed["dotctrl"]["elements"]]
-                self.rc_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
-                self.text_editors_status = self.parsed["dotctrl"]["smart"][
-                    "text_editors"
-                ]["enable"]
-            except FileNotFoundError as f:
-                printer(f"Configuration file not found.", f, foreground=FG.ERROR)
-            except Exception as e:
-                printer(
-                    "An error occurred while reading the configuration file.",
-                    e,
-                    foreground=FG.ERROR,
-                )
-                exit(1)
-
-            rc = utils.listing_files(self.HOME, only_rc=True)
-            if self.rc_status and self.text_editors_status:
-                self.data = rc + self.text_editors + self.elements
-            elif self.rc_status and not self.text_editors_status:
-                self.data = rc + self.elements
-            elif not self.rc_status and self.text_editors_status:
-                self.data = self.text_editors + self.elements
-            else:
-                self.data = self.elements
-
-
-class Utils(Data):
-    """Class that contains utilities for the main class."""
-
-    def __init__(self, root, home):
-        Data.__init__(self, root, home)
-
-    @staticmethod
-    def path_creation(root, item):
-        """Create repository for file with a path"""
-        # if not islink(join(self.HOME, item)) and exists(join(self.HOME, item)):
-        path_split = item.split("/")[:-1]
-        path_str = "/".join(path_split)
-        path = join(root, path_str)
-        snakypy.path.create(path)
-        return str(path)
-        # return
-
-    def listing_repo(self, check_islink=False):
-        """Method lists the dotfiles in the repository and checks whether
-        they are linked."""
-        listing_data = list()
-        data = [*utils.listing_files(self.repo, only_rc=True), *self.data]
-        for item in data:
-            if check_islink:
-                if exists(join(self.repo, item)) and not islink(join(self.HOME, item)):
-                    listing_data.append(item)
-            else:
-                if exists(join(self.repo, item)):
-                    listing_data.append(item)
-        return listing_data
-
-    def restore_conditions(self, src, dst, arguments):
-        """Method presents the possibilities of options for restored
-        the elements."""
-        if utils.exists_levels(src, dst, arguments) == 0:
-            printer(
-                "The files match the repository and the drive. " "User --force.",
-                foreground=FG.WARNING,
-            )
-            exit(0)
-        if utils.exists_levels(src, dst, arguments) == 1:
-            utils.rm_objects(src)
-            shutil.move(dst, src)
-            snakypy.os.rmdir_blank(self.repo)
-        if utils.exists_levels(src, dst, arguments) == 2:
-            shutil.move(dst, src)
-            snakypy.os.rmdir_blank(self.repo)
-
-    def remove_options(self, arguments):
-        """Method presents the possibilities of options for removing
-        the elements."""
-        utils.cheking_init(self.ROOT)
-        data = [*utils.listing_files(self.repo, only_rc=True), *self.data]
-        if len(data) <= 0:
-            printer("Nothing to do.", foreground=FG.FINISH)
-            exit(0)
-        else:
-            printer(
-                "ATTENTION! This choice is permanent, there will be no going back.",
-                foreground=FG.WARNING,
-            )
-            if arguments["--all"]:
-                reply = snakypy.pick(
-                    "Do you really want to destroy ALL elements of the repository?",
-                    ["Yes", "No"],
-                    colorful=True,
-                    lowercase=True,
-                )
-                if reply == "yes":
-                    return "all", data
-                return
-            reply = snakypy.pick(
-                "Choose the element you want to remove from the repository:",
-                data,
-                colorful=True,
-                ctrl_c_message=True,
-            )
-            exit(0) if reply is None else None
-            if not arguments["--noconfirm"]:
-                confirm = snakypy.pick(
-                    f'Really want to destroy the "{reply}"?',
-                    ["yes", "no"],
-                    colorful=True,
-                )
-                exit(0) if confirm is None else None
-                if confirm == "yes":
-                    return reply, data
-                return
-            return reply, data
-
-
-class Dotctrl(Utils):
+class Dotctrl(Ransom):
     """Main class Dotctrl"""
 
     def __init__(self, root, home):
-        Utils.__init__(self, root, home)
+        Ransom.__init__(self, root, home)
 
     @staticmethod
     def arguments(argv=None):
@@ -270,6 +83,20 @@ class Dotctrl(Utils):
             read_config = snakypy.file.read(self.config)
             pydoc.pager(read_config)
 
+    def listing_repo(self, check_linked=False):
+        """Method lists the dotfiles in the repository and checks whether
+        they are linked."""
+        listing_data = list()
+        data = [*utils.listing_files(self.repo, only_rc=True), *self.data]
+        for item in data:
+            if check_linked:
+                if exists(join(self.repo, item)) and not islink(join(self.HOME, item)):
+                    listing_data.append(item)
+            else:
+                if exists(join(self.repo, item)):
+                    listing_data.append(item)
+        return listing_data
+
     def list_command(self):
         """Method that lists the dotfiles in the repository."""
         utils.cheking_init(self.ROOT)
@@ -288,7 +115,7 @@ class Dotctrl(Utils):
             with their place of origin. If there is no list and information,
             the message Not linked"""
         utils.cheking_init(self.ROOT)
-        listing_data = self.listing_repo(check_islink=True)
+        listing_data = self.listing_repo(check_linked=True)
         if len(os.listdir(self.repo)) == 0 or len(list(listing_data)) == 0:
             return printer("Nothing to check.", foreground=FG.FINISH)
         printer(
@@ -321,7 +148,7 @@ class Dotctrl(Utils):
             file_home = join(self.HOME, arguments["--element"])
             file_repo = join(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
-                self.path_creation(self.repo, arguments["--element"])
+                utils.path_creation(self.repo, arguments["--element"])
             utils.add_element_config(file_home, arguments["--element"], self.config)
             utils.to_move(file_home, file_repo, arguments["--force"])
         else:
@@ -330,7 +157,7 @@ class Dotctrl(Utils):
                 file_repo = join(self.repo, item)
                 if "/" in item:
                     if not islink(file_home) and exists(file_home):
-                        self.path_creation(self.repo, item)
+                        utils.path_creation(self.repo, item)
                 utils.to_move(file_home, file_repo, arguments["--force"])
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
 
@@ -342,13 +169,13 @@ class Dotctrl(Utils):
             file_home = join(self.HOME, arguments["--element"])
             file_repo = join(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
-                self.path_creation(self.HOME, arguments["--element"])
+                utils.path_creation(self.HOME, arguments["--element"])
             utils.create_symlink(file_repo, file_home, arguments["--force"])
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
                 if "/" in item:
-                    self.path_creation(self.HOME, item)
+                    utils.path_creation(self.HOME, item)
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
                 utils.create_symlink(file_repo, file_home, arguments["--force"])
@@ -361,16 +188,16 @@ class Dotctrl(Utils):
             file_home = join(self.HOME, arguments["--element"])
             file_repo = join(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
-                self.path_creation(self.HOME, arguments["--element"])
-            self.restore_conditions(file_home, file_repo, self.arguments)
+                utils.path_creation(self.HOME, arguments["--element"])
+            utils.restore_args(self.repo, file_home, file_repo, self.arguments)
         else:
             data = [*utils.listing_files(self.repo, only_rc=True), *self.data]
             for item in data:
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
                 if "/" in item:
-                    self.path_creation(self.HOME, item)
-                self.restore_conditions(file_home, file_repo, self.arguments)
+                    utils.path_creation(self.HOME, item)
+                utils.restore_args(self.repo, file_home, file_repo, self.arguments)
         utils.clear_config_garbage(self.HOME, self.repo, self.config)
 
     def remove_command(self, arguments):
@@ -386,7 +213,7 @@ class Dotctrl(Utils):
                 with suppress(Exception):
                     os.remove(join(repo, item))
 
-        option = self.remove_options(arguments)
+        option = utils.remove_opts(self.ROOT, self.repo, self.data, arguments)
         if option is None:
             printer("Aborted by user.", foreground=FG.WARNING)
         elif option and option[0] != "all":

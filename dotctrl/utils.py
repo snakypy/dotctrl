@@ -41,6 +41,7 @@ def cheking_init(root):
 
 def to_move(src, dst, arguments):
     """Moves the dot files from the drive to the repository.
+    :param arguments: Receive "Docopt" argument output
     :param src: Element source location
     :param dst: Dotctrl repository location
     """
@@ -141,6 +142,15 @@ def clear_config_garbage(repo, home, config):
     snakypy.json.create(parsed, config, force=True)
 
 
+def path_creation(root, item):
+    """Create repository for file with a path"""
+    path_split = item.split("/")[:-1]
+    path_str = "/".join(path_split)
+    path = join(root, path_str)
+    snakypy.path.create(path)
+    return str(path)
+
+
 def add_element_config(src, element, config):
     """Function that adds element to the configuration file
     when using the "pull --element=<object>" option."""
@@ -154,3 +164,64 @@ def add_element_config(src, element, config):
                 lst.append(element)
                 parsed["dotctrl"]["elements"] = lst
                 snakypy.json.create(parsed, config, force=True)
+
+
+def restore_args(repo, src, dst, arguments):
+    """Function presents the possibilities of options for restored
+    the elements."""
+    if exists_levels(src, dst, arguments) == 0:
+        printer(
+            "The files match the repository and the drive. " "User --force.",
+            foreground=FG.WARNING,
+        )
+        exit(0)
+    if exists_levels(src, dst, arguments) == 1:
+        rm_objects(src)
+        shutil.move(dst, src)
+        snakypy.os.rmdir_blank(repo)
+    if exists_levels(src, dst, arguments) == 2:
+        shutil.move(dst, src)
+        snakypy.os.rmdir_blank(repo)
+
+
+def remove_opts(root, repo, data, arguments):
+    """Function presents the possibilities of options for removing
+    the elements."""
+    cheking_init(root)
+    objects = [*listing_files(repo, only_rc=True), *data]
+    if len(objects) <= 0:
+        printer("Nothing to do.", foreground=FG.FINISH)
+        exit(0)
+    else:
+        printer(
+            "ATTENTION! This choice is permanent, there will be no going back.",
+            foreground=FG.WARNING,
+        )
+        if arguments["--all"]:
+            reply = snakypy.pick(
+                "Do you really want to destroy ALL elements of the repository?",
+                ["Yes", "No"],
+                colorful=True,
+                lowercase=True,
+            )
+            if reply == "yes":
+                return "all", objects
+            return
+        reply = snakypy.pick(
+            "Choose the element you want to remove from the repository:",
+            objects,
+            colorful=True,
+            ctrl_c_message=True,
+        )
+        exit(0) if reply is None else None
+        if not arguments["--noconfirm"]:
+            confirm = snakypy.pick(
+                f'Really want to destroy the "{reply}"?',
+                ["yes", "no"],
+                colorful=True,
+            )
+            exit(0) if confirm is None else None
+            if confirm == "yes":
+                return reply, objects
+            return
+        return reply, objects
