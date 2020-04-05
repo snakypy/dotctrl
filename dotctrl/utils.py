@@ -193,11 +193,13 @@ def remove_opts(root, repo, data, arguments):
         printer("Nothing to do.", foreground=FG.FINISH)
         exit(0)
     else:
+        if arguments["--all"] and arguments["--noconfirm"]:
+            return "all", objects
         printer(
             "ATTENTION! This choice is permanent, there will be no going back.",
             foreground=FG.WARNING,
         )
-        if arguments["--all"]:
+        if arguments["--all"] and not arguments["--noconfirm"]:
             reply = snakypy.pick(
                 "Do you really want to destroy ALL elements of the repository?",
                 ["Yes", "No"],
@@ -207,6 +209,7 @@ def remove_opts(root, repo, data, arguments):
             if reply == "yes":
                 return "all", objects
             return
+
         reply = snakypy.pick(
             "Choose the element you want to remove from the repository:",
             objects,
