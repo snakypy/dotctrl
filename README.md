@@ -151,6 +151,44 @@ If you want to perform a massive **unlink**, do:
 $ dotctrl unlink
 ```
 
+**Restore** 
+
+Restore an element from the repository to its original location:
+
+```shell
+$ dotctrl restore --element=".config/flake8"
+```
+
+If you want to perform a massive **restore**, do:
+
+```shell
+$ dotctrl restore
+```
+> Note: > Note: If there is already an element created in the original location, **Dotctrl** will inform you to use the `--force` option.
+
+**Remove** `(DANGER)`
+
+The **remove** option is irreversible. Removes element (s) from the repository and its symbolic links in the place of origin if it exists. 
+
+This option of **remove**, is interactive, that is, you will have questions precisely because it is an irreversible option.
+
+To remove an element from the repository and its symbolic link, do:
+
+```shell
+$ dotctrl remove
+```
+This will open a list of elements from the repository for the remove user. The user can only choose one element at a time.
+
+If you want to remove elements in bulk, use the `--all` option
+
+```/shell
+$ dotctrl remove --all
+```
+
+To perform the removal without interactive mode, use the `--noconfirm` option. DANGER!
+
+
+
 **For more command, run: `dotctrl -h`**
 
 ## Configuration
