@@ -81,12 +81,14 @@ def create_symlink(src, dst, arguments):
                 os.remove(dst)
             try:
                 os.symlink(src, dst)
+                return True
             except PermissionError as p:
                 printer(
                     "User without permission to create the symbolic link.",
                     p,
                     foreground=FG.ERROR,
                 )
+    return
 
 
 def rm_objects(obj):
@@ -100,17 +102,6 @@ def rm_objects(obj):
     else:
         with contextlib.suppress(Exception):
             shutil.rmtree(obj)
-
-
-def exists_levels(src, dst, arguments):
-    """A function that returns level by checking source, destination
-    and forced argument files."""
-    if exists(src) and exists(dst) and not arguments()["--force"]:
-        return 0
-    elif exists(src) and exists(dst) and arguments()["--force"]:
-        return 1
-    elif not exists(src) and exists(dst):
-        return 2
 
 
 def listing_files(directory, only_rc=False):
@@ -168,21 +159,39 @@ def add_element_config(src, element, config):
             return
 
 
+def exists_levels(src, dst, arguments):
+    """A function that returns level by checking source, destination
+    and forced argument files."""
+    if exists(src) and exists(dst) and not arguments()["--force"]:
+        return 0
+    elif exists(src) and exists(dst) and arguments()["--force"]:
+        return 1
+    elif exists(src) and not exists(dst):
+        return 2
+    return
+
+
 def restore_args(repo, src, dst, arguments):
     """Function presents the possibilities of options for restored
     the elements."""
+    if exists_levels(src, dst, arguments) is None:
+        printer(
+            f'Restore failed. Element "{src}" not found in repository.',
+            foreground=FG.ERROR,
+        )
+        exit(1)
     if exists_levels(src, dst, arguments) == 0:
         printer(
-            "The files match the repository and the drive. " "User --force.",
+            "The files match the repository and the drive. User --force.",
             foreground=FG.WARNING,
         )
         exit(0)
     if exists_levels(src, dst, arguments) == 1:
-        rm_objects(src)
-        shutil.move(dst, src)
+        rm_objects(dst)
+        shutil.move(src, dst)
         snakypy.os.rmdir_blank(repo)
     if exists_levels(src, dst, arguments) == 2:
-        shutil.move(dst, src)
+        shutil.move(src, dst)
         snakypy.os.rmdir_blank(repo)
 
 
