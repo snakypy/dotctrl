@@ -1,3 +1,9 @@
+import os
+import sys
+# sys.path.insert(0, os.path.abspath(".."))
+import dotctrl
+# import sphinx_rtd_theme
+
 #
 # dotctrl documentation build configuration file, created by
 # sphinx-quickstart on Fri Jun  9 13:47:02 2017.
@@ -16,13 +22,6 @@
 # relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
 #
-import os
-import sys
-
-sys.path.insert(0, os.path.abspath(".."))
-
-import dotctrl
-import sphinx_rtd_theme
 
 # -- General configuration ---------------------------------------------
 
@@ -32,6 +31,7 @@ import sphinx_rtd_theme
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
+
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
