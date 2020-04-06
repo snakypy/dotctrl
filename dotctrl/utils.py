@@ -250,6 +250,6 @@ def join_two(obj1, obj2):
     even if it finds a slash (/)"""
     new_obj2 = obj2
     if new_obj2[0] == "/":
-        new_obj2 = obj2[1:]
+        new_obj2 = new_obj2[1:]
     result = os.path.join(obj1, new_obj2)
     return result
