@@ -164,6 +164,8 @@ def add_element_config(src, element, config):
                 lst.append(element)
                 parsed["dotctrl"]["elements"] = lst
                 snakypy.json.create(parsed, config, force=True)
+                return True
+            return
 
 
 def restore_args(repo, src, dst, arguments):
@@ -226,3 +228,15 @@ def remove_opts(root, repo, data, arguments):
                 return reply, objects
             return
         return reply, objects
+
+
+def join_two(obj1, obj2):
+    """Formats the element entry with the pull --element command. By default,
+    when you type a forward slash (/) in the second parameter of the join command,
+    the union is not made. This function has the responsibility of making the join
+    even if it finds a slash (/)"""
+    new_obj2 = obj2
+    if new_obj2[0] == "/":
+        new_obj2 = obj2[1:]
+    result = os.path.join(obj1, new_obj2)
+    return result
