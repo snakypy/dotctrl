@@ -120,15 +120,19 @@ def listing_files(directory, only_rc=False):
     return data
 
 
-def clear_config_garbage(repo, home, config):
+def clear_config_garbage(repo, home, config, only_repo=False):
     """Deletes elements in the configuration file that is
     neither in the Dotctrl repository nor in the source location."""
     parsed = snakypy.json.read(config)
     elements = parsed["dotctrl"]["elements"]
     new_elements = []
     for item in elements:
-        if exists(join(repo, item)) or exists(join(home, item)):
-            new_elements.append(item)
+        if only_repo:
+            if exists(join(repo, item)):
+                new_elements.append(item)
+        else:
+            if exists(join(repo, item)) or exists(join(home, item)):
+                new_elements.append(item)
     parsed["dotctrl"]["elements"] = new_elements
     snakypy.json.create(parsed, config, force=True)
 
