@@ -5,7 +5,7 @@
         rev: 19.10b0
         hooks:
           - id: black
-            directory: ^dotctrl
+            files: ^dotctrl
       -   repo: https://gitlab.com/pycqa/flake8
           rev: 3.7.9
           hooks:
