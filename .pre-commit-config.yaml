@@ -9,9 +9,9 @@ repos:
     -   id: black
         types: [file]
         files: ^dotctrl/*
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.7.9
-    hooks:
-    -   id: flake8
-        types: [file]
-        files: ^dotctrl/*
+#-   repo: https://gitlab.com/pycqa/flake8
+#    rev: 3.7.9
+#    hooks:
+#    -   id: flake8
+#        types: [file]
+#        files: ^dotctrl/*
