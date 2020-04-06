@@ -14,7 +14,6 @@ class Ransom:
         self.HOME = home
         self.repo = join(self.ROOT, "dotctrl")
         self.config = join(self.ROOT, __pkginfo__["config"])
-        utils.update_config(self.HOME, self.repo, self.config)
         self.gitignore = join(self.ROOT, ".gitignore")
         self.readme = join(self.ROOT, "README.md")
         self.text_editors = [
