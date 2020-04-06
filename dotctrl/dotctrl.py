@@ -148,7 +148,7 @@ class Dotctrl(Ransom):
             if len(data) == 0:
                 printer(
                     "Nothing to unlinked, en masse. Empty list of elements.",
-                    foreground=FG.WARNING
+                    foreground=FG.WARNING,
                 )
 
     def pull_command(self, arguments):
@@ -181,7 +181,7 @@ class Dotctrl(Ransom):
             if len(self.data) == 0:
                 printer(
                     "Nothing to pull, in droves. Empty list of elements.",
-                    foreground=FG.WARNING
+                    foreground=FG.WARNING,
                 )
 
     def link_command(self, arguments):
@@ -210,7 +210,7 @@ class Dotctrl(Ransom):
             if len(data) == 0:
                 printer(
                     "Nothing to linked, en masse. Empty repository.",
-                    foreground=FG.WARNING
+                    foreground=FG.WARNING,
                 )
 
     def restore_command(self, arguments):
