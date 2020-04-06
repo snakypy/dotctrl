@@ -93,7 +93,7 @@ Pull an element into the **Dotctrl** repository:
 $ dotctrl pull --element=".config/flake8"
 ```
 
-> Note: You must enter the path of the element from the `$HOME` directory.
+> Note: You must enter the element path without the `HOME` path.
 
 If you want to perform a massive **pull**, do:
 
@@ -111,7 +111,7 @@ After pulling the element(s), create symbolic links to them in their original lo
 $ dotctrl link --element=".config/flake8"
 ```
 
-> Note: You must enter the path of the element from the `$HOME` directory.
+> Note: You must enter the element path without the `HOME` path.
 
 If you want to perform a massive **link**, do:
 
@@ -145,19 +145,23 @@ Unlink element from the repository with the source location:
 $ dotctrl unlink --element=".config/flake8"
 ```
 
+> NOTE: You must enter the element path without the `HOME` path.
+
 If you want to perform a massive **unlink**, do:
 
 ```shell
 $ dotctrl unlink
 ```
 
-**Restore** 
+**Restore**
 
 Restore an element from the repository to its original location:
 
 ```shell
 $ dotctrl restore --element=".config/flake8"
 ```
+
+> NOTE: You must enter the element path without the `HOME` path.
 
 If you want to perform a massive **restore**, do:
 
@@ -168,7 +172,7 @@ $ dotctrl restore
 
 **Remove** `(DANGER)`
 
-The **remove** option is irreversible. Removes element (s) from the repository and its symbolic links in the place of origin if it exists. 
+The **remove** option is irreversible. Removes element (s) from the repository and its symbolic links in the place of origin if it exists.
 
 This option of **remove**, is interactive, that is, you will have questions precisely because it is an irreversible option.
 
