@@ -135,21 +135,28 @@ class Dotctrl(Ransom):
                 with suppress(Exception):
                     os.remove(file_home)
                     return True
-            printer(
+            return printer(
                 f'Element "{file_home}" not unlinked. Element not found.',
                 foreground=FG.ERROR,
             )
         else:
-            data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
+            data = [*utils.listing_files(self.repo, only_rc=True), *self.data]
             for item in data:
                 file_home = join(self.HOME, item)
                 with suppress(Exception):
                     os.remove(file_home)
+            if len(data) == 0:
+                printer(
+                    "Nothing to unlinked, en masse. Empty list of elements.",
+                    foreground=FG.WARNING
+                )
 
     def pull_command(self, arguments):
         """Method responsible for pulling the elements from the
         place of origin to the repository."""
+
         utils.cheking_init(self.ROOT)
+
         if arguments["--element"]:
             file_home = utils.join_two(self.HOME, arguments["--element"])
             file_repo = utils.join_two(self.repo, arguments["--element"])
@@ -171,6 +178,11 @@ class Dotctrl(Ransom):
                     if not islink(file_home) and exists(file_home):
                         utils.path_creation(self.repo, item)
                 utils.to_move(file_home, file_repo, arguments["--force"])
+            if len(self.data) == 0:
+                printer(
+                    "Nothing to pull, in droves. Empty list of elements.",
+                    foreground=FG.WARNING
+                )
 
     def link_command(self, arguments):
         """Method responsible for creating symbolic links from the
@@ -195,6 +207,11 @@ class Dotctrl(Ransom):
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo, item)
                 utils.create_symlink(file_repo, file_home, arguments["--force"])
+            if len(data) == 0:
+                printer(
+                    "Nothing to linked, en masse. Empty repository.",
+                    foreground=FG.WARNING
+                )
 
     def restore_command(self, arguments):
         """Method to restore dotfiles from the repository to their
@@ -218,6 +235,8 @@ class Dotctrl(Ransom):
                 if "/" in item:
                     utils.path_creation(self.HOME, item)
                 utils.restore_args(self.repo, file_repo, file_home, self.arguments)
+            if len(data) == 0:
+                printer("Empty repository. Nothing to restore.", foreground=FG.WARNING)
 
     def remove_command(self, arguments):
         """Method of removing elements from the repository and
