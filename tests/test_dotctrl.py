@@ -33,9 +33,7 @@ def dotfiles_tests(base, create=True):
     files_text = [".dotctrlrc", ".config/foo.txt"]
     if create:
         for item in files_text:
-            snakypy.file.create(
-                "dotctrl tests", join(base["home"], item), force=True
-            )
+            snakypy.file.create("dotctrl tests", join(base["home"], item), force=True)
             if not exists(join(base["home"], item)):
                 assert False
         for item in class_dotctrl(base).text_editors:
@@ -58,9 +56,7 @@ def update_config_elements(base, *files):
 def test_cli(base):
     dotfiles_tests(base)
 
-    @decorators.assign_cli(
-        class_dotctrl(base).arguments(argv=["init"]), "init"
-    )
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["init"]), "init")
     def init():
         dotctrl_init(base)
         if not exists(class_dotctrl(base).config):
@@ -74,14 +70,10 @@ def test_cli(base):
     def credence():
         class_dotctrl(base).credence()
 
-    @decorators.assign_cli(
-        class_dotctrl(base).arguments(argv=["pull"]), "pull"
-    )
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["pull"]), "pull")
     def pull():
         update_config_elements(base, ".config/foo.txt", ".config/bar.txt")
-        class_dotctrl(base).pull_command(
-            class_dotctrl(base).arguments(argv=["pull"])
-        )
+        class_dotctrl(base).pull_command(class_dotctrl(base).arguments(argv=["pull"]))
         for item in dotfiles_tests(base, create=False):
             if not exists(join(class_dotctrl(base).repo, item)):
                 assert False
@@ -89,19 +81,13 @@ def test_cli(base):
             if not exists(join(class_dotctrl(base).repo, item)):
                 assert False
 
-    @decorators.assign_cli(
-        class_dotctrl(base).arguments(argv=["check"]), "check"
-    )
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["check"]), "check")
     def check():
         class_dotctrl(base).check_command()
 
-    @decorators.assign_cli(
-        class_dotctrl(base).arguments(argv=["link"]), "link"
-    )
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["link"]), "link")
     def link():
-        class_dotctrl(base).link_command(
-            class_dotctrl(base).arguments(argv=["link"])
-        )
+        class_dotctrl(base).link_command(class_dotctrl(base).arguments(argv=["link"]))
         for item in dotfiles_tests(base, create=False):
             if not islink(join(class_dotctrl(base).HOME, item)):
                 assert False
@@ -109,9 +95,7 @@ def test_cli(base):
             if not islink(join(class_dotctrl(base).HOME, item)):
                 assert False
 
-    @decorators.assign_cli(
-        class_dotctrl(base).arguments(argv=["unlink"]), "unlink"
-    )
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["unlink"]), "unlink")
     def unlink():
         class_dotctrl(base).unlink_command(
             class_dotctrl(base).arguments(argv=["unlink"])
@@ -123,9 +107,7 @@ def test_cli(base):
             if islink(join(class_dotctrl(base).HOME, item)):
                 assert False
 
-    @decorators.assign_cli(
-        class_dotctrl(base).arguments(argv=["restore"]), "restore"
-    )
+    @decorators.assign_cli(class_dotctrl(base).arguments(argv=["restore"]), "restore")
     def restore():
         class_dotctrl(base).restore_command(
             class_dotctrl(base).arguments(argv=["restore"])
