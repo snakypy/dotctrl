@@ -130,9 +130,15 @@ class Dotctrl(Ransom):
         with their place of origin."""
         utils.cheking_init(self.ROOT)
         if arguments["--element"]:
-            file_home = join(self.HOME, arguments["--element"])
-            with suppress(Exception):
-                os.remove(file_home)
+            file_home = utils.join_two(self.HOME, arguments["--element"])
+            if islink(file_home):
+                with suppress(Exception):
+                    os.remove(file_home)
+                    return True
+            printer(
+                f'Element "{file_home}" not unlinked. Element not found.',
+                foreground=FG.ERROR,
+            )
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
@@ -145,12 +151,18 @@ class Dotctrl(Ransom):
         place of origin to the repository."""
         utils.cheking_init(self.ROOT)
         if arguments["--element"]:
-            file_home = join(self.HOME, arguments["--element"])
-            file_repo = join(self.repo, arguments["--element"])
+            file_home = utils.join_two(self.HOME, arguments["--element"])
+            file_repo = utils.join_two(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
                 utils.path_creation(self.repo, arguments["--element"])
-            utils.add_element_config(file_home, arguments["--element"], self.config)
-            utils.to_move(file_home, file_repo, arguments["--force"])
+            status = utils.add_element_config(
+                file_home, arguments["--element"], self.config
+            )
+            if status:
+                return utils.to_move(file_home, file_repo, arguments["--force"])
+            return printer(
+                "Nothing was pulled. Nonexistent element.", foreground=FG.ERROR
+            )
         else:
             for item in self.data:
                 file_home = join(self.HOME, item)
@@ -159,7 +171,6 @@ class Dotctrl(Ransom):
                     if not islink(file_home) and exists(file_home):
                         utils.path_creation(self.repo, item)
                 utils.to_move(file_home, file_repo, arguments["--force"])
-        utils.clear_config_garbage(self.HOME, self.repo, self.config)
 
     def link_command(self, arguments):
         """Method responsible for creating symbolic links from the
@@ -170,7 +181,14 @@ class Dotctrl(Ransom):
             file_repo = join(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
                 utils.path_creation(self.HOME, arguments["--element"])
-            utils.create_symlink(file_repo, file_home, arguments["--force"])
+            status = utils.create_symlink(
+                file_repo, file_home, arguments["--force"]
+            )
+            if not status:
+                printer(
+                    f'Element "{file_repo}" not linked. Review the same in the repository.',
+                    foreground=FG.ERROR,
+                )
         else:
             data = (*utils.listing_files(self.repo, only_rc=True), *self.data)
             for item in data:
@@ -189,7 +207,7 @@ class Dotctrl(Ransom):
             file_repo = join(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
                 utils.path_creation(self.HOME, arguments["--element"])
-            utils.restore_args(self.repo, file_home, file_repo, self.arguments)
+            utils.restore_args(self.repo, file_repo, file_home, self.arguments)
         else:
             data = [*utils.listing_files(self.repo, only_rc=True), *self.data]
             for item in data:
@@ -197,14 +215,13 @@ class Dotctrl(Ransom):
                 file_repo = join(self.repo, item)
                 if "/" in item:
                     utils.path_creation(self.HOME, item)
-                utils.restore_args(self.repo, file_home, file_repo, self.arguments)
-        utils.clear_config_garbage(self.HOME, self.repo, self.config)
+                utils.restore_args(self.repo, file_repo, file_home, self.arguments)
 
     def remove_command(self, arguments):
         """Method of removing elements from the repository and
         symbolic links linked to them. Calls other methods and functions
         that also perform other actions."""
-
+        # TODO: Se não tiver no repo, remover do dotctrl.jon tambem.
         def rm_elements(home, repo, item):
             if exists(join(repo, item)):
                 if islink(join(home, item)):
@@ -222,4 +239,3 @@ class Dotctrl(Ransom):
             for i in option[1]:
                 rm_elements(self.HOME, self.repo, i)
             snakypy.os.rmdir_blank(self.repo)
-        utils.clear_config_garbage(self.HOME, self.repo, self.config)
