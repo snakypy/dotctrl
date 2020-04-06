@@ -181,9 +181,7 @@ class Dotctrl(Ransom):
             file_repo = join(self.repo, arguments["--element"])
             if "/" in arguments["--element"]:
                 utils.path_creation(self.HOME, arguments["--element"])
-            status = utils.create_symlink(
-                file_repo, file_home, arguments["--force"]
-            )
+            status = utils.create_symlink(file_repo, file_home, arguments["--force"])
             if not status:
                 printer(
                     f'Element "{file_repo}" not linked. Review the same in the repository.',
@@ -201,7 +199,11 @@ class Dotctrl(Ransom):
     def restore_command(self, arguments):
         """Method to restore dotfiles from the repository to their
         original location."""
+
         utils.cheking_init(self.ROOT)
+
+        utils.clear_config_garbage(self.HOME, self.repo, self.config, only_repo=True)
+
         if arguments["--element"]:
             file_home = join(self.HOME, arguments["--element"])
             file_repo = join(self.repo, arguments["--element"])
@@ -221,7 +223,7 @@ class Dotctrl(Ransom):
         """Method of removing elements from the repository and
         symbolic links linked to them. Calls other methods and functions
         that also perform other actions."""
-        # TODO: Se não tiver no repo, remover do dotctrl.jon tambem.
+
         def rm_elements(home, repo, item):
             if exists(join(repo, item)):
                 if islink(join(home, item)):
