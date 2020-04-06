@@ -130,6 +130,9 @@ class Dotctrl(Ransom):
         """Method to unlink point files from the repository
         with their place of origin."""
         utils.cheking_init(self.ROOT)
+
+        utils.update_config(self.HOME, self.repo, self.config)
+
         if arguments["--element"]:
             file_home = utils.join_two(self.HOME, arguments["--element"])
             if islink(file_home):
@@ -157,6 +160,8 @@ class Dotctrl(Ransom):
         place of origin to the repository."""
 
         utils.cheking_init(self.ROOT)
+
+        utils.update_config(self.HOME, self.repo, self.config)
 
         if arguments["--element"]:
             file_home = utils.join_two(self.HOME, arguments["--element"])
@@ -188,6 +193,9 @@ class Dotctrl(Ransom):
     def link_command(self, arguments):
         """Method responsible for creating symbolic links from the
         repository to the place of origin of the elements."""
+
+        utils.update_config(self.HOME, self.repo, self.config)
+
         utils.cheking_init(self.ROOT)
         if arguments["--element"]:
             file_home = join(self.HOME, arguments["--element"])
@@ -243,6 +251,8 @@ class Dotctrl(Ransom):
         """Method of removing elements from the repository and
         symbolic links linked to them. Calls other methods and functions
         that also perform other actions."""
+
+        utils.update_config(self.HOME, self.repo, self.config)
 
         def rm_elements(home, repo, item):
             if exists(join(repo, item)):
