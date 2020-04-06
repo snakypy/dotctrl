@@ -35,13 +35,8 @@ class Dotctrl(Ransom):
     @staticmethod
     def credence():
         utils.show_billboard()
-        snakypy.console.credence(
-            __pkginfo__["name"],
-            __version__,
-            __pkginfo__["home_page"],
-            __pkginfo__,
-            foreground=FG.CYAN,
-        )
+        snakypy.console.credence(__pkginfo__["name"], __version__, __pkginfo__["home_page"], __pkginfo__,
+                                 foreground=FG.CYAN)
 
     def init_command(self, arguments):
         """Base repository method."""
