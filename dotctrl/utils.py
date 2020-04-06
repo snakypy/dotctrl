@@ -205,7 +205,7 @@ def remove_opts(root, repo, data, arguments):
     cheking_init(root)
     objects = [*listing_files(repo, only_rc=True), *data]
     if len(objects) <= 0:
-        printer("Nothing to do.", foreground=FG.FINISH)
+        printer("Nothing to remove.", foreground=FG.WARNING)
         exit(0)
     else:
         if arguments["--all"] and arguments["--noconfirm"]:
