@@ -1,5 +1,6 @@
 """Dotctrl main module, where everything happens."""
 # Quick and Dirty, then refinery. :)
+# TODO: Use SOLID Metodology
 import os
 import pydoc
 import shutil
