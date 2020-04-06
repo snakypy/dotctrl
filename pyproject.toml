@@ -43,6 +43,7 @@ pytest-runner = "^5.2"
 ipython = "^7.13.0"
 black = "^19.10b0"
 eqversion = "^0.1.2"
+pre-commit = "^2.2.0"
 
 
 [build-system]
