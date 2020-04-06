@@ -219,7 +219,7 @@ class Dotctrl(Ransom):
 
         utils.cheking_init(self.ROOT)
 
-        utils.clear_config_garbage(self.HOME, self.repo, self.config, only_repo=True)
+        utils.update_config(self.HOME, self.repo, self.config, only_repo=True)
 
         if arguments["--element"]:
             file_home = join(self.HOME, arguments["--element"])
@@ -260,3 +260,5 @@ class Dotctrl(Ransom):
             for i in option[1]:
                 rm_elements(self.HOME, self.repo, i)
             snakypy.os.rmdir_blank(self.repo)
+
+        utils.update_config(self.HOME, self.repo, self.config)

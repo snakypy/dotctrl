@@ -120,7 +120,7 @@ def listing_files(directory, only_rc=False):
     return data
 
 
-def clear_config_garbage(repo, home, config, only_repo=False):
+def update_config(repo, home, config, only_repo=False):
     """Deletes elements in the configuration file that is
     neither in the Dotctrl repository nor in the source location."""
     parsed = snakypy.json.read(config)
