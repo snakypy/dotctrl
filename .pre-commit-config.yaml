@@ -10,10 +10,10 @@ repos:
     hooks:
     -   id: black
         types: [python]
-        files: ^dotctrl/
+        files: ^dotctrl/*
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.9
     hooks:
     -   id: flake8
         types: [python]
-        files: ^dotctrl/
+        files: ^dotctrl/*
