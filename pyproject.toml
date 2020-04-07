@@ -23,7 +23,7 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-dotctrl = "dotctrl.cli:main"
+dotctrl = "dotctrl.dotctrl:main"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/snakypy/dotctrl/issues"

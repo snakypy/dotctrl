@@ -1,20 +1,20 @@
 from os.path import exists, join
 from snakypy import FG, printer
 from snakypy.ansi import NONE
-from dotctrl.config import base
-from dotctrl.console import utils
+from dotctrl.config.base import Base
+from dotctrl.console.utils import check_init, listing_files
 
 
-class Command(base.Base):
+class ListCommand(Base):
     def __init__(self, root, home):
-        base.Base.__init__(self, root, home)
+        Base.__init__(self, root, home)
 
     def main(self):
         """Method that lists the dotfiles in the repository."""
-        utils.check_init(self.ROOT)
+        check_init(self.ROOT)
 
         listing_data = list()
-        objects = [*utils.listing_files(self.repo_path, only_rc_files=True), *self.data]
+        objects = [*listing_files(self.repo_path, only_rc_files=True), *self.data]
         for item in objects:
             if exists(join(self.repo_path, item)):
                 listing_data.append(item)

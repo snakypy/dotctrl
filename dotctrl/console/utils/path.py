@@ -1,13 +1,13 @@
-import os
-import snakypy
+from snakypy.path import create as create_path
+from os.path import join
 
 
 def path_creation(root, item):
     """Create repository for file with a path"""
     path_split = item.split("/")[:-1]
     path_str = "/".join(path_split)
-    path = os.path.join(root, path_str)
-    snakypy.path.create(path)
+    path = join(root, path_str)
+    create_path(path)
     return str(path)
 
 
@@ -19,5 +19,5 @@ def join_two(obj1, obj2):
     new_obj2 = obj2
     if new_obj2[0] == "/":
         new_obj2 = new_obj2[1:]
-    result = os.path.join(obj1, new_obj2)
+    result = join(obj1, new_obj2)
     return result

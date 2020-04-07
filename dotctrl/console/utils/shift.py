@@ -1,7 +1,8 @@
-import os
-import shutil
-import contextlib
-import snakypy
+from snakypy.json import read as json_read
+from snakypy.json import create as json_create
+from shutil import move, rmtree
+from os import remove, symlink
+from contextlib import suppress
 from sys import exit
 from os.path import exists, islink, isfile, join
 from snakypy import printer, FG
@@ -24,10 +25,10 @@ def create_symlink(src, dst, arguments):
             )
             exit(0)
         else:
-            with contextlib.suppress(Exception):
-                os.remove(dst)
+            with suppress(Exception):
+                remove(dst)
             try:
-                os.symlink(src, dst)
+                symlink(src, dst)
                 return True
             except PermissionError as p:
                 printer(
@@ -53,8 +54,8 @@ def to_move(src, dst, arguments):
             )
             exit(0)
         else:
-            with contextlib.suppress(Exception):
-                shutil.move(src, dst)
+            with suppress(Exception):
+                move(src, dst)
             return True
     return
 
@@ -65,17 +66,17 @@ def rm_objects(obj):
     :param obj: Object to be removed (files or folders).
     """
     if isfile(obj) or islink(obj):
-        with contextlib.suppress(Exception):
-            os.remove(obj)
+        with suppress(Exception):
+            remove(obj)
     else:
-        with contextlib.suppress(Exception):
-            shutil.rmtree(obj)
+        with suppress(Exception):
+            rmtree(obj)
 
 
 def rm_garbage_config(repo, home, config, only_repo=False):
     """Deletes elements in the configuration file that is
     neither in the Dotctrl repository nor in the source location."""
-    parsed = snakypy.json.read(config)
+    parsed = json_read(config)
     elements = parsed["dotctrl"]["elements"]
     new_elements = list()
     for item in elements:
@@ -86,13 +87,13 @@ def rm_garbage_config(repo, home, config, only_repo=False):
             if exists(join(repo, item)) or exists(join(home, item)):
                 new_elements.append(item)
     parsed["dotctrl"]["elements"] = new_elements
-    snakypy.json.create(parsed, config, force=True)
+    json_create(parsed, config, force=True)
 
 
 def add_element_config(src, element, config):
     """Function that adds element to the configuration file
     when using the "pull --element=<object>" option."""
-    parsed = snakypy.json.read(config)
+    parsed = json_read(config)
     if element not in parsed["dotctrl"]["elements"]:
         if element[-2:] == "rc" and "/" not in element:
             pass
@@ -101,6 +102,6 @@ def add_element_config(src, element, config):
                 lst = list(parsed["dotctrl"]["elements"])
                 lst.append(element)
                 parsed["dotctrl"]["elements"] = lst
-                snakypy.json.create(parsed, config, force=True)
+                json_create(parsed, config, force=True)
                 return True
             return

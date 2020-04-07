@@ -1,6 +1,6 @@
 """Modulate to store records and data."""
-import sys
-import snakypy
+from sys import exit
+from snakypy.json import read as json_read
 from os.path import exists, join
 from snakypy import FG, printer
 from dotctrl.config import package
@@ -31,7 +31,7 @@ class Base:
 
         if exists(self.config_path):
             try:
-                self.parsed = snakypy.json.read(self.config_path)
+                self.parsed = json_read(self.config_path)
                 self.elements = list(self.parsed["dotctrl"]["elements"])
                 self.rc_files = utils.listing_files(self.HOME, only_rc_files=True)
                 self.rc_files_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
@@ -46,7 +46,7 @@ class Base:
                     e,
                     foreground=FG.ERROR,
                 )
-                sys.exit(1)
+                exit(1)
 
             if self.rc_files_status and self.text_editors_status:
                 self.data = self.rc_files + self.editors_config + self.elements

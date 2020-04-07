@@ -1,71 +1,72 @@
 """CLI Dotctrl"""
 import snakypy
 from dotctrl import ROOT, HOME
-from dotctrl.console import utils
-from dotctrl.console import init
-from dotctrl.console import pull
-from dotctrl.console import link
-from dotctrl.console import unlink
-from dotctrl.console import config
-from dotctrl.console import check
-from dotctrl.console import remove
-from dotctrl.console import restore
-from dotctrl.console import list
-from dotctrl.console import credits
+from dotctrl.console.utils import arguments
+from dotctrl.console.utils.decorators import assign_cli
+from dotctrl.console.init import InitCommand
+from dotctrl.console.pull import PullCommand
+from dotctrl.console.link import LinkCommand
+from dotctrl.console.unlink import UnlinkCommand
+from dotctrl.console.config import ConfigCommand
+from dotctrl.console.check import CheckCommand
+from dotctrl.console.remove import RemoveCommand
+from dotctrl.console.restore import RestoreCommand
+from dotctrl.console.list import ListCommand
+from dotctrl.console.credits import CreditsCommand
 
 
 # Get arguments Docopt
-args = utils.arguments()
+args = arguments()
 
 
-@utils.decorators.assign_cli(args, "init")
+@assign_cli(args, "init")
 def run_init():
-    init.Command(ROOT, HOME).main(args)
+    InitCommand(ROOT, HOME).main(args)
 
 
-@utils.decorators.assign_cli(args, "pull")
+@assign_cli(args, "pull")
 def run_pull():
-    pull.Command(ROOT, HOME).main(args)
+    PullCommand(ROOT, HOME).main(args)
 
 
-@utils.decorators.assign_cli(args, "link")
+@assign_cli(args, "link")
 def run_link():
-    link.Command(ROOT, HOME).main(args)
+    LinkCommand(ROOT, HOME).main(args)
 
 
-@utils.decorators.assign_cli(args, "unlink")
+@assign_cli(args, "unlink")
 def run_unlink():
-    unlink.Command(ROOT, HOME).main(args)
+    UnlinkCommand(ROOT, HOME).main(args)
 
 
-@utils.decorators.assign_cli(args, "config")
+@assign_cli(args, "config")
 def run_config():
-    config.Command(ROOT, HOME).main(args)
+    ConfigCommand(ROOT, HOME).main(args)
 
 
-@utils.decorators.assign_cli(args, "check")
+@assign_cli(args, "check")
 def run_check():
-    check.Command(ROOT, HOME).main()
+    CheckCommand(ROOT, HOME).main()
 
 
-@utils.decorators.assign_cli(args, "list")
+@assign_cli(args, "list")
 def run_list():
-    list.Command(ROOT, HOME).main()
+    ListCommand(ROOT, HOME).main()
 
 
-@utils.decorators.assign_cli(args, "restore")
+@assign_cli(args, "restore")
 def run_restore():
-    restore.Command(ROOT, HOME).main(args)
+    RestoreCommand(ROOT, HOME).main(args)
 
 
-@utils.decorators.assign_cli(args, "remove")
+@assign_cli(args, "remove")
 def run_remove():
-    remove.Command(ROOT, HOME).main(args)
+    RemoveCommand(ROOT, HOME).main(args)
 
 
-@utils.decorators.assign_cli(args, "--credits")
+@assign_cli(args, "--credits")
 def run_credits():
-    credits.Command().main()
+    CreditsCommand().main()
 
 
 @snakypy.decorators.only_for_linux
