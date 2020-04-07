@@ -16,6 +16,7 @@ class PullCommand(Base):
         Base.__init__(self, root, home)
 
     def main(self, arguments):
+        # TODO: Error pull --element
         """Method responsible for pulling the elements from the
         place of origin to the repository."""
 
@@ -28,15 +29,18 @@ class PullCommand(Base):
             file_repo = join_two(self.repo_path, arguments["--element"])
             if "/" in arguments["--element"]:
                 path_creation(self.repo_path, arguments["--element"])
-            status = add_element_config(
-                file_home, arguments["--element"], self.config_path
-            )
-            if status:
-                return to_move(file_home, file_repo, arguments["--force"])
-            return printer(
-                "Nothing was pulled. Nonexistent element.", foreground=FG.ERROR
-            )
+            add_element_config(file_home, arguments["--element"], self.config_path)
+            if not exists(file_home):
+                return printer(
+                    "Nothing was pulled. Nonexistent element.", foreground=FG.ERROR
+                )
+            to_move(file_home, file_repo, arguments["--force"])
         else:
+            if len(self.data) == 0:
+                return printer(
+                    "Nothing to pull, in droves. Empty list of elements.",
+                    foreground=FG.WARNING,
+                )
             for item in self.data:
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo_path, item)
@@ -44,8 +48,3 @@ class PullCommand(Base):
                     if not islink(file_home) and exists(file_home):
                         path_creation(self.repo_path, item)
                 to_move(file_home, file_repo, arguments["--force"])
-            if len(self.data) == 0:
-                printer(
-                    "Nothing to pull, in droves. Empty list of elements.",
-                    foreground=FG.WARNING,
-                )

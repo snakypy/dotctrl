@@ -31,14 +31,13 @@ def restore_args(repo, src, dst, arguments):
         rmdir_blank(repo)
     else:
         printer(
-            f'Restore failed. Element "{src}" not found in repository.',
-            foreground=FG.ERROR,
+            f'The element "{src}" not found in repository to be restored.'
+            f" Review the configuration file, or use other option.",
+            foreground=FG.WARNING,
         )
-        exit(1)
 
 
 class RestoreCommand(Base):
-    # TODO: Remover do arquivo dotctrl.json também.
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
@@ -48,7 +47,8 @@ class RestoreCommand(Base):
 
         check_init(self.ROOT)
 
-        rm_garbage_config(self.HOME, self.repo_path, self.config_path, only_repo=True)
+        # Uncomment to remove the element from the registry.
+        # rm_garbage_config(self.HOME, self.repo_path, self.config_path, only_repo=True)
 
         if arguments["--element"]:
             file_home = join(self.HOME, arguments["--element"])
