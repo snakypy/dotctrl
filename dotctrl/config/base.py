@@ -3,35 +3,38 @@ import sys
 import snakypy
 from os.path import exists, join
 from snakypy import FG, printer
-from dotctrl import __pkginfo__, utils
+from dotctrl.config import package
+from dotctrl.console import utils
 
 
-class Ransom:
+class Base:
     """Class to retrieve data"""
 
     def __init__(self, root, home):
         self.ROOT = root
         self.HOME = home
-        self.repo = join(self.ROOT, "dotctrl")
-        self.config = join(self.ROOT, __pkginfo__["config"])
-        self.gitignore = join(self.ROOT, ".gitignore")
+        self.repo_path = join(self.ROOT, "dotctrl")
+        self.config_path = join(self.ROOT, package.info["config"])
+        self.gitignore_path = join(self.ROOT, ".gitignore_path")
         self.readme = join(self.ROOT, "README.md")
-        self.text_editors = [
+        self.atom = [".atom/config.cson", ".atom/github.cson", ".atom/snippets.cson"]
+        self.vscode = [
             ".config/Code/User/settings.json",
             ".config/Code/User/locale.json",
-            ".atom/config.cson",
-            ".atom/github.cson",
-            ".atom/snippets.cson",
+        ]
+        self.sublime = [
             ".config/sublime-text-3/Packages/User/" "Preferences.sublime-settings",
             ".config/sublime-text-3/Packages/User/" "Package Control.sublime-settings",
             ".config/sublime-text-3/Packages/User/" "Distraction Free.sublime-settings",
         ]
+        self.editors_config = self.atom + self.vscode + self.atom
 
-        if exists(self.config):
+        if exists(self.config_path):
             try:
-                self.parsed = snakypy.json.read(self.config)
-                self.elements = [*self.parsed["dotctrl"]["elements"]]
-                self.rc_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
+                self.parsed = snakypy.json.read(self.config_path)
+                self.elements = list(self.parsed["dotctrl"]["elements"])
+                self.rc_files = utils.listing_files(self.HOME, only_rc_files=True)
+                self.rc_files_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
                 self.text_editors_status = self.parsed["dotctrl"]["smart"][
                     "text_editors"
                 ]["enable"]
@@ -45,13 +48,11 @@ class Ransom:
                 )
                 sys.exit(1)
 
-            rc = utils.listing_files(self.HOME, only_rc=True)
-
-            if self.rc_status and self.text_editors_status:
-                self.data = rc + self.text_editors + self.elements
-            elif self.rc_status and not self.text_editors_status:
-                self.data = rc + self.elements
-            elif not self.rc_status and self.text_editors_status:
-                self.data = self.text_editors + self.elements
+            if self.rc_files_status and self.text_editors_status:
+                self.data = self.rc_files + self.editors_config + self.elements
+            elif self.rc_files_status and not self.text_editors_status:
+                self.data = self.rc_files + self.elements
+            elif not self.rc_files_status and self.text_editors_status:
+                self.data = self.editors_config + self.elements
             else:
                 self.data = self.elements
