@@ -38,6 +38,7 @@ def restore_args(repo, src, dst, arguments):
 
 
 class RestoreCommand(Base):
+    # TODO: Remover do arquivo dotctrl.json também.
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
