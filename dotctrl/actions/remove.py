@@ -6,20 +6,22 @@ from os.path import exists, islink, join
 from sys import exit
 from snakypy import FG, printer
 from dotctrl.config.base import Base
-from dotctrl.console.utils import listing_files, check_init, rm_garbage_config
+from dotctrl.utils import listing_files, check_init, rm_garbage_config
 
 
-def remove_opts(root, repo, objects, arguments):
+def remove_opts(repo, objects, arguments):
     """Function presents the possibilities of options for removing
     the elements."""
-    check_init(root)
-    get_objects = [*listing_files(repo, only_rc_files=True), *objects]
-    if len(get_objects) <= 0:
+    objects_repo = list()
+    for item in [*listing_files(repo, only_rc_files=True), *objects]:
+        if exists(join(repo, item)):
+            objects_repo.append(item)
+    if len(objects_repo) <= 0:
         printer("Nothing to remove.", foreground=FG.WARNING)
         exit(0)
     else:
         if arguments["--all"] and arguments["--noconfirm"]:
-            return "all", get_objects
+            return "all", objects_repo
         printer(
             "ATTENTION! This choice is permanent, there will be no going back.",
             foreground=FG.WARNING,
@@ -32,12 +34,12 @@ def remove_opts(root, repo, objects, arguments):
                 lowercase=True,
             )
             if reply == "yes":
-                return "all", get_objects
+                return "all", objects_repo
             return
 
         reply = pick(
             "Choose the element you want to remove from the repository:",
-            get_objects,
+            objects_repo,
             colorful=True,
             ctrl_c_message=True,
         )
@@ -48,9 +50,9 @@ def remove_opts(root, repo, objects, arguments):
             )
             exit(0) if confirm is None else None
             if confirm == "yes":
-                return reply, get_objects
+                return reply, objects_repo
             return
-        return reply, get_objects
+        return reply, objects_repo
 
 
 def rm_elements(home, repo, item):
@@ -70,10 +72,11 @@ class RemoveCommand(Base):
         """Method of removing elements from the repository and
         symbolic links linked to them. Calls other methods and functions
         that also perform other actions."""
+        check_init(self.ROOT)
 
         rm_garbage_config(self.HOME, self.repo_path, self.config_path)
 
-        option = remove_opts(self.ROOT, self.repo_path, self.data, arguments)
+        option = remove_opts(self.repo_path, self.data, arguments)
 
         if option is None:
             printer("Aborted by user.", foreground=FG.WARNING)
