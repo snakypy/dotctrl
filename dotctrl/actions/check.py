@@ -3,10 +3,11 @@ from os.path import exists, join, islink
 from snakypy import FG, printer
 from snakypy.ansi import NONE
 from dotctrl.config.base import Base
-from dotctrl.console.utils import check_init, listing_files
+from dotctrl.utils import check_init, listing_files
 
 
 class CheckCommand(Base):
+    # TODO: Unify "check" and "list" command
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
