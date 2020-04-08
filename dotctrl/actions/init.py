@@ -6,7 +6,7 @@ from snakypy.json import create as create_json
 from snakypy.file import create as create_file
 from dotctrl.config import gitignore, package, readme, config
 from dotctrl.config.base import Base
-from dotctrl.console.utils import git_init_command
+from dotctrl.utils import git_init_command
 
 
 class InitCommand(Base):
