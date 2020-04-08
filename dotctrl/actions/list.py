@@ -2,7 +2,7 @@ from os.path import exists, join
 from snakypy import FG, printer
 from snakypy.ansi import NONE
 from dotctrl.config.base import Base
-from dotctrl.console.utils import check_init, listing_files
+from dotctrl.utils import check_init, listing_files
 
 
 class ListCommand(Base):
