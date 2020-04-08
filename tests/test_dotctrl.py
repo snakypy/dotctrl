@@ -1,15 +1,14 @@
 import pytest
 import snakypy
 from os.path import exists, islink, join, isfile
-from dotctrl.console.utils.decorators import assign_cli
+from dotctrl.utils.decorators import assign_cli
 from dotctrl.config.base import Base
-from dotctrl.console.init import InitCommand
-from dotctrl.console.pull import PullCommand
-from dotctrl.console.link import LinkCommand
-from dotctrl.console.unlink import UnlinkCommand
-from dotctrl.console.restore import RestoreCommand
-from dotctrl.console.check import CheckCommand
-from dotctrl.console.utils import arguments
+from dotctrl.actions.init import InitCommand
+from dotctrl.actions.pull import PullCommand
+from dotctrl.actions.link import LinkCommand
+from dotctrl.actions.unlink import UnlinkCommand
+from dotctrl.actions.restore import RestoreCommand
+from dotctrl.utils import arguments
 
 
 @pytest.fixture
@@ -91,10 +90,6 @@ def test_cli(base):
             if not exists(join(class_base(base).repo_path, item)):
                 assert False
 
-    @assign_cli(arguments(argv=["check"]), "check")
-    def check():
-        CheckCommand(base["root"], base["home"]).main()
-
     @assign_cli(arguments(argv=["link"]), "link")
     def link():
         LinkCommand(base["root"], base["home"]).main(
@@ -102,7 +97,7 @@ def test_cli(base):
                 argv=[
                     "link",
                     f"--element={dotfiles_tests(base, create=False)[0]}",
-                    "--force"
+                    "--force",
                 ]
             )
         )
@@ -123,16 +118,19 @@ def test_cli(base):
     def unlink():
         UnlinkCommand(base["root"], base["home"]).main(
             arguments(
-                argv=[
-                    "unlink",
-                    f"--element={dotfiles_tests(base, create=False)[0]}"
-                ]
+                argv=["unlink", f"--element={dotfiles_tests(base, create=False)[0]}"]
             )
         )
         f = join(class_base(base).HOME, dotfiles_tests(base, create=False)[0])
         if islink(f):
             assert False
-        UnlinkCommand(base["root"], base["home"]).main(arguments(argv=["unlink"]))
+
+        with pytest.raises(SystemExit):
+            UnlinkCommand(base["root"], base["home"]).main(arguments(argv=["unlink"]))
+
+        UnlinkCommand(base["root"], base["home"]).main(
+            arguments(argv=["unlink", "--force"])
+        )
         for item in dotfiles_tests(base, create=False):
             if islink(join(class_base(base).HOME, item)):
                 assert False
@@ -157,18 +155,20 @@ def test_cli(base):
 
         RestoreCommand(base["root"], base["home"]).main(arguments(argv=["restore"]))
         for item in dotfiles_tests(base, create=False):
-            if exists(join(class_base(base).repo_path, item)):
+            elem_repo = join(class_base(base).repo_path, item)
+            if exists(elem_repo):
                 assert False
         for item in class_base(base).editors_config:
-            if exists(join(class_base(base).repo_path, item)):
+            elem_repo = join(class_base(base).repo_path, item)
+            if exists(elem_repo):
                 assert False
         for item in class_base(base).editors_config:
-            if islink(join(class_base(base).HOME, item)):
+            elem_home = join(class_base(base).HOME, item)
+            if islink(elem_home):
                 assert False
 
     init()
     pull()
     link()
     unlink()
-    check()
     restore()
