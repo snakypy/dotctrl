@@ -1,18 +1,18 @@
 """CLI Dotctrl"""
 import snakypy
 from dotctrl import ROOT, HOME
-from dotctrl.console.utils import arguments
-from dotctrl.console.utils.decorators import assign_cli
-from dotctrl.console.init import InitCommand
-from dotctrl.console.pull import PullCommand
-from dotctrl.console.link import LinkCommand
-from dotctrl.console.unlink import UnlinkCommand
-from dotctrl.console.config import ConfigCommand
-from dotctrl.console.check import CheckCommand
-from dotctrl.console.remove import RemoveCommand
-from dotctrl.console.restore import RestoreCommand
-from dotctrl.console.list import ListCommand
-from dotctrl.console.credits import CreditsCommand
+from dotctrl.utils import arguments
+from dotctrl.utils.decorators import assign_cli
+from dotctrl.actions.init import InitCommand
+from dotctrl.actions.pull import PullCommand
+from dotctrl.actions.link import LinkCommand
+from dotctrl.actions.unlink import UnlinkCommand
+from dotctrl.actions.config import ConfigCommand
+from dotctrl.actions.check import CheckCommand
+from dotctrl.actions.remove import RemoveCommand
+from dotctrl.actions.restore import RestoreCommand
+from dotctrl.actions.list import ListCommand
+from dotctrl.actions.credits import CreditsCommand
 
 
 # Get arguments Docopt
