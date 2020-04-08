@@ -19,7 +19,7 @@ USAGE:
     {package.info['executable']} list
     {package.info['executable']} pull [--element=<object>] [--force]
     {package.info['executable']} link [--element=<object>] [--force]
-    {package.info['executable']} unlink [--element=<object>]
+    {package.info['executable']} unlink [--element=<object>] [--force]
     {package.info['executable']} config (--open | --view)
     {package.info['executable']} restore [--element=<object>] [--force]
     {package.info['executable']} remove [--all] [--noconfirm]
