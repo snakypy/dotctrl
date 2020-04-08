@@ -1,5 +1,10 @@
 from snakypy.path import create as create_path
 from os.path import join
+from pathlib import Path
+
+
+def shorten_path(file_path, length):
+    return Path(*Path(file_path).parts[-length:])
 
 
 def path_creation(root, item):
