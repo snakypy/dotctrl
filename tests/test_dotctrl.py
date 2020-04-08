@@ -153,7 +153,12 @@ def test_cli(base):
         if not isfile(f):
             assert False
 
-        RestoreCommand(base["root"], base["home"]).main(arguments(argv=["restore"]))
+        with pytest.raises(SystemExit):
+            RestoreCommand(base["root"], base["home"]).main(arguments(argv=["restore"]))
+
+        RestoreCommand(base["root"], base["home"]).main(
+            arguments(argv=["restore", "--force"])
+        )
         for item in dotfiles_tests(base, create=False):
             elem_repo = join(class_base(base).repo_path, item)
             if exists(elem_repo):
