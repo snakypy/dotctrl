@@ -1,7 +1,8 @@
-from os.path import join
+from sys import exit
+from os.path import join, islink
 from snakypy import FG, printer
 from dotctrl.config.base import Base
-from dotctrl.console.utils import (
+from dotctrl.utils import (
     check_init,
     rm_garbage_config,
     path_creation,
@@ -27,6 +28,13 @@ class LinkCommand(Base):
             file_repo = join(self.repo_path, arguments["--element"])
             if "/" in arguments["--element"]:
                 path_creation(self.HOME, arguments["--element"])
+            if islink(file_home) and not arguments["--force"]:
+                printer(
+                    "This symbolic link already exists. Use the --force"
+                    " option to recreate.",
+                    foreground=FG.WARNING,
+                )
+                exit(0)
             status = create_symlink(file_repo, file_home, arguments["--force"])
             if not status:
                 printer(
