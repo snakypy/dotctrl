@@ -1,7 +1,7 @@
 from os.path import exists, islink, join
 from snakypy import FG, printer
 from dotctrl.config.base import Base
-from dotctrl.console.utils import (
+from dotctrl.utils import (
     check_init,
     path_creation,
     join_two,
@@ -16,7 +16,6 @@ class PullCommand(Base):
         Base.__init__(self, root, home)
 
     def main(self, arguments):
-        # TODO: Error pull --element
         """Method responsible for pulling the elements from the
         place of origin to the repository."""
 
@@ -30,7 +29,7 @@ class PullCommand(Base):
             if "/" in arguments["--element"]:
                 path_creation(self.repo_path, arguments["--element"])
             add_element_config(file_home, arguments["--element"], self.config_path)
-            if not exists(file_home):
+            if not exists(file_home) or islink(file_home):
                 return printer(
                     "Nothing was pulled. Nonexistent element.", foreground=FG.ERROR
                 )
