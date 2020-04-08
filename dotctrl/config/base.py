@@ -4,7 +4,7 @@ from snakypy.json import read as json_read
 from os.path import exists, join
 from snakypy import FG, printer
 from dotctrl.config import package
-from dotctrl.console import utils
+from dotctrl import utils
 
 
 class Base:
