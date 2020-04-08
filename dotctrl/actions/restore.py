@@ -4,37 +4,44 @@ from os.path import exists, join
 from sys import exit
 from snakypy import FG, printer
 from dotctrl.config.base import Base
-from dotctrl.console.utils import (
+from dotctrl.utils import (
     check_init,
     path_creation,
-    rm_garbage_config,
     listing_files,
     rm_objects,
+    shorten_path,
+    # rm_garbage_config
 )
 
 
-def restore_args(repo, src, dst, arguments):
-    """Function presents the possibilities of options for restored
-    the elements."""
-    if exists(src) and exists(dst) and not arguments["--force"]:
+def restore_warning(repo, src, dst, arguments):
+    if not exists(repo):
         printer(
-            "The files match the repository and the drive. User --force.",
+            f'The element "{str(shorten_path(repo, 1))}" not found in '
+            f"repository to be restored. Review the configuration file, "
+            f"or use other option.",
             foreground=FG.WARNING,
         )
         exit(0)
-    elif exists(src) and exists(dst) and arguments["--force"]:
-        rm_objects(dst)
-        move(src, dst)
-        rmdir_blank(repo)
-    elif exists(src) and not exists(dst):
-        move(src, dst)
-        rmdir_blank(repo)
-    else:
+    if exists(src) and exists(dst) and not arguments["--force"]:
         printer(
-            f'The element "{src}" not found in repository to be restored.'
-            f" Review the configuration file, or use other option.",
+            "Elements correspond to the repository and the place of origin. "
+            "User --force.",
             foreground=FG.WARNING,
         )
+        exit(0)
+
+
+def restore_action(repo_path, src, dst, arguments):
+    """Function presents the possibilities of options for restored
+    the elements."""
+    if exists(src) and exists(dst) and arguments["--force"]:
+        rm_objects(dst)
+        move(src, dst)
+        rmdir_blank(repo_path)
+    elif exists(src) and not exists(dst):
+        move(src, dst)
+        rmdir_blank(repo_path)
 
 
 class RestoreCommand(Base):
@@ -55,7 +62,8 @@ class RestoreCommand(Base):
             file_repo = join(self.repo_path, arguments["--element"])
             if "/" in arguments["--element"]:
                 path_creation(self.HOME, arguments["--element"])
-            restore_args(self.repo_path, file_repo, file_home, arguments)
+            restore_warning(self.repo_path, file_repo, file_home, arguments)
+            restore_action(self.repo_path, file_repo, file_home, arguments)
         else:
             objects = [
                 *listing_files(self.repo_path, only_rc_files=True),
@@ -66,6 +74,7 @@ class RestoreCommand(Base):
                 file_repo = join(self.repo_path, item)
                 if "/" in item:
                     path_creation(self.HOME, item)
-                restore_args(self.repo_path, file_repo, file_home, arguments)
+                restore_warning(self.repo_path, file_repo, file_home, arguments)
+                restore_action(self.repo_path, file_repo, file_home, arguments)
             if len(objects) == 0:
                 printer("Empty repository. Nothing to restore.", foreground=FG.WARNING)
