@@ -1,9 +1,10 @@
 from os import remove
+from sys import exit
 from contextlib import suppress
 from os.path import islink, join
 from snakypy import FG, printer
 from dotctrl.config.base import Base
-from dotctrl.console.utils import (
+from dotctrl.utils import (
     check_init,
     rm_garbage_config,
     listing_files,
@@ -39,6 +40,13 @@ class UnlinkCommand(Base):
             ]
             for item in objects:
                 file_home = join(self.HOME, item)
+                if not islink(file_home) and not arguments["--force"]:
+                    printer(
+                        "Unlinked elements were found. Use the --element option "
+                        "to unlink unique links or use --force.",
+                        foreground=FG.WARNING,
+                    )
+                    exit(0)
                 with suppress(Exception):
                     remove(file_home)
             if len(objects) == 0:
