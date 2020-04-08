@@ -17,13 +17,7 @@ def test_restore_command(base):
     test_unlink_command(base)
 
     RestoreCommand(base["root"], base["home"]).main(
-        arguments(
-            argv=[
-                "restore",
-                f"--element={elements(base)[0]}",
-                "--force",
-            ]
-        )
+        arguments(argv=["restore", f"--element={elements(base)[0]}", "--force"])
     )
 
     linked_file = join(class_base(base).HOME, elements(base)[0])

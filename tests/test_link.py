@@ -16,22 +16,14 @@ def test_link_command(base):
     test_pull_command(base)
 
     LinkCommand(base["root"], base["home"]).main(
-        arguments(
-            argv=[
-                "link",
-                f"--element={elements(base)[0]}",
-                "--force",
-            ]
-        )
+        arguments(argv=["link", f"--element={elements(base)[0]}", "--force"])
     )
 
     f = join(class_base(base).HOME, elements(base)[0])
     if not islink(f):
         assert False
 
-    LinkCommand(base["root"], base["home"]).main(
-        arguments(argv=["link", "--force"])
-    )
+    LinkCommand(base["root"], base["home"]).main(arguments(argv=["link", "--force"]))
 
     for item in elements(base):
         if not islink(join(class_base(base).HOME, item)):

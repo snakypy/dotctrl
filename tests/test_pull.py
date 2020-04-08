@@ -21,13 +21,7 @@ def test_pull_command(base):
     update_config_elements(base, ".config/foo.txt", ".config/bar.txt")
 
     PullCommand(base["root"], base["home"]).main(
-        arguments(
-            argv=[
-                "pull",
-                f"--element={elements(base)[0]}",
-                "--force",
-            ]
-        )
+        arguments(argv=["pull", f"--element={elements(base)[0]}", "--force"])
     )
 
     file_linked = join(class_base(base).HOME, elements(base)[0])

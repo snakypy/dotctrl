@@ -17,9 +17,7 @@ def test_unlink_command(base):
     test_link_command(base)
 
     UnlinkCommand(base["root"], base["home"]).main(
-        arguments(
-            argv=["unlink", f"--element={elements(base)[0]}"]
-        )
+        arguments(argv=["unlink", f"--element={elements(base)[0]}"])
     )
 
     linked_file = join(class_base(base).HOME, elements(base)[0])
