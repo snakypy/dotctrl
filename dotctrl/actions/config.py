@@ -4,7 +4,7 @@ from subprocess import call
 from os import environ
 from sys import exit
 from snakypy.file import read as read_file
-from dotctrl.console.utils import check_init
+from dotctrl.utils import check_init
 from dotctrl.config.base import Base
 
 
