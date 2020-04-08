@@ -47,8 +47,9 @@ class UnlinkCommand(Base):
                         foreground=FG.WARNING,
                     )
                     exit(0)
-                with suppress(Exception):
-                    remove(file_home)
+                if islink(file_home):
+                    with suppress(Exception):
+                        remove(file_home)
             if len(objects) == 0:
                 printer(
                     "Nothing to unlinked, en masse. Empty list of elements.",
