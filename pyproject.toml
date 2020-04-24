@@ -58,16 +58,15 @@ exclude = '''
     | \.hg
     | \.mypy_cache
     | \.tox
-    | \.venv
-    | _build
+    | \venv
     | buck-out
     | build
+    | _build
+    | venv
     | dist
     | docs
     | tmp
   )/
-  | foo.py           # also separately exclude a file named foo.py in
-                     # the root of the project
 )
 '''
 
