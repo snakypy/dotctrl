@@ -14,7 +14,7 @@ class ListCommand(Base):
         check_init(self.ROOT)
 
         listing_data = list()
-        objects = [*listing_files(self.repo_path, only_rc_files=True), *self.data]
+        objects = set([*listing_files(self.repo_path, only_rc_files=True), *self.data])
         for item in objects:
             if exists(join(self.repo_path, item)):
                 listing_data.append(item)
