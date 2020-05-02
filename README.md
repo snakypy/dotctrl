@@ -31,6 +31,9 @@
 
 **Dotctrl** is a package for managing your "dotfiles" on Linux. **Dotctrl** works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
 
+## Top Contributions
+[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/0)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/0)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/1)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/1)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/2)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/2)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/3)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/3)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/4)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/4)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/5)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/5)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/6)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/6)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/7)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/7)
+
 ## Features
 
 * Create multiple repositories for your files;
