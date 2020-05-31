@@ -26,7 +26,7 @@ class CheckCommand(Base):
         if len(listdir(self.repo_path)) == 0 or len(list(listing_data)) == 0:
             return printer("Nothing to check.", foreground=FG.FINISH)
         printer(
-            f"\nElement(s):", foreground=FG.CYAN,
+            "\nElement(s):", foreground=FG.CYAN,
         )
         for item in listing_data:
             status = f"{FG.YELLOW}[Not linked]{NONE}"

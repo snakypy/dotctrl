@@ -39,7 +39,7 @@ class Base:
                     "text_editors"
                 ]["enable"]
             except FileNotFoundError as f:
-                printer(f"Configuration file not found.", f, foreground=FG.ERROR)
+                printer("Configuration file not found.", f, foreground=FG.ERROR)
             except Exception as e:
                 printer(
                     "An error occurred while reading the configuration file.",

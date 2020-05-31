@@ -23,7 +23,7 @@ class ListCommand(Base):
         if len(list(listing_data)) == 0:
             return printer("Repository is empty. No elements.", foreground=FG.WARNING)
         printer(
-            f"\nElements(s):", foreground=FG.CYAN,
+            "\nElements(s):", foreground=FG.CYAN,
         )
         for item in listing_data:
             print(f"{FG.CYAN}➜{NONE} {item}")
