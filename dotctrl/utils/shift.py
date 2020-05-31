@@ -16,7 +16,7 @@ def create_symlink(src, dst, arguments):
     :param arguments: Receive a Docopt dictionary
     """
     if exists(src):
-        if islink(dst) and not arguments:
+        if exists(dst) and not arguments:
             printer(
                 "Some symbolic links have already been created.\n"
                 "Use the --element option to create unique links "
@@ -26,7 +26,10 @@ def create_symlink(src, dst, arguments):
             exit(0)
         else:
             with suppress(Exception):
-                remove(dst)
+                if isfile(dst):
+                    remove(dst)
+                else:
+                    rmtree(dst)
             try:
                 symlink(src, dst)
                 return True
