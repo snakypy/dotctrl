@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 # Version
-__version__ = "1.1.5"
+__version__ = "1.1.6"
 # Path current
 ROOT = os.getcwd()
 # HOME user

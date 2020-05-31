@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dotctrl"
-version = "1.1.5"
+version = "1.1.6"
 description = "Dotctrl is a package for managing your dotfiles on Linux."
 authors = ["William C. Canin <william.costa.canin@gmail.com>"]
 readme = "README.rst"
