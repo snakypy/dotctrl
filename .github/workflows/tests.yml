@@ -1,4 +1,4 @@
-name: Python package
+name: Tests
 
 on: [push]
 
@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -19,12 +19,6 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install poetry
         poetry install
-    - name: Lint with Flake8
-      run: |
-        poetry run flake8 dotctrl
-    - name: Lint with black
-      run: |
-        poetry run black dotctrl/ --check
     - name: Test with Tox
       run: |
         poetry run tox
