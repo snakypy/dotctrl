@@ -7,7 +7,7 @@
 ### << Global variables.
 
     ## Name of the package you are creating
-	PACKAGE_NAME="dotctrl"
+	PACKAGE_NAME="snakypy"
 	## Python executable
   # PYTHON_EXEC="python3" ## Executável em Python. E.g: python | python3
   # GET_SHELL=$SHELL
