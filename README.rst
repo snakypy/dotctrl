@@ -4,7 +4,7 @@
     :alt: Dotctrl
 
 
-.. image:: https://github.com/snakypy/dotctrl/workflows/Python%20package/badge.svg
+.. image:: https://github.com/snakypy/dotctrl/workflows/Tests/badge.svg
     :target: https://github.com/snakypy/dotctrl
 
 .. image:: https://img.shields.io/pypi/v/dotctrl.svg
