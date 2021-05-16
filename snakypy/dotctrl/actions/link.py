@@ -1,8 +1,8 @@
 from sys import exit
 from os.path import join, islink
-from snakypy import FG, printer
-from dotctrl.config.base import Base
-from dotctrl.utils import (
+from snakypy.helpers import FG, printer
+from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.utils import (
     check_init,
     rm_garbage_config,
     path_creation,
@@ -32,14 +32,14 @@ class LinkCommand(Base):
                 printer(
                     "This symbolic link already exists. Use the --force"
                     " option to recreate.",
-                    foreground=FG.WARNING,
+                    foreground=FG().WARNING,
                 )
                 exit(0)
             status = create_symlink(file_repo, file_home, arguments["--force"])
             if not status:
                 printer(
                     f'Element "{file_repo}" not linked. Review the same in the repository.',
-                    foreground=FG.ERROR,
+                    foreground=FG().ERROR,
                 )
         else:
             data_ = (
@@ -55,5 +55,5 @@ class LinkCommand(Base):
             if len(data_) == 0:
                 printer(
                     "Nothing to linked, en masse. Empty repository.",
-                    foreground=FG.WARNING,
+                    foreground=FG().WARNING,
                 )

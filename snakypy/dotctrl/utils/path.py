@@ -1,4 +1,4 @@
-from snakypy.path import create as create_path
+from snakypy.helpers.path import create as create_path
 from os.path import join
 from pathlib import Path
 

@@ -1,12 +1,12 @@
 from os.path import exists
 from sys import exit
-from snakypy import FG, printer
-from snakypy.path import create as create_path
-from snakypy.json import create as create_json
-from snakypy.file import create as create_file
-from dotctrl.config import gitignore, package, readme, config
-from dotctrl.config.base import Base
-from dotctrl.utils import git_init_command
+from snakypy.helpers import FG, printer
+from snakypy.helpers.path import create as create_path
+from snakypy.helpers.files import create_json
+from snakypy.helpers.files import create_file
+from snakypy.dotctrl.config import gitignore, package, readme, config
+from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.utils import git_init_command
 
 
 class InitCommand(Base):
@@ -16,7 +16,7 @@ class InitCommand(Base):
     def main(self, arguments):
         """Base repository method."""
         if exists(self.config_path):
-            printer("Repository is already defined.", foreground=FG.FINISH)
+            printer("Repository is already defined.", foreground=FG().FINISH)
             exit(0)
         create_path(self.repo_path)
         create_json(config.content, self.config_path, force=True)
@@ -26,5 +26,5 @@ class InitCommand(Base):
             create_file(gitignore.content, self.gitignore_path, force=True)
         printer(
             f"Initialized {package.info['name']} repository in {self.repo_path}",
-            foreground=FG.FINISH,
+            foreground=FG().FINISH,
         )

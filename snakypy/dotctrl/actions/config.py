@@ -3,9 +3,9 @@ from shutil import which
 from subprocess import call
 from os import environ
 from sys import exit
-from snakypy.file import read as read_file
-from dotctrl.utils import check_init
-from dotctrl.config.base import Base
+from snakypy.helpers.files import read_file
+from snakypy.dotctrl.utils import check_init
+from snakypy.dotctrl.config.base import Base
 
 
 def editor_run(editor, config):

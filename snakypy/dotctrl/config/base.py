@@ -1,10 +1,10 @@
 """Modulate to store records and data."""
 from sys import exit
-from snakypy.json import read as json_read
+from snakypy.helpers.files import read_json
 from os.path import exists, join
-from snakypy import FG, printer
-from dotctrl.config import package
-from dotctrl import utils
+from snakypy.helpers import FG, printer
+from snakypy.dotctrl.config import package
+from snakypy.dotctrl import utils
 
 
 class Base:
@@ -31,20 +31,22 @@ class Base:
 
         if exists(self.config_path):
             try:
-                self.parsed = json_read(self.config_path)
+                self.parsed = read_json(self.config_path)
                 self.elements = list(self.parsed["dotctrl"]["elements"])
                 self.rc_files = utils.listing_files(self.HOME, only_rc_files=True)
                 self.rc_files_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
                 self.text_editors_status = self.parsed["dotctrl"]["smart"][
                     "text_editors"
                 ]["enable"]
-            except FileNotFoundError as f:
-                printer("Configuration file not found.", f, foreground=FG.ERROR)
-            except Exception as e:
+            except FileNotFoundError as err:
+                printer(
+                    "Configuration file not found.", str(err), foreground=FG().ERROR
+                )
+            except Exception as err:
                 printer(
                     "An error occurred while reading the configuration file.",
-                    e,
-                    foreground=FG.ERROR,
+                    str(err),
+                    foreground=FG().ERROR,
                 )
                 exit(1)
 

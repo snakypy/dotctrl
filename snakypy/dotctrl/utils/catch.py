@@ -1,18 +1,18 @@
 # import os
 from glob import glob
 from docopt import docopt
-from snakypy import FG
-from snakypy.ansi import NONE
+from snakypy.helpers import FG
+from snakypy.helpers.ansi import NONE
 from os import walk
 from os.path import join, islink, isfile
-from dotctrl import __version__
-from dotctrl.config import menu, package
+from snakypy.dotctrl import __version__
+from snakypy.dotctrl.config import menu, package
 
 
 def arguments(argv=None):
     """Function to return the option menu arguments."""
     formatted_version = (
-        f"{package.info['name']} version: " f"{FG.CYAN}{__version__}{NONE}"
+        f"{package.info['name']} version: " f"{FG().CYAN}{__version__}{NONE}"
     )
     data = docopt(menu.options, argv=argv, version=formatted_version)
     return data

@@ -2,9 +2,9 @@ from os import remove
 from sys import exit
 from contextlib import suppress
 from os.path import islink, join
-from snakypy import FG, printer
-from dotctrl.config.base import Base
-from dotctrl.utils import (
+from snakypy.helpers import FG, printer
+from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.utils import (
     check_init,
     rm_garbage_config,
     listing_files,
@@ -31,7 +31,7 @@ class UnlinkCommand(Base):
                     return True
             return printer(
                 f'Element "{file_home}" not unlinked. Element not found.',
-                foreground=FG.ERROR,
+                foreground=FG().ERROR,
             )
         else:
             objects = [
@@ -44,7 +44,7 @@ class UnlinkCommand(Base):
                     printer(
                         "Unlinked elements were found. Use the --element option "
                         "to unlink unique links or use --force.",
-                        foreground=FG.WARNING,
+                        foreground=FG().WARNING,
                     )
                     exit(0)
                 if islink(file_home):
@@ -53,5 +53,5 @@ class UnlinkCommand(Base):
             if len(objects) == 0:
                 printer(
                     "Nothing to unlinked, en masse. Empty list of elements.",
-                    foreground=FG.WARNING,
+                    foreground=FG().WARNING,
                 )

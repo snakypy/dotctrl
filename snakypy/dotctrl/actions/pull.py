@@ -1,7 +1,7 @@
 from os.path import exists, islink, join
-from snakypy import FG, printer
-from dotctrl.config.base import Base
-from dotctrl.utils import (
+from snakypy.helpers import FG, printer
+from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.utils import (
     check_init,
     path_creation,
     join_two,
@@ -31,14 +31,14 @@ class PullCommand(Base):
             add_element_config(file_home, arguments["--element"], self.config_path)
             if not exists(file_home) or islink(file_home):
                 return printer(
-                    "Nothing was pulled. Nonexistent element.", foreground=FG.ERROR
+                    "Nothing was pulled. Nonexistent element.", foreground=FG().ERROR
                 )
             to_move(file_home, file_repo, arguments["--force"])
         else:
             if len(self.data) == 0:
                 return printer(
                     "Nothing to pull, in droves. Empty list of elements.",
-                    foreground=FG.WARNING,
+                    foreground=FG().WARNING,
                 )
             for item in self.data:
                 file_home = join(self.HOME, item)

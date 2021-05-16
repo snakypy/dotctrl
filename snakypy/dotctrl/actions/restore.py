@@ -1,10 +1,10 @@
 from shutil import move
-from snakypy.utils.os import rmdir_blank
+from snakypy.helpers.os import rmdir_blank
 from os.path import exists, join
 from sys import exit
-from snakypy import FG, printer
-from dotctrl.config.base import Base
-from dotctrl.utils import (
+from snakypy.helpers import FG, printer
+from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.utils import (
     check_init,
     path_creation,
     listing_files,
@@ -22,7 +22,7 @@ def restore_action(repo_path, src, dst, arguments):
             f'The element "{str(shorten_path(src, 1))}" not found in '
             f"repository to be restored. Review the configuration file, "
             f"or use other option.",
-            foreground=FG.WARNING,
+            foreground=FG().WARNING,
         )
         exit(0)
 
@@ -30,7 +30,7 @@ def restore_action(repo_path, src, dst, arguments):
         printer(
             "Elements correspond to the repository and the place of origin. "
             "User --force.",
-            foreground=FG.WARNING,
+            foreground=FG().WARNING,
         )
         exit(0)
 
@@ -74,4 +74,6 @@ class RestoreCommand(Base):
                     path_creation(self.HOME, item)
                 restore_action(self.repo_path, file_repo, file_home, arguments)
             if len(objects) == 0:
-                printer("Empty repository. Nothing to restore.", foreground=FG.WARNING)
+                printer(
+                    "Empty repository. Nothing to restore.", foreground=FG().WARNING
+                )

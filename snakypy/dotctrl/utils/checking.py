@@ -1,7 +1,7 @@
 from sys import exit
 from os.path import join, exists
-from snakypy import printer, FG
-from dotctrl.config import package
+from snakypy.helpers import printer, FG
+from snakypy.dotctrl.config import package
 
 
 def check_init(root):
@@ -11,6 +11,6 @@ def check_init(root):
         printer(
             f"The repository was not created. "
             f"Use \"{package.info['pkg_name']} init\". Aborted",
-            foreground=FG.WARNING,
+            foreground=FG().WARNING,
         )
         exit(1)

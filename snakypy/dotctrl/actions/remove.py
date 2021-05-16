@@ -1,12 +1,11 @@
 from os import remove
-from snakypy import pick
-from snakypy.utils.os import rmdir_blank
+from snakypy.helpers import pick, FG, printer
+from snakypy.helpers.os import rmdir_blank
 from contextlib import suppress
 from os.path import exists, islink, join
 from sys import exit
-from snakypy import FG, printer
-from dotctrl.config.base import Base
-from dotctrl.utils import listing_files, check_init, rm_garbage_config
+from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.utils import listing_files, check_init, rm_garbage_config
 
 
 def remove_opts(repo, objects, arguments):
@@ -17,14 +16,14 @@ def remove_opts(repo, objects, arguments):
         if exists(join(repo, item)):
             objects_repo.append(item)
     if len(objects_repo) <= 0:
-        printer("Nothing to remove.", foreground=FG.WARNING)
+        printer("Nothing to remove.", foreground=FG().WARNING)
         exit(0)
     else:
         if arguments["--all"] and arguments["--noconfirm"]:
             return "all", objects_repo
         printer(
             "ATTENTION! This choice is permanent, there will be no going back.",
-            foreground=FG.WARNING,
+            foreground=FG().WARNING,
         )
         if arguments["--all"] and not arguments["--noconfirm"]:
             reply = pick(
@@ -46,7 +45,9 @@ def remove_opts(repo, objects, arguments):
         exit(0) if reply is None else None
         if not arguments["--noconfirm"]:
             confirm = pick(
-                f'Really want to destroy the "{reply}"?', ["yes", "no"], colorful=True,
+                f'Really want to destroy the "{reply}"?',
+                ["yes", "no"],
+                colorful=True,
             )
             exit(0) if confirm is None else None
             if confirm == "yes":
@@ -79,7 +80,7 @@ class RemoveCommand(Base):
         option = remove_opts(self.repo_path, self.data, arguments)
 
         if option is None:
-            printer("Aborted by user.", foreground=FG.WARNING)
+            printer("Aborted by user.", foreground=FG().WARNING)
         elif option and option[0] != "all":
             rm_elements(self.HOME, self.repo_path, option[0])
         elif option and option[0] == "all":

@@ -1,4 +1,4 @@
-from dotctrl.config import package
+from snakypy.dotctrl.config import package
 
 content = f"""# {package.info['name']}: Ignored by default.
 

@@ -1,10 +1,8 @@
-from dotctrl import __name__
-
 info = {
     "name": "Dotctrl",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
-    "pkg_name": __name__,
-    "executable": __name__,
+    "pkg_name": "dotctrl",
+    "executable": "dotctrl",
     "config": "dotctrl.json",
     "home_page": "https://github.com/snakypy/dotctrl",
     "organization_name": "Snakypy",
