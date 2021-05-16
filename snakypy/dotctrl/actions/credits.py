@@ -1,4 +1,4 @@
-from snakypy.console import credence, billboard
+from snakypy.helpers.console import credence, billboard
 from snakypy.dotctrl import __version__
 from snakypy.dotctrl.config import package
 from snakypy.helpers import printer, FG
