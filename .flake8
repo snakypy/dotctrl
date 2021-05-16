@@ -1,5 +1,5 @@
 [flake8]
-exclude = .git,*migrations*
+exclude = .git,__pycache__,*migrations*,.tox,.pytest_cache,.mypy_cache,tests
 max-line-length = 120
 ; F401: imported but unused
 ; F403: used; unable to detect undefined names
