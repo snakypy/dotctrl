@@ -1,5 +1,5 @@
-from dotctrl.utils.decorators import assign_cli
-from dotctrl.actions.link import LinkCommand
+from snakypy.dotctrl.utils.decorators import assign_cli
+from snakypy.dotctrl.actions.link import LinkCommand
 from os.path import join, islink
 from .utilities import (
     base,

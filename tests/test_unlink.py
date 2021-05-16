@@ -1,6 +1,6 @@
 import pytest
-from dotctrl.utils.decorators import assign_cli
-from dotctrl.actions.unlink import UnlinkCommand
+from snakypy.dotctrl.utils.decorators import assign_cli
+from snakypy.dotctrl.actions.unlink import UnlinkCommand
 from os.path import join, islink
 from .utilities import (
     base,

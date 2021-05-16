@@ -1,4 +1,4 @@
-from dotctrl.utils.decorators import assign_cli
+from snakypy.dotctrl.utils.decorators import assign_cli
 from os.path import exists
 from .utilities import (
     base,

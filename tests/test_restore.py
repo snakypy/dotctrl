@@ -1,6 +1,6 @@
 import pytest
-from dotctrl.utils.decorators import assign_cli
-from dotctrl.actions.restore import RestoreCommand
+from snakypy.dotctrl.utils.decorators import assign_cli
+from snakypy.dotctrl.actions.restore import RestoreCommand
 from os.path import join, islink, exists, isfile
 from .utilities import (
     base,

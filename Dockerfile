@@ -1,14 +1,14 @@
 FROM python:3
 USER root
-WORKDIR /dotctrl
+WORKDIR /snakypy/dotctrl
 ENV LOCAL_BIN=/root/.local/bin
 RUN apt-get update \
 && apt-get install zsh vim -y \
 && export PATH=$PATH:$LOCAL_BIN \
 && pip install poetry \
 && rm -rf /var/cache/apt/*
-ADD . /dotctrl
-RUN cd /dotctrl \
+ADD . /snakypy/dotctrl
+RUN cd /snakypy/dotctrl \
 && poetry install \
 && chmod +x docker.sh
 CMD poetry shell

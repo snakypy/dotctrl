@@ -1,5 +1,5 @@
-from dotctrl.utils.decorators import assign_cli
-from dotctrl.actions.pull import PullCommand
+from snakypy.dotctrl.utils.decorators import assign_cli
+from snakypy.dotctrl.actions.pull import PullCommand
 from os.path import exists, join, islink
 from .utilities import (
     base,
