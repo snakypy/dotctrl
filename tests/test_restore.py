@@ -1,18 +1,17 @@
+from os.path import exists, isfile, islink, join
+
 import pytest
-from snakypy.dotctrl.utils.decorators import assign_cli
+
 from snakypy.dotctrl.actions.restore import RestoreCommand
-from os.path import join, islink, exists, isfile
-from .utilities import (
-    base,
-    elements,
-    arguments,
-    class_base,
-)
+from snakypy.dotctrl.utils.decorators import assign_cli
+
 from .test_unlink import test_unlink_command
+from .utilities import base  # noqa: E261
+from .utilities import arguments, class_base, elements
 
 
 @assign_cli(arguments(argv=["restore"]), "restore")
-def test_restore_command(base):
+def test_restore_command(base):  # noqa: F811
 
     test_unlink_command(base)
 

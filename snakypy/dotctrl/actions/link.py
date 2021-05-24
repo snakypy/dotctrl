@@ -1,13 +1,15 @@
+from os.path import islink, join
 from sys import exit
-from os.path import join, islink
+
 from snakypy.helpers import FG, printer
+
 from snakypy.dotctrl.config.base import Base
 from snakypy.dotctrl.utils import (
     check_init,
-    rm_garbage_config,
-    path_creation,
     create_symlink,
     listing_files,
+    path_creation,
+    rm_garbage_config,
 )
 
 
@@ -15,7 +17,7 @@ class LinkCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
-    def main(self, arguments):
+    def main(self, arguments: dict) -> None:
         """Method responsible for creating symbolic links from the
         repository to the place of origin of the elements."""
 

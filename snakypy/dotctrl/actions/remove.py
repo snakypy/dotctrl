@@ -1,20 +1,24 @@
-from os import remove
-from snakypy.helpers import pick, FG, printer
-from snakypy.helpers.os import rmdir_blank
 from contextlib import suppress
+from os import remove
 from os.path import exists, islink, join
 from sys import exit
+from typing import Any, Tuple, Union
+
+from snakypy.helpers import FG, pick, printer
+from snakypy.helpers.os import rmdir_blank
+
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import listing_files, check_init, rm_garbage_config
+from snakypy.dotctrl.utils import check_init, listing_files, rm_garbage_config
 
 
-def remove_opts(repo, objects, arguments):
+def remove_opts(repo, objects, arguments: dict) -> Union[tuple]:
     """Function presents the possibilities of options for removing
     the elements."""
-    objects_repo = list()
+    objects_repo = []
     for item in [*listing_files(repo, only_rc_files=True), *objects]:
         if exists(join(repo, item)):
             objects_repo.append(item)
+
     if len(objects_repo) <= 0:
         printer("Nothing to remove.", foreground=FG().WARNING)
         exit(0)
@@ -26,7 +30,7 @@ def remove_opts(repo, objects, arguments):
             foreground=FG().WARNING,
         )
         if arguments["--all"] and not arguments["--noconfirm"]:
-            reply = pick(
+            reply: Union[tuple[int, Any], bool, None] = pick(
                 "Do you really want to destroy ALL elements of the repository?",
                 ["Yes", "No"],
                 colorful=True,
@@ -34,7 +38,6 @@ def remove_opts(repo, objects, arguments):
             )
             if reply == "yes":
                 return "all", objects_repo
-            return
 
         reply = pick(
             "Choose the element you want to remove from the repository:",
@@ -52,7 +55,6 @@ def remove_opts(repo, objects, arguments):
             exit(0) if confirm is None else None
             if confirm == "yes":
                 return reply, objects_repo
-            return
         return reply, objects_repo
 
 
@@ -69,7 +71,7 @@ class RemoveCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
-    def main(self, arguments):
+    def main(self, arguments: dict) -> None:
         """Method of removing elements from the repository and
         symbolic links linked to them. Calls other methods and functions
         that also perform other actions."""
@@ -77,7 +79,7 @@ class RemoveCommand(Base):
 
         rm_garbage_config(self.HOME, self.repo_path, self.config_path)
 
-        option = remove_opts(self.repo_path, self.data, arguments)
+        option: tuple = remove_opts(self.repo_path, self.data, arguments)
 
         if option is None:
             printer("Aborted by user.", foreground=FG().WARNING)

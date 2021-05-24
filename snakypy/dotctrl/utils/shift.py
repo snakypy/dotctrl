@@ -1,14 +1,14 @@
-from snakypy.helpers.files import read_json
-from snakypy.helpers.files import create_json
-from shutil import move, rmtree
-from os import remove, symlink
 from contextlib import suppress
+from os import remove, symlink
+from os.path import exists, isfile, islink, join
+from shutil import move, rmtree
 from sys import exit
-from os.path import exists, islink, isfile, join
-from snakypy.helpers import printer, FG
+
+from snakypy.helpers import FG, printer
+from snakypy.helpers.files import create_json, read_json
 
 
-def create_symlink(src, dst, arguments):
+def create_symlink(src, dst, arguments) -> bool:
     """Creates symbolic links. In this case, the "src" is the
         repository for dotctrl.
     :param src: Dotctrl repository location
@@ -39,10 +39,10 @@ def create_symlink(src, dst, arguments):
                     str(err),
                     foreground=FG().ERROR,
                 )
-    return
+    return False
 
 
-def to_move(src, dst, arguments):
+def to_move(src: str, dst: str, arguments) -> bool:
     """Moves the dot files from the drive to the repository.
     :param arguments: Receive "Docopt" argument output
     :param src: Element source location
@@ -60,10 +60,10 @@ def to_move(src, dst, arguments):
             with suppress(Exception):
                 move(src, dst)
             return True
-    return
+    return False
 
 
-def rm_objects(obj):
+def remove_objects(obj):
     """Removes objects according to the type of folder,
     file or symbolic link.
     :param obj: Object to be removed (files or folders).
@@ -76,7 +76,9 @@ def rm_objects(obj):
             rmtree(obj)
 
 
-def rm_garbage_config(repo, home, config, only_repo=False):
+def rm_garbage_config(
+    repo: str, home: str, config: str, only_repo: bool = False
+) -> None:
     """Deletes elements in the configuration file that is
     neither in the Dotctrl repository nor in the source location."""
     parsed = read_json(config)
@@ -93,7 +95,7 @@ def rm_garbage_config(repo, home, config, only_repo=False):
     create_json(parsed, config, force=True)
 
 
-def add_element_config(src, element, config):
+def add_element_config(src, element, config) -> bool:
     """Function that adds element to the configuration file
     when using the "pull --element=<object>" option."""
     parsed = read_json(config)
@@ -107,4 +109,4 @@ def add_element_config(src, element, config):
                 parsed["dotctrl"]["elements"] = lst
                 create_json(parsed, config, force=True)
                 return True
-            return
+    return False

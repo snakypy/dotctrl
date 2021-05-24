@@ -1,17 +1,15 @@
-from snakypy.dotctrl.utils.decorators import assign_cli
+from os.path import islink, join
+
 from snakypy.dotctrl.actions.link import LinkCommand
-from os.path import join, islink
-from .utilities import (
-    base,
-    elements,
-    arguments,
-    class_base,
-)
+from snakypy.dotctrl.utils.decorators import assign_cli
+
 from .test_pull import test_pull_command
+from .utilities import base  # noqa: E261
+from .utilities import arguments, class_base, elements
 
 
 @assign_cli(arguments(argv=["link"]), "link")
-def test_link_command(base):
+def test_link_command(base):  # noqa: F811
 
     test_pull_command(base)
 

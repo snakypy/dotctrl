@@ -16,10 +16,32 @@ For more information, access: 'https://github.com/snakypy/dotctrl'
 import os
 from pathlib import Path
 
-
-# Version
-__version__ = "1.1.7"
 # Path current
 ROOT = os.getcwd()
 # HOME user
 HOME = str(Path.home())
+
+__info__ = {
+    "name": "Dotctrl",
+    "version": "1.1.8",
+    "description": "Dotctrl is a package for managing your dotfiles on Linux.",
+    "pkg_name": "dotctrl",
+    "executable": "dotctrl",
+    "config": "dotctrl.json",
+    "home_page": "https://github.com/snakypy/dotctrl",
+    "organization_name": "Snakypy",
+    "author": {
+        "name": "William C. Canin",
+        "email": "william.costa.canin@gmail.com",
+        "website": "https://williamcanin.github.io",
+        "github": "https://github.com/williamcanin",
+    },
+    "credence": [
+        {
+            "my_name": "William C. Canin",
+            "email": "william.costa.canin@gmail.com",
+            "website": "http://williamcanin.me",
+            "locale": "Brazil - SP",
+        }
+    ],
+}

@@ -1,31 +1,31 @@
 """Module menu"""
 from snakypy.helpers import FG
 from snakypy.helpers.ansi import NONE
-from snakypy.dotctrl import __version__
-from snakypy.dotctrl.config import package
+
+from snakypy.dotctrl import __info__
 
 # Messages colorful
 DANGER = f"{FG().YELLOW}DANGER!{NONE}"
 
 # Menu options and arguments.
 options = f"""
-{package.info['name']} version: {FG().CYAN}{__version__}{NONE}
+{__info__['name']} version: {FG().CYAN}{__info__['version']}{NONE}
 
-{package.info['name']} - Managing your dotfiles on Linux.
+{__info__['name']} - Managing your dotfiles on Linux.
 
 USAGE:
-    {package.info['executable']} init [--git]
-    {package.info['executable']} check
-    {package.info['executable']} list
-    {package.info['executable']} pull [--element=<object>] [--force]
-    {package.info['executable']} link [--element=<object>] [--force]
-    {package.info['executable']} unlink [--element=<object>] [--force]
-    {package.info['executable']} config (--open | --view)
-    {package.info['executable']} restore [--element=<object>] [--force]
-    {package.info['executable']} remove [--all] [--noconfirm]
-    {package.info['executable']} --help
-    {package.info['executable']} --version
-    {package.info['executable']} --credits
+    {__info__['executable']} init [--git]
+    {__info__['executable']} check
+    {__info__['executable']} list
+    {__info__['executable']} pull [--element=<object>] [--force]
+    {__info__['executable']} link [--element=<object>] [--force]
+    {__info__['executable']} unlink [--element=<object>] [--force]
+    {__info__['executable']} config (--open | --view)
+    {__info__['executable']} restore [--element=<object>] [--force]
+    {__info__['executable']} remove [--all] [--noconfirm]
+    {__info__['executable']} --help
+    {__info__['executable']} --version
+    {__info__['executable']} --credits
 
 ARGUMENTS:
     {FG().CYAN}init{NONE} ----------- Creates the dotfiles repository.

@@ -1,19 +1,20 @@
-from snakypy.dotctrl.utils.decorators import assign_cli
+from os.path import exists, islink, join
+
 from snakypy.dotctrl.actions.pull import PullCommand
-from os.path import exists, join, islink
+from snakypy.dotctrl.utils.decorators import assign_cli
+
+from .utilities import base  # noqa: E261
 from .utilities import (
-    base,
-    elements,
-    update_config_elements,
-    run_init_command,
     arguments,
     class_base,
+    elements,
+    run_init_command,
+    update_config_elements,
 )
 
 
 @assign_cli(arguments(argv=["pull"]), "pull")
-def test_pull_command(base):
-
+def test_pull_command(base):  # noqa: F811
     elements(base, create=True)
 
     run_init_command(base)

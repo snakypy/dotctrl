@@ -1,18 +1,17 @@
+from os.path import islink, join
+
 import pytest
-from snakypy.dotctrl.utils.decorators import assign_cli
+
 from snakypy.dotctrl.actions.unlink import UnlinkCommand
-from os.path import join, islink
-from .utilities import (
-    base,
-    elements,
-    arguments,
-    class_base,
-)
+from snakypy.dotctrl.utils.decorators import assign_cli
+
 from .test_link import test_link_command
+from .utilities import base  # noqa: E261
+from .utilities import arguments, class_base, elements
 
 
 @assign_cli(arguments(argv=["unlink"]), "unlink")
-def test_unlink_command(base):
+def test_unlink_command(base):  # noqa: F811
 
     test_link_command(base)
 
