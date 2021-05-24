@@ -22,7 +22,6 @@ class ListCommand(Base):
         """Method that lists the dotfiles in the repository."""
         check_init(self.ROOT)
 
-        # listing_data = utils.listing_repo(self.repo, self.HOME, self.data)
         if len(list(self.listing_data)) == 0:
             printer("Repository is empty. No elements.", foreground=FG().WARNING)
             return False
