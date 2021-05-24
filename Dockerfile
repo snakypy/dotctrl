@@ -10,5 +10,5 @@ RUN apt-get update \
 ADD . /snakypy/dotctrl
 RUN cd /snakypy/dotctrl \
 && poetry install \
-&& chmod +x docker.sh
+&& mkdir -p /tmp/dotfiles; cd $_ && dotctrl init --git
 CMD poetry shell
