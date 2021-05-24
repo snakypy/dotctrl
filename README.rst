@@ -3,33 +3,49 @@
     :align: center
     :alt: Dotctrl
 
+_________________
 
 .. image:: https://github.com/snakypy/dotctrl/workflows/Tests/badge.svg
     :target: https://github.com/snakypy/dotctrl
+    :alt: Tests
 
 .. image:: https://img.shields.io/pypi/v/dotctrl.svg
     :target: https://pypi.python.org/pypi/dotctrl
-
-.. image:: https://travis-ci.com/snakypy/dotctrl.svg?branch=master
-    :target: https://travis-ci.com/snakypy/dotctrl
+    :alt: PyPI - Dotctrl
 
 .. image:: https://img.shields.io/pypi/wheel/dotctrl
+    :target: https://pypi.org/project/wheel/
     :alt: PyPI - Wheel
+
+.. image:: https://img.shields.io/pypi/pyversions/dotctrl
+    :target: https://pyup.io/repos/github/snakypy/dotctrl/
+    :alt: Python versions
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
+    :alt: Black
+
+.. image:: https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336
+    :target: https://pycqa.github.io/isort/
+    :alt: Isort
+
+.. image:: http://www.mypy-lang.org/static/mypy_badge.svg
+    :target: http://mypy-lang.org/
+    :alt: Mypy
 
 .. image:: https://pyup.io/repos/github/snakypy/dotctrl/shield.svg
-    :target: https://pyup.io/repos/github/snakypy/dotctrl
-    :alt: Updates
+   :target: https://pyup.io/repos/github/snakypy/dotctrl/
+   :alt: Updates
 
 .. image:: https://img.shields.io/github/issues-raw/snakypy/dotctrl
-    :alt: GitHub issues
+   :target: https://github.com/snakypy/dotctrl/issues
+   :alt: GitHub issues
 
 .. image:: https://img.shields.io/github/license/snakypy/dotctrl
     :alt: GitHub license
     :target: https://github.com/snakypy/dotctrl/blob/master/LICENSE
 
+_________________
 
 `Dotctrl` is a package for managing your "dotfiles" on Linux. `Dotctrl` works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
 
