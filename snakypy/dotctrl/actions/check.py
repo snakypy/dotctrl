@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import exists, islink, join, isdir
+from os.path import exists, isdir, islink, join
 from typing import Any
 
 from snakypy.helpers import FG, printer
