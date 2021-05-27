@@ -18,7 +18,7 @@ def create_symlink(src, dst, arguments) -> bool:
     if exists(src):
         if exists(dst) and not arguments:
             printer(
-                "Some symbolic links have already been created.\n"
+                "Some symbolic links already exist according to the ones you want to create.\n"
                 "Use the --element option to create unique links "
                 "or use --force.",
                 foreground=FG().WARNING,
