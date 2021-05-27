@@ -1,4 +1,4 @@
-from os.path import exists, join
+from os.path import exists, join, isdir
 from typing import Any
 
 from snakypy.helpers import FG, printer
@@ -30,5 +30,8 @@ class ListCommand(Base):
             foreground=FG().CYAN,
         )
         for item in self.listing_data:
-            print(f"{FG().CYAN}➜{NONE} {item}")
+            if isdir(join(self.repo_path, item)):
+                print(f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item}")
+            else:
+                print(f"{FG().CYAN}➜{FG().MAGENTA} File: {NONE}{item}")
         return True
