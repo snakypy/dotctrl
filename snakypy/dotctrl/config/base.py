@@ -1,10 +1,11 @@
 """Modulate to store records and data."""
-from sys import exit
-from snakypy.helpers.files import read_json
 from os.path import exists, join
+from sys import exit
+
 from snakypy.helpers import FG, printer
-from snakypy.dotctrl.config import package
-from snakypy.dotctrl import utils
+from snakypy.helpers.files import read_json
+
+from snakypy.dotctrl import __info__, utils
 
 
 class Base:
@@ -14,7 +15,7 @@ class Base:
         self.ROOT = root
         self.HOME = home
         self.repo_path = join(self.ROOT, "dotctrl")
-        self.config_path = join(self.ROOT, package.info["config"])
+        self.config_path = join(self.ROOT, __info__["config"])
         self.gitignore_path = join(self.ROOT, ".gitignore_path")
         self.readme = join(self.ROOT, "README.md")
         self.atom = [".atom/config.cson", ".atom/github.cson", ".atom/snippets.cson"]
@@ -51,7 +52,7 @@ class Base:
                 exit(1)
 
             if self.rc_files_status and self.text_editors_status:
-                self.data = self.rc_files + self.editors_config + self.elements
+                self.data: list = self.rc_files + self.editors_config + self.elements
             elif self.rc_files_status and not self.text_editors_status:
                 self.data = self.rc_files + self.elements
             elif not self.rc_files_status and self.text_editors_status:

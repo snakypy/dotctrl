@@ -1,7 +1,7 @@
-from snakypy.helpers.console import credence, billboard
-from snakypy.dotctrl import __version__
-from snakypy.dotctrl.config import package
-from snakypy.helpers import printer, FG
+from snakypy.helpers import FG, printer
+from snakypy.helpers.console import billboard, credence
+
+from snakypy.dotctrl import __info__
 
 
 class CreditsCommand:
@@ -10,13 +10,13 @@ class CreditsCommand:
         print("\n")
         printer("Offered by:".center(50), foreground=FG().GREEN)
         billboard(
-            package.info["organization_name"], justify="center", foreground=FG().YELLOW
+            __info__["organization_name"], justify="center", foreground=FG().YELLOW
         )
         printer("copyright (c) since 2020\n".center(100), foreground=FG().GREEN)
         credence(
-            package.info["name"],
-            __version__,
-            package.info["home_page"],
-            package.info,
+            __info__["name"],
+            __info__,
+            __info__["home_page"],
+            __info__,
             foreground=FG().CYAN,
         )

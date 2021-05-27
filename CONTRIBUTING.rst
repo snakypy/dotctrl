@@ -114,9 +114,9 @@ To do this, do:
 
     $ docker run --rm -it dotctrl:<version>
 
-3 - Run the "docker.sh" script to create the Dotctrl repository:
+3 - Run the command to create the Dotctrl repository:
 
-    $ ./docker.sh
+    $ mkdir -p /tmp/Dotfiles; cd $_ && dotctrl init --git
 
 Appear in credits
 ------------------

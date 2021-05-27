@@ -1,22 +1,19 @@
-from os import remove
-from sys import exit
 from contextlib import suppress
+from os import remove
 from os.path import islink, join
+from sys import exit
+
 from snakypy.helpers import FG, printer
+
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import (
-    check_init,
-    rm_garbage_config,
-    listing_files,
-    join_two,
-)
+from snakypy.dotctrl.utils import check_init, join_two, listing_files, rm_garbage_config
 
 
 class UnlinkCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
-    def main(self, arguments):
+    def main(self, arguments: dict) -> bool:
         """Method to unlink point files from the repository
         with their place of origin."""
         check_init(self.ROOT)
@@ -29,10 +26,11 @@ class UnlinkCommand(Base):
                 with suppress(Exception):
                     remove(file_home)
                     return True
-            return printer(
+            printer(
                 f'Element "{file_home}" not unlinked. Element not found.',
                 foreground=FG().ERROR,
             )
+            return False
         else:
             objects = [
                 *listing_files(self.repo_path, only_rc_files=True),
@@ -55,3 +53,5 @@ class UnlinkCommand(Base):
                     "Nothing to unlinked, en masse. Empty list of elements.",
                     foreground=FG().WARNING,
                 )
+                return False
+            return True

@@ -1,11 +1,13 @@
 import pydoc
+from os import environ
 from shutil import which
 from subprocess import call
-from os import environ
 from sys import exit
+
 from snakypy.helpers.files import read_file
-from snakypy.dotctrl.utils import check_init
+
 from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.utils import check_init
 
 
 def editor_run(editor, config):
@@ -21,7 +23,7 @@ class ConfigCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
-    def main(self, arguments):
+    def main(self, arguments) -> None:
         """Method for opening or viewing the configuration file."""
         check_init(self.ROOT)
 

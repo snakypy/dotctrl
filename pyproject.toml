@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dotctrl"
-version = "1.1.7"
+version = "1.1.8"
 description = "Dotctrl is a package for managing your dotfiles on Linux."
 authors = ["William C. Canin <william.costa.canin@gmail.com>"]
 readme = "README.rst"
@@ -30,22 +30,19 @@ dotctrl = "snakypy.dotctrl.dotctrl:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-snakypy-helpers = "^0.1.1"
+snakypy-helpers = "^0.1.4"
 docopt = "^0.6.2"
 
 [tool.poetry.dev-dependencies]
-twine = "^3.4.1"
-wheel = "^0.36.2"
 flake8 = "^3.9.1"
 tox = "^3.23.0"
 pytest = "^6.2.3"
-pytest-runner = "^5.2"
 ipython = "^7.23.1"
 black = "^21.5b1"
-pre-commit = "^2.12.1"
-sphinx-rtd-theme = "^0.5.2"
-recommonmark = "^0.7.1"
+pre-commit = "^2.13.0"
 mypy = "^0.812"
+imake = "^0.1.0"
+isort = "^5.8.0"
 
 [tool.black]
 line-length = 88
@@ -71,6 +68,21 @@ exclude = '''
   )/
 )
 '''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+src_paths = ["snakypy", "tests"]
+line_length = 88
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+cache_dir = "/tmp/.pytest_cache"
+# addopts = "-ra -q"
+testpaths = ["tests"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -9,6 +9,5 @@ RUN apt-get update \
 && rm -rf /var/cache/apt/*
 ADD . /snakypy/dotctrl
 RUN cd /snakypy/dotctrl \
-&& poetry install \
-&& chmod +x docker.sh
+&& poetry install
 CMD poetry shell

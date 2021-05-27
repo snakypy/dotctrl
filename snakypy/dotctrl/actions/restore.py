@@ -1,20 +1,21 @@
-from shutil import move
-from snakypy.helpers.os import rmdir_blank
 from os.path import exists, join
+from shutil import move
 from sys import exit
+
 from snakypy.helpers import FG, printer
+from snakypy.helpers.os import rmdir_blank
+
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import (
+from snakypy.dotctrl.utils import (  # rm_garbage_config
     check_init,
-    path_creation,
     listing_files,
-    rm_objects,
+    path_creation,
+    remove_objects,
     shorten_path,
-    # rm_garbage_config
 )
 
 
-def restore_action(repo_path, src, dst, arguments):
+def restore_action(repo_path: str, src: str, dst: str, arguments: dict) -> None:
     """Function presents the possibilities of options for restored
     # the elements."""
     if not exists(src) and not arguments["--force"]:
@@ -35,7 +36,7 @@ def restore_action(repo_path, src, dst, arguments):
         exit(0)
 
     if exists(src) and exists(dst) and arguments["--force"]:
-        rm_objects(dst)
+        remove_objects(dst)
         move(src, dst)
         rmdir_blank(repo_path)
     elif exists(src) and not exists(dst):
@@ -47,7 +48,7 @@ class RestoreCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
-    def main(self, arguments):
+    def main(self, arguments: dict) -> None:
         """Method to restore dotfiles from the repository to their
         original location."""
 

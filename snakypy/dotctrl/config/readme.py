@@ -1,6 +1,6 @@
-from snakypy.dotctrl.config import package
+from snakypy.dotctrl import __info__
 
-content = f"""# {package.info['name']}
+content = f"""# {__info__['name']}
 
 > NOTE: This is an informational README only.
 
@@ -9,7 +9,7 @@ content = f"""# {package.info['name']}
 **Brief description:**
 
 All *dotfiles* files are kept in the **dotctrl** repository/folder.
-Depending on what you add to the configuration file (`{package.info['config']}`),
+Depending on what you add to the configuration file (`{__info__['config']}`),
 many will be stored in the repository with a dot (.) to maintain compatibility with
 directories and files on your machine's drive, that is, all paths of the
 repository **dotctrl**, are compatible with those belonging to the **$HOME**.
@@ -28,8 +28,8 @@ $ du -a ./dotctrl | more
 ## Management
 
 These *dotfiles* were generated with the \
-[**Dotctrl**]({package.info['home_page']}) package.
-To use, allow yourself to [visit the project]({package.info['home_page']})
+[**Dotctrl**]({__info__['home_page']}) package.
+To use, allow yourself to [visit the project]({__info__['home_page']})
 repository and read its functionality.
 
 ---

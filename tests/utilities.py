@@ -1,9 +1,11 @@
-import pytest
-from snakypy.helpers.path import create as create_path
-from snakypy.helpers.files import create_file, update_json
 from os.path import exists, join
-from snakypy.dotctrl.config.base import Base
+
+import pytest
+from snakypy.helpers.files import create_file, update_json
+from snakypy.helpers.path import create as create_path
+
 from snakypy.dotctrl.actions.init import InitCommand
+from snakypy.dotctrl.config.base import Base
 from snakypy.dotctrl.utils import arguments
 
 
@@ -20,8 +22,7 @@ def base(tmpdir):
 
 
 def class_base(base):
-    inst = Base(base["root"], base["home"])
-    return inst
+    return Base(base["root"], base["home"])
 
 
 def run_init_command(base):
@@ -40,13 +41,13 @@ def elements(base, create=False):
     return elements_lst
 
 
-def update_config_elements(base, *files):
+def update_config_elements(base, *files, rc=True, editors=True):
     parsed = class_base(base).parsed
     parsed["dotctrl"]["elements"] = [*files]
-    parsed["dotctrl"]["smart"]["rc"]["enable"] = True
-    parsed["dotctrl"]["smart"]["text_editors"]["enable"] = True
+    parsed["dotctrl"]["smart"]["rc"]["enable"] = rc
+    parsed["dotctrl"]["smart"]["text_editors"]["enable"] = editors
     update_json(class_base(base).config_path, parsed)
     new_parsed = class_base(base).parsed
     assert new_parsed["dotctrl"]["elements"] == [*files]
-    assert new_parsed["dotctrl"]["smart"]["rc"]["enable"] is True
-    assert new_parsed["dotctrl"]["smart"]["text_editors"]["enable"] is True
+    assert new_parsed["dotctrl"]["smart"]["rc"]["enable"] is rc
+    assert new_parsed["dotctrl"]["smart"]["text_editors"]["enable"] is editors

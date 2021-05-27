@@ -1,6 +1,6 @@
-from snakypy.dotctrl.config import package
+from snakypy.dotctrl import __info__
 
-content = f"""# {package.info['name']}: Ignored by default.
+content = f"""# {__info__['name']}: Ignored by default.
 
 __pycache__/
 *.lock
