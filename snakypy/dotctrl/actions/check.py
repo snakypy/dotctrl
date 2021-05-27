@@ -10,7 +10,6 @@ from snakypy.dotctrl.utils import check_init, listing_files
 
 
 class CheckCommand(Base):
-    # TODO: Unify "check" and "list" command
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
