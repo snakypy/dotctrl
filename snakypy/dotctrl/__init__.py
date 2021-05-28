@@ -14,12 +14,10 @@ For more information, access: 'https://github.com/snakypy/dotctrl'
 """
 
 import os
-from contextlib import suppress
 from os.path import abspath, dirname, join
 from pathlib import Path
 
-from snakypy.helpers.files import create_file, read_file
-from tomlkit import dumps, parse
+from snakypy.helpers.files import eqversion
 
 # Path current
 ROOT = os.getcwd()
@@ -52,10 +50,6 @@ __info__ = {
     ],
 }
 
-# Updates the version of the pyproject.toml file according to the package version.
-with suppress(FileNotFoundError):
-    pyproject_file = join(dirname(abspath(__file__)), "../../pyproject.toml")
-    parsed = parse(read_file(pyproject_file))
-    if parsed["tool"]["poetry"]["version"] != __info__["version"]:
-        parsed["tool"]["poetry"]["version"] = __info__["version"]
-        create_file(dumps(parsed), pyproject_file, force=True)
+# Keep the versions the same on pyproject.toml and __init__.py
+pyproject = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
+eqversion(pyproject, __info__["version"])
