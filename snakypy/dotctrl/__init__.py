@@ -9,17 +9,23 @@ dotfiles.
 
 For more information, access: 'https://github.com/snakypy/dotctrl'
 
-:copyright: Copyright 2020-present by Snakypy team, see AUTHORS.
+:copyright: Copyright 2020-2021 by Snakypy team, see AUTHORS.
 :license: MIT license, see LICENSE for details.
 """
 
 import os
+from contextlib import suppress
+from os.path import abspath, dirname, join
 from pathlib import Path
+
+from snakypy.helpers.files import create_file, read_file
+from tomlkit import dumps, parse
 
 # Path current
 ROOT = os.getcwd()
 # HOME user
 HOME = str(Path.home())
+
 
 __info__ = {
     "name": "Dotctrl",
@@ -45,3 +51,11 @@ __info__ = {
         }
     ],
 }
+
+# Updates the version of the pyproject.toml file according to the package version.
+with suppress(FileNotFoundError):
+    pyproject_file = join(dirname(abspath(__file__)), "../../pyproject.toml")
+    parsed = parse(read_file(pyproject_file))
+    if parsed["tool"]["poetry"]["version"] != __info__["version"]:
+        parsed["tool"]["poetry"]["version"] = __info__["version"]
+        create_file(dumps(parsed), pyproject_file, force=True)
