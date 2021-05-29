@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dotctrl"
-version = "1.1.8"
+version = "1.1.9"
 description = "Dotctrl is a package for managing your dotfiles on Linux."
 authors = ["William C. Canin <william.costa.canin@gmail.com>"]
 readme = "README.rst"
@@ -30,8 +30,8 @@ dotctrl = "snakypy.dotctrl.dotctrl:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-snakypy-helpers = "^0.1.4"
 docopt = "^0.6.2"
+snakypy-helpers = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.1"
@@ -41,7 +41,7 @@ ipython = "^7.23.1"
 black = "^21.5b1"
 pre-commit = "^2.13.0"
 mypy = "^0.812"
-imake = "^0.1.0"
+imake = "^0.1.2"
 isort = "^5.8.0"
 
 [tool.black]

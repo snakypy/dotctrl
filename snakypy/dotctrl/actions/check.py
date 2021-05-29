@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import exists, islink, join
+from os.path import exists, isdir, islink, join
 from typing import Any
 
 from snakypy.helpers import FG, printer
@@ -34,6 +34,9 @@ class CheckCommand(Base):
         )
         for item in self.listing_data:
             status = f"{FG().YELLOW}[Not linked]{NONE}"
-            print(f"{FG().CYAN}➜{NONE} {item} {status}")
+            if isdir(join(self.repo_path, item)):
+                print(f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item} {status}")
+            else:
+                print(f"{FG().CYAN}➜{FG().MAGENTA} File: {NONE}{item} {status}")
 
         return False

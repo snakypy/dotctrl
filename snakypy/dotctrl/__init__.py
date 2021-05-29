@@ -9,21 +9,25 @@ dotfiles.
 
 For more information, access: 'https://github.com/snakypy/dotctrl'
 
-:copyright: Copyright 2020-present by Snakypy team, see AUTHORS.
+:copyright: Copyright 2020-2021 by Snakypy team, see AUTHORS.
 :license: MIT license, see LICENSE for details.
 """
 
 import os
+from os.path import abspath, dirname, join
 from pathlib import Path
+
+from snakypy.helpers.files import eqversion
 
 # Path current
 ROOT = os.getcwd()
 # HOME user
 HOME = str(Path.home())
 
+
 __info__ = {
     "name": "Dotctrl",
-    "version": "1.1.8",
+    "version": "1.1.9",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
     "pkg_name": "dotctrl",
     "executable": "dotctrl",
@@ -45,3 +49,7 @@ __info__ = {
         }
     ],
 }
+
+# Keep the versions the same on pyproject.toml and __init__.py
+pyproject = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
+eqversion(pyproject, __info__["version"])
