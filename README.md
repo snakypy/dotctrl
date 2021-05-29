@@ -369,17 +369,17 @@ If you liked my work, buy me a coffee :coffee: :smiley:
   <tbody>
     <tr>
       <td>
-        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBK2HEEYG8V5W&source">
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBK2HEEYG8V5W&source" target="_blank">
           <img src="https://raw.githubusercontent.com/snakypy/dotctrl/master/.github/donations/logo-paypal.svg" alt="PayPal Donation"
         </a>
       </td>
       <td>
-        <a href="https://app.picpay.com/user/williamcanin" >
+        <a href="https://app.picpay.com/user/williamcanin" target="_blank">
           <img width="120" height="40" src="https://raw.githubusercontent.com/snakypy/dotctrl/master/.github/donations/logo-picpay.svg" alt="PicPay Donation">
        </a>
      </td>
      <td>
-        <a href="https://nubank.com.br/pagar/4hzmr/HNn2g3w1TI" >
+        <a href="https://nubank.com.br/pagar/4hzmr/HNn2g3w1TI" target="_blank">
           <img width="120" height="40" src="https://raw.githubusercontent.com/snakypy/dotctrl/master/.github/donations/logo-nubank.svg" alt="Nubank Donation">
        </a>
      </td>
