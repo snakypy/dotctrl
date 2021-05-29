@@ -102,10 +102,12 @@ Links
 Donation
 --------
 
-If you liked my work, buy me a coffee <3
+Click on the image below to be redirected the donation forms:
 
-.. image:: https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif
-    :target: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBK2HEEYG8V5W&source
+.. image:: https://raw.githubusercontent.com/snakypy/dotctrl/master/.github/svg/donate/donate-hand.svg
+    :width: 160 px
+    :height: 100px
+    :target: https://github.com/snakypy/donations/blob/master/README.md
 
 License
 -------
