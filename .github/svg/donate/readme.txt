@@ -1,1 +1,0 @@
-Images obtained from the website: https://www.svgrepo.com
