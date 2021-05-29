@@ -104,7 +104,7 @@ Donation
 
 Click on the image below to be redirected the donation forms:
 
-.. image:: https://raw.githubusercontent.com/snakypy/dotctrl/master/.github/svg/donate/donate-hand.svg
+.. image:: https://raw.githubusercontent.com/snakypy/donations/master/svg/donate/donate-hand.svg
     :width: 160 px
     :height: 100px
     :target: https://github.com/snakypy/donations/blob/master/README.md

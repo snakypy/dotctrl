@@ -359,7 +359,7 @@ Click on the image below to be redirected the donation forms:
 
 <div class="donate">
   <a href="https://github.com/snakypy/donations/blob/master/README.md">
-    <img width="160" height="100" src="https://raw.githubusercontent.com/snakypy/dotctrl/master/.github/svg/donate/donate-hand.svg" alt="Donations"
+    <img width="160" height="100" src="https://raw.githubusercontent.com/snakypy/donations/master/svg/donate/donate-hand.svg" alt="Donations"
   </a>
 </div>
 
