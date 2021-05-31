@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://github.com/snakypy/dotctrl">
-    <img alt="ZSHPower" src="https://raw.githubusercontent.com/snakypy/snakypy-static/master/dotctrl/logo/png/dotctrl.png" width="auto">
+    <img alt="ZSHPower" src="https://raw.githubusercontent.com/snakypy/assets/master/dotctrl/images/dotctrl-transparent.png" width="auto">
   </a>
 </h1>
 
