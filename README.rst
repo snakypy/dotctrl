@@ -1,4 +1,4 @@
-.. image:: https://raw.githubusercontent.com/snakypy/snakypy-static/master/dotctrl/logo/png/dotctrl.png
+.. image:: https://raw.githubusercontent.com/snakypy/assets/main/dotctrl/images/dotctrl-transparent.png
     :width: 441 px
     :align: center
     :alt: Dotctrl
