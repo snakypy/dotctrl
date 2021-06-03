@@ -15,7 +15,7 @@ class CreditsCommand:
         printer("copyright (c) since 2020\n".center(100), foreground=FG().GREEN)
         credence(
             __info__["name"],
-            __info__,
+            __info__["version"],
             __info__["home_page"],
             __info__,
             foreground=FG().CYAN,
