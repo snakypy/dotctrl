@@ -44,7 +44,7 @@ __info__ = {
         {
             "my_name": "William C. Canin",
             "email": "william.costa.canin@gmail.com",
-            "website": "http://williamcanin.me",
+            "website": "http://williamcanin.github.io",
             "locale": "Brazil - SP",
         }
     ],
