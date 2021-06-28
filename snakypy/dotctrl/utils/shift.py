@@ -39,6 +39,9 @@ def create_symlink(src, dst, arguments) -> bool:
                     str(err),
                     foreground=FG().ERROR,
                 )
+            except FileExistsError:
+                remove(dst)
+                symlink(src, dst)
     return False
 
 
