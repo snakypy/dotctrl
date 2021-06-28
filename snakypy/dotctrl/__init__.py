@@ -27,7 +27,7 @@ HOME = str(Path.home())
 
 __info__ = {
     "name": "Dotctrl",
-    "version": "1.1.9",
+    "version": "1.1.10",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
     "pkg_name": "dotctrl",
     "executable": "dotctrl",
@@ -44,7 +44,7 @@ __info__ = {
         {
             "my_name": "William C. Canin",
             "email": "william.costa.canin@gmail.com",
-            "website": "http://williamcanin.me",
+            "website": "http://williamcanin.github.io",
             "locale": "Brazil - SP",
         }
     ],
