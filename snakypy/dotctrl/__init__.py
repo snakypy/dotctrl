@@ -12,28 +12,22 @@ For more information, access: 'https://github.com/snakypy/dotctrl'
 :copyright: Copyright 2020-2021 by Snakypy team, see AUTHORS.
 :license: MIT license, see LICENSE for details.
 """
-
 import os
 from os.path import abspath, dirname, join
 from pathlib import Path
 
 from snakypy.helpers.files import eqversion
 
-# Path current
-ROOT = os.getcwd()
-# HOME user
-HOME = str(Path.home())
-
-
 __info__ = {
     "name": "Dotctrl",
-    "version": "1.1.10",
+    "version": "1.2.0",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
     "pkg_name": "dotctrl",
     "executable": "dotctrl",
     "config": "dotctrl.json",
     "home_page": "https://github.com/snakypy/dotctrl",
     "organization_name": "Snakypy",
+    "env": "DOTCTRL_PATH",
     "author": {
         "name": "William C. Canin",
         "email": "william.costa.canin@gmail.com",
@@ -44,11 +38,28 @@ __info__ = {
         {
             "my_name": "William C. Canin",
             "email": "william.costa.canin@gmail.com",
-            "website": "http://williamcanin.github.io",
+            "website": "https://williamcanin.github.io",
             "locale": "Brazil - SP",
         }
     ],
 }
+
+
+def choose_root(env):
+    """
+    Function to return the ROOT path. If the DOTFILES environment variable
+    exists then this path will be returned, otherwise it will return
+    the current path.
+    """
+    if os.environ.get(env):
+        return os.environ.get(env)
+    return os.getcwd()
+
+
+# Path current
+ROOT = choose_root(__info__["env"])
+# HOME user
+HOME = str(Path.home())
 
 # Keep the versions the same on pyproject.toml and __init__.py
 pyproject = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
