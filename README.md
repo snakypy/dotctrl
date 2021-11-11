@@ -27,6 +27,7 @@
     <a href="#installing">Installing</a> |
     <a href="#using">Using</a> |
     <a href="#configuration">Configuration</a> |
+    <a href="#environment-variable">Environment variable</a> |
     <a href="#upgrading">Upgrade</a> |
     <a href="#donation">Donation</a> |
   </h4>
@@ -325,6 +326,17 @@ This section is very cool. It is the smart section of **Dotctrl**, where you wil
     }
 }
 ```
+
+## Environment variable
+
+By default, **Dotctrl** works with multiple directories, which makes you have to use it in a certain directory you created for your dotfiles. If you want to use **Dotctrl** in any PATH, you need to create an environment variable that **Dotctrl** makes available. This environment variable is `DOTCTRL_PATH`. You must create it on your operating system containing the directory where your dotfiles will be. For example, in your `.bashrc` or `.zshrc` file:
+
+```shell
+export DOTCTRL_PATH="$HOME/.dotfiles"
+```
+
+> Remember, by creating this environment variable, you will not be able to create other directories for **Dotctrl**.
+
 
 ## Upgrading
 
