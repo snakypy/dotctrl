@@ -76,18 +76,18 @@ It's time to install **Dotctrl**. To do this, do:
 **Globally:**
 
 ```shell
-# pip install dotctrl
+# python -m pip install dotctrl
 ```
 or
 
 ```shell
-$ sudo pip install dotctrl
+$ sudo python -m pip install dotctrl
 ```
 
 **For the user:**
 
 ```shell
-$ pip install dotctrl --user
+$ python -m pip install dotctrl --user
 ```
 
 > NOTE: If you are installing to the user's local environment, be sure to add the environment variables to the `zshrc` or `.bashrc` file.
@@ -345,18 +345,18 @@ If **Dotctrl** has any new features, please update the command line below:
 Globally:
 
 ```shell
-# pip install dotctrl -U
+# python -m  pip install dotctrl -U
 ```
 
 or
 
 ```shell
-$ sudo pip install dotctrl -U
+$ sudo python -m pip install dotctrl -U
 ```
 For the user:
 
 ```shell
-$ pip install dotctrl -U --user
+$ python -m pip install dotctrl -U --user
 ```
 
 ## More Commands
