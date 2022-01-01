@@ -1,5 +1,5 @@
 """CLI Dotctrl"""
-from snakypy.helpers.decorators import only_linux
+from snakypy.helpers.decorators import denying_os
 
 from snakypy.dotctrl import HOME, ROOT
 from snakypy.dotctrl.actions.check import CheckCommand
@@ -69,7 +69,7 @@ def run_credits():
     CreditsCommand().main()
 
 
-@only_linux
+@denying_os("Windows")
 def main():
     run_init()
     run_pull()
