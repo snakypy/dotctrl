@@ -44,10 +44,7 @@
 <br>
 <br>
 
-**Dotctrl** is a package for managing your "dotfiles" on Linux. **Dotctrl** works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
-
-## Top Contributions
-[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/0)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/0)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/1)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/1)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/2)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/2)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/3)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/3)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/4)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/4)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/5)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/5)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/6)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/6)[![](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/images/7)](https://sourcerer.io/fame/williamcanin/snakypy/dotctrl/links/7)
+**Dotctrl** is a package for managing your "dotfiles" on Linux or macOS. **Dotctrl** works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
 
 ## Features
 
@@ -108,7 +105,7 @@ $ dotctrl init
 Pull an element into the **Dotctrl** repository:
 
 ```shell
-$ dotctrl pull --element=".config/flake8"
+$ dotctrl pull --element=".zprofile"
 ```
 
 > Note: You must enter the element path without the `HOME` path.
@@ -126,7 +123,7 @@ $ dotctrl pull
 After pulling the element(s), create symbolic links to them in their original locations:
 
 ```shell
-$ dotctrl link --element=".config/flake8"
+$ dotctrl link --element=".zprofile"
 ```
 
 > Note: You must enter the element path without the `HOME` path.
@@ -160,7 +157,7 @@ $ dotctrl list
 Unlink element from the repository with the source location:
 
 ```shell
-$ dotctrl unlink --element=".config/flake8"
+$ dotctrl unlink --element=".zprofile"
 ```
 
 > NOTE: You must enter the element path without the `HOME` path.
@@ -176,7 +173,7 @@ $ dotctrl unlink
 Restore an element from the repository to its original location:
 
 ```shell
-$ dotctrl restore --element=".config/flake8"
+$ dotctrl restore --element=".zprofile"
 ```
 
 > NOTE: You must enter the element path without the `HOME` path.
@@ -246,8 +243,8 @@ $ dotctrl config --open
 ```json
 {
 
-        "elements": [".config/foo/foo.conf",
-                     ".config/bar/bar.conf",
+        "elements": [".foo/foo.conf",
+                     ".bar/bar.conf",
                      ".foo.conf"]
 
 }
@@ -258,8 +255,8 @@ The `elements` option also accepts complete folders instead of just files:
 ```json
 {
 
-        "elements": [".config/foo",
-                     ".config/bar"]
+        "elements": [".foo",
+                     ".bar"]
 
 }
 ```
@@ -310,8 +307,7 @@ This section is very cool. It is the smart section of **Dotctrl**, where you wil
             "editor": "vim"
         },
         "elements": [
-            ".config/flake8",
-            ".bash_profile",
+            ".zprofile",
             ".gitconfig",
             ".config/xfce4/terminal/terminalrc"
         ],
@@ -373,7 +369,7 @@ Click on the image below to be redirected the donation forms:
 
 <div class="donate">
   <a href="https://github.com/snakypy/donations/blob/master/README.md">
-    <img width="160" height="100" src="https://raw.githubusercontent.com/snakypy/donations/master/svg/donate/donate-hand.svg" alt="Donations"
+    <img width="160" height="100" src="https://raw.githubusercontent.com/snakypy/donations/master/svg/donate/donate-hand.svg" alt="Donations"/>
   </a>
 </div>
 
