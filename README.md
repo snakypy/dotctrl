@@ -70,21 +70,8 @@ To work correctly, you will first need:
 
 It's time to install **Dotctrl**. To do this, do:
 
-**Globally:**
-
 ```shell
-# python -m pip install dotctrl
-```
-or
-
-```shell
-$ sudo python -m pip install dotctrl
-```
-
-**For the user:**
-
-```shell
-$ python -m pip install dotctrl --user
+$ python3 -m pip install dotctrl --user
 ```
 
 > NOTE: If you are installing to the user's local environment, be sure to add the environment variables to the `zshrc` or `.bashrc` file.
@@ -93,10 +80,25 @@ $ python -m pip install dotctrl --user
 
 **Init**
 
-After installing the package, you need to create the Dotctrl repository in an empty folder in the location of your choice. For example:
+After installing the package, you need to create the Dotctrl repository in an empty folder in the location of your choice. We recommend always creating in the users' root directory, because creating in the user's folder you can get lost if the user is deleted. With that, the example below:
+
+Linux:
 
 ```shell
-$ mkdir ~/Dotfiles; cd $_
+$ sudo mkdir /home/.dotfiles
+$ sudo chown <YOU USER> /home/.dotfiles
+$ sudo chmod 700 -R /home/.dotfiles
+$ mkdir /home/.dotfiles; cd $_
+$ dotctrl init
+```
+
+macOS:
+
+```shell
+$ sudo mkdir /Users/.dotfiles
+$ sudo chown <YOU USER> /Users/.dotfiles
+$ sudo chmod 700 /Users/.dotfiles
+$ mkdir /Users/.dotfiles; cd $_
 $ dotctrl init
 ```
 
@@ -327,8 +329,17 @@ This section is very cool. It is the smart section of **Dotctrl**, where you wil
 
 By default, **Dotctrl** works with multiple directories, which makes you have to use it in a certain directory you created for your dotfiles. If you want to use **Dotctrl** in any PATH, you need to create an environment variable that **Dotctrl** makes available. This environment variable is `DOTCTRL_PATH`. You must create it on your operating system containing the directory where your dotfiles will be. For example, in your `.bashrc` or `.zshrc` file:
 
+
+Linux:
+
 ```shell
-export DOTCTRL_PATH="$HOME/.dotfiles"
+export DOTCTRL_PATH="/home/.dotfiles"
+```
+
+macOS:
+
+```shell
+export DOTCTRL_PATH="/Users/.dotfiles"
 ```
 
 > Remember, by creating this environment variable, you will not be able to create other directories for **Dotctrl**.
