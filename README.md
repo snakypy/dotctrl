@@ -79,7 +79,7 @@ python3 -m pip install dotctrl --user
 
 ## Using
 
-NOTE: All commands must be as common user.
+> NOTE: All commands must be as common user.
 
 **Init**
 
