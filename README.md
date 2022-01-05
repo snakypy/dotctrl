@@ -86,21 +86,26 @@ After installing the package, you need to create the Dotctrl repository in an em
 Linux:
 
 ```shell
-$ sudo mkdir -p /home/.dotfiles/linux
-$ sudo chown <YOU USER> /home/.dotfiles
-$ sudo chmod 700 -R /home/.dotfiles
-$ mkdir /home/.dotfiles/linux; cd $_
-$ dotctrl init
+HOME_USERS="/home"
 ```
 
 macOS:
 
 ```shell
-$ sudo mkdir -p /Users/.dotfiles/macos
-$ sudo chown <YOU USER> /Users/.dotfiles
-$ sudo chmod 700 /Users/.dotfiles
-$ mkdir /Users/.dotfiles/macos; cd $_
-$ dotctrl init
+HOME_USERS="/Users"
+```
+
+
+
+```shell
+
+sudo mkdir -p $HOME_USERS/.dotfiles/linux
+sudo chown <YOU USER> $HOME_USERS/.dotfiles
+sudo chmod 700 -R $HOME_USERS/.dotfiles
+mkdir $HOME_USERS/.dotfiles/linux; cd $_
+dotctrl init
+```
+rl init
 ```
 
 > TIP: You can create several subfolders with different Dotctrl repository.
