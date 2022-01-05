@@ -103,7 +103,7 @@ $ mkdir /Users/.dotfiles/macos; cd $_
 $ dotctrl init
 ```
 
-> TIP: You can create several subfolders with different dotctrl repository.
+> TIP: You can create several subfolders with different Dotctrl repository.
 
 **Pull**
 
