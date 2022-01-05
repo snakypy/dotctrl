@@ -79,6 +79,8 @@ python3 -m pip install dotctrl --user
 
 ## Using
 
+NOTE: All commands must be as common user.
+
 **Init**
 
 After installing the package, you need to create the Dotctrl repository in an empty folder in the location of your choice. We recommend always creating in the users' root directory, because creating in the user's folder you can get lost if the user is deleted. With that, the example below:
