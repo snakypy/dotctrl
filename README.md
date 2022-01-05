@@ -387,7 +387,9 @@ $ cd /Users/.dotfiles
 B - Creating git repository, commit and saving (push)
 
 ```shell
+$ git remote add origin git@github.com:<YOUR USER>/dotfiles.git
 $ git init
+$ git add .
 $ git commit -m "Update"
 $ git push origin main
 ```
@@ -401,7 +403,7 @@ Linux:
 ```shell
 $ sudo mkdir /home/.dotfiles
 $ sudo chmod 770 -R /home/.dotfiles
-$ git clone git@github.com:williamcanin/dotfiles.git /home/.dotfiles
+$ git clone git@github.com:<YOUR USER>/dotfiles.git /home/.dotfiles
 $ cd /home/.dotfiles/linux
 $ dotctrl link --force
 ```
@@ -411,7 +413,7 @@ macOS:
 ```shell
 $ sudo mkdir /Users/.dotfiles
 $ sudo chmod 770 -R /Users/.dotfiles
-$ git clone git@github.com:williamcanin/dotfiles.git /Users/.dotfiles
+$ git clone git@github.com:<YOUR USER>/dotfiles.git /Users/.dotfiles
 $ cd /home/.dotfiles/macos
 $ dotctrl link --force
 ```
