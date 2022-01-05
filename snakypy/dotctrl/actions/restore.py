@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from os.path import exists, join
 from shutil import move
 from sys import exit
@@ -62,7 +63,8 @@ class RestoreCommand(Base):
             file_repo = join(self.repo_path, arguments["--element"])
             if "/" in arguments["--element"]:
                 path_creation(self.HOME, arguments["--element"])
-            restore_action(self.repo_path, file_repo, file_home, arguments)
+            with ThreadPoolExecutor() as e:
+                e.submit(restore_action, self.repo_path, file_repo, file_home, arguments)
         else:
             objects = [
                 *listing_files(self.repo_path, only_rc_files=True),
@@ -73,7 +75,8 @@ class RestoreCommand(Base):
                 file_repo = join(self.repo_path, item)
                 if "/" in item:
                     path_creation(self.HOME, item)
-                restore_action(self.repo_path, file_repo, file_home, arguments)
+                with ThreadPoolExecutor() as e:
+                    e.submit(restore_action, self.repo_path, file_repo, file_home, arguments)
             if len(objects) == 0:
                 printer(
                     "Empty repository. Nothing to restore.", foreground=FG().WARNING

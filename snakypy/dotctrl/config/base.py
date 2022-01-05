@@ -1,6 +1,7 @@
 """Modulate to store records and data."""
+import sys
 from os.path import exists, join
-from sys import exit
+from sys import exit, platform
 
 from snakypy.helpers import FG, printer
 from snakypy.helpers.files import read_json
@@ -19,16 +20,47 @@ class Base:
         self.gitignore_path = join(self.ROOT, ".gitignore_path")
         self.readme = join(self.ROOT, "README.md")
         self.atom = [".atom/config.cson", ".atom/github.cson", ".atom/snippets.cson"]
-        self.vscode = [
-            ".config/Code/User/settings.json",
-            ".config/Code/User/locale.json",
-        ]
-        self.sublime = [
-            ".config/sublime-text-3/Packages/User/" "Preferences.sublime-settings",
-            ".config/sublime-text-3/Packages/User/" "Package Control.sublime-settings",
-            ".config/sublime-text-3/Packages/User/" "Distraction Free.sublime-settings",
-        ]
-        self.editors_config = self.atom + self.vscode + self.atom
+        self.vscode_data = {
+            "linux": [
+                ".config/Code/User/settings.json",
+                ".config/Code/User/locale.json",
+            ],
+            "macos": [
+                "Library/Application Support/Code/User/settings.json",
+                "Library/Application Support/Code/User/locale.json",
+            ],
+        }
+        self.vscode = (
+            self.vscode_data["linux"]
+            if platform == "linux"
+            else self.vscode_data["macos"]
+        )
+
+        self.sublime_data = {
+            "linux": [
+                ".config/sublime-text/Packages/User/" "Preferences.sublime-settings",
+                ".config/sublime-text/Packages/User/"
+                "Package Control.sublime-settings",
+                ".config/sublime-text/Packages/User/"
+                "Distraction Free.sublime-settings",
+            ],
+            "macos": [
+                "Library/Application Support/Sublime Text/Packages/User/"
+                "Preferences.sublime-settings",
+                "Library/Application Support/Sublime Text/Packages/User/"
+                "Package Control.sublime-settings",
+                "Library/Application Support/Sublime Text/Packages/User/"
+                "Distraction Free.sublime-settings",
+            ],
+        }
+
+        self.sublime = (
+            self.sublime_data["linux"]
+            if platform == "linux"
+            else self.sublime_data["macos"]
+        )
+
+        self.editors_config = self.atom + self.vscode + self.sublime
 
         if exists(self.config_path):
             try:

@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import suppress
 from os import remove
 from os.path import exists, islink, join
@@ -84,10 +85,13 @@ class RemoveCommand(Base):
         if option is None:
             printer("Aborted by user.", foreground=FG().WARNING)
         elif option and option[0] != "all":
-            rm_elements(self.HOME, self.repo_path, option[0])
+            with ThreadPoolExecutor() as e:
+                e.submit(rm_elements, self.HOME, self.repo_path, option[0])
         elif option and option[0] == "all":
             for i in option[1]:
-                rm_elements(self.HOME, self.repo_path, i)
-            rmdir_blank(self.repo_path)
+                with ThreadPoolExecutor() as e:
+                    e.submit(rm_elements, self.HOME, self.repo_path, i)
+            with ThreadPoolExecutor() as e:
+                e.submit(rmdir_blank, self.repo_path)
 
         rm_garbage_config(self.HOME, self.repo_path, self.config_path)
