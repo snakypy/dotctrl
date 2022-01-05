@@ -72,7 +72,7 @@ To work correctly, you will first need:
 It's time to install **Dotctrl**. To do this, do:
 
 ```shell
-$ python3 -m pip install dotctrl --user
+python3 -m pip install dotctrl --user
 ```
 
 > NOTE: If you are installing to the user's local environment, be sure to add the environment variables to the `zshrc` or `.bashrc` file.
@@ -86,26 +86,21 @@ After installing the package, you need to create the Dotctrl repository in an em
 Linux:
 
 ```shell
-HOME_USERS="/home"
+sudo mkdir -p /home/.dotfiles/linux
+sudo chown <YOU USER> /home/.dotfiles
+sudo chmod 700 -R /home/.dotfiles
+mkdir /home/.dotfiles/linux; cd $_
+dotctrl init
 ```
 
 macOS:
 
 ```shell
-HOME_USERS="/Users"
-```
-
-
-
-```shell
-
-sudo mkdir -p $HOME_USERS/.dotfiles/linux
-sudo chown <YOU USER> $HOME_USERS/.dotfiles
-sudo chmod 700 -R $HOME_USERS/.dotfiles
-mkdir $HOME_USERS/.dotfiles/linux; cd $_
+sudo mkdir -p /Users/.dotfiles/linux
+sudo chown <YOU USER> /Users/.dotfiles
+sudo chmod 700 -R /Users/.dotfiles
+mkdir /Users/.dotfiles/linux; cd $_
 dotctrl init
-```
-rl init
 ```
 
 > TIP: You can create several subfolders with different Dotctrl repository.
@@ -115,7 +110,7 @@ rl init
 Pull an element into the **Dotctrl** repository:
 
 ```shell
-$ dotctrl pull --element=".zprofile"
+dotctrl pull --element=".zprofile"
 ```
 
 > Note: You must enter the element path without the `HOME` path.
@@ -123,7 +118,7 @@ $ dotctrl pull --element=".zprofile"
 If you want to perform a massive **pull**, do:
 
 ```shell
-$ dotctrl pull
+dotctrl pull
 ```
 
 > Note: This option is only possible if you pass the [elements](#section-elements) in the **dotctrl.json** file.
@@ -133,7 +128,7 @@ $ dotctrl pull
 After pulling the element(s), create symbolic links to them in their original locations:
 
 ```shell
-$ dotctrl link --element=".zprofile"
+dotctrl link --element=".zprofile"
 ```
 
 > Note: You must enter the element path without the `HOME` path.
@@ -141,7 +136,7 @@ $ dotctrl link --element=".zprofile"
 If you want to perform a massive **link**, do:
 
 ```shell
-$ dotctrl link
+dotctrl link
 ```
 
 > Note: If there is a link already created, **Dotctrl** will inform you to use the `--force` option.
@@ -151,7 +146,7 @@ $ dotctrl link
 Make a check to see if there are elements to be linked:
 
 ```shell
-$ dotctrl check
+dotctrl check
 ```
 
 **List**
@@ -159,7 +154,7 @@ $ dotctrl check
 List the elements of the repository:
 
 ```shell
-$ dotctrl list
+dotctrl list
 ```
 
 **Unlink**
@@ -167,7 +162,7 @@ $ dotctrl list
 Unlink element from the repository with the source location:
 
 ```shell
-$ dotctrl unlink --element=".zprofile"
+dotctrl unlink --element=".zprofile"
 ```
 
 > NOTE: You must enter the element path without the `HOME` path.
@@ -175,7 +170,7 @@ $ dotctrl unlink --element=".zprofile"
 If you want to perform a massive **unlink**, do:
 
 ```shell
-$ dotctrl unlink
+dotctrl unlink
 ```
 
 **Restore**
@@ -183,7 +178,7 @@ $ dotctrl unlink
 Restore an element from the repository to its original location:
 
 ```shell
-$ dotctrl restore --element=".zprofile"
+dotctrl restore --element=".zprofile"
 ```
 
 > NOTE: You must enter the element path without the `HOME` path.
@@ -191,7 +186,7 @@ $ dotctrl restore --element=".zprofile"
 If you want to perform a massive **restore**, do:
 
 ```shell
-$ dotctrl restore
+dotctrl restore
 ```
 > Note: > Note: If there is already an element created in the original location, **Dotctrl** will inform you to use the `--force` option.
 
@@ -204,14 +199,14 @@ This option of **remove**, is interactive, that is, you will have questions prec
 To remove an element from the repository and its symbolic link, do:
 
 ```shell
-$ dotctrl remove
+dotctrl remove
 ```
 This will open a list of elements from the repository for the remove user. The user can only choose one element at a time.
 
 If you want to remove elements in bulk, use the `--all` option
 
 ```/shell
-$ dotctrl remove --all
+dotctrl remove --all
 ```
 
 To perform the removal without interactive mode, use the `--noconfirm` option. DANGER!
@@ -227,7 +222,7 @@ To perform the removal without interactive mode, use the `--noconfirm` option. D
 You can open the **Dotctrl** configuration file in the terminal itself using the command:
 
 ```shel
-$ dotctrl config --open
+dotctrl config --open
 ```
 
 ### Understanding each section `dotctrl.json`:
@@ -358,7 +353,7 @@ export DOTCTRL_PATH="/Users/.dotfiles/macos"
 If **Dotctrl** has any new features, please update the command line below:
 
 ```shell
-$ python3 -m pip install dotctrl -U --user
+python3 -m pip install dotctrl -U --user
 ```
 
 ## More Commands
@@ -366,7 +361,7 @@ $ python3 -m pip install dotctrl -U --user
 For more command information, use:
 
 ```
-$ dotctrl --help
+dotctrl --help
 ```
 
 ## Saving and Clone your dotfiles through Github (bonus)
@@ -380,23 +375,23 @@ A - Entering the master dotfiles folder:
 Linux:
 
 ```shell
-$ cd /home/.dotfiles
+cd /home/.dotfiles
 ```
 
 macOS:
 
 ```shell
-$ cd /Users/.dotfiles
+cd /Users/.dotfiles
 ```
 
 B - Creating git repository, commit and saving (push)
 
 ```shell
-$ git remote add origin git@github.com:<YOUR USER>/dotfiles.git
-$ git init
-$ git add .
-$ git commit -m "Update"
-$ git push origin main
+git remote add origin git@github.com:<YOUR USER>/dotfiles.git
+git init
+git add .
+git commit -m "Update"
+git push origin main
 ```
 
 2 - **Clone:**
@@ -406,21 +401,21 @@ You can clone any directory of your choice as well, but let's keep the example b
 Linux:
 
 ```shell
-$ sudo mkdir /home/.dotfiles
-$ sudo chmod 770 -R /home/.dotfiles
-$ git clone git@github.com:<YOUR USER>/dotfiles.git /home/.dotfiles
-$ cd /home/.dotfiles/linux
-$ dotctrl link --force
+sudo mkdir /home/.dotfiles
+sudo chmod 770 -R /home/.dotfiles
+git clone git@github.com:<YOUR USER>/dotfiles.git /home/.dotfiles
+cd /home/.dotfiles/linux
+dotctrl link --force
 ```
 
 macOS:
 
 ```shell
-$ sudo mkdir /Users/.dotfiles
-$ sudo chmod 770 -R /Users/.dotfiles
-$ git clone git@github.com:<YOUR USER>/dotfiles.git /Users/.dotfiles
-$ cd /home/.dotfiles/macos
-$ dotctrl link --force
+sudo mkdir /Users/.dotfiles
+sudo chmod 770 -R /Users/.dotfiles
+git clone git@github.com:<YOUR USER>/dotfiles.git /Users/.dotfiles
+cd /home/.dotfiles/macos
+dotctrl link --force
 ```
 
 ## Donation
