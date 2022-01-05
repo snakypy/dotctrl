@@ -63,6 +63,7 @@ To work correctly, you will first need:
 
 - [`Python`](https://python.org) (v3.7 or recent);
 - [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 or recent) must be installed;
+- [`Git`](https://git-scm.com/downloads) (v2.0 or recent);
 - One of that editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/) or [emacs](https://www.gnu.org/software/emacs/) must be installed;
 
 
@@ -85,22 +86,24 @@ After installing the package, you need to create the Dotctrl repository in an em
 Linux:
 
 ```shell
-$ sudo mkdir /home/.dotfiles
+$ sudo mkdir -p /home/.dotfiles/linux
 $ sudo chown <YOU USER> /home/.dotfiles
 $ sudo chmod 700 -R /home/.dotfiles
-$ mkdir /home/.dotfiles; cd $_
+$ mkdir /home/.dotfiles/linux; cd $_
 $ dotctrl init
 ```
 
 macOS:
 
 ```shell
-$ sudo mkdir /Users/.dotfiles
+$ sudo mkdir -p /Users/.dotfiles/macos
 $ sudo chown <YOU USER> /Users/.dotfiles
 $ sudo chmod 700 /Users/.dotfiles
-$ mkdir /Users/.dotfiles; cd $_
+$ mkdir /Users/.dotfiles/macos; cd $_
 $ dotctrl init
 ```
+
+> TIP: You can create several subfolders with different dotctrl repository.
 
 **Pull**
 
@@ -333,13 +336,13 @@ By default, **Dotctrl** works with multiple directories, which makes you have to
 Linux:
 
 ```shell
-export DOTCTRL_PATH="/home/.dotfiles"
+export DOTCTRL_PATH="/home/.dotfiles/linux"
 ```
 
 macOS:
 
 ```shell
-export DOTCTRL_PATH="/Users/.dotfiles"
+export DOTCTRL_PATH="/Users/.dotfiles/macos"
 ```
 
 > Remember, by creating this environment variable, you will not be able to create other directories for **Dotctrl**.
@@ -349,21 +352,8 @@ export DOTCTRL_PATH="/Users/.dotfiles"
 
 If **Dotctrl** has any new features, please update the command line below:
 
-Globally:
-
 ```shell
-# python -m  pip install dotctrl -U
-```
-
-or
-
-```shell
-$ sudo python -m pip install dotctrl -U
-```
-For the user:
-
-```shell
-$ python -m pip install dotctrl -U --user
+$ python3 -m pip install dotctrl -U --user
 ```
 
 ## More Commands
@@ -372,6 +362,58 @@ For more command information, use:
 
 ```
 $ dotctrl --help
+```
+
+## Saving and Clone your dotfiles through Github (bonus)
+
+Now that you have control of your dotfiles, it's time to save them. This example below will show you how to save to Github and performing clone.
+
+1 - **Save:**
+
+A - Entering the master dotfiles folder:
+
+Linux:
+
+```shell
+$ cd /home/.dotfiles
+```
+
+macOS:
+
+```shell
+$ cd /Users/.dotfiles
+```
+
+B - Creating git repository, commit and saving (push)
+
+```shell
+$ git init
+$ git commit -m "Update"
+$ git push origin main
+```
+
+2 - **Clone:**
+
+You can clone any directory of your choice as well, but let's keep the example build directory above. Follow the steps:
+
+Linux:
+
+```shell
+$ sudo mkdir /home/.dotfiles
+$ sudo chmod 770 -R /home/.dotfiles
+$ git clone git@github.com:williamcanin/dotfiles.git /home/.dotfiles
+$ cd /home/.dotfiles/linux
+$ dotctrl link --force
+```
+
+macOS:
+
+```shell
+$ sudo mkdir /Users/.dotfiles
+$ sudo chmod 770 -R /Users/.dotfiles
+$ git clone git@github.com:williamcanin/dotfiles.git /Users/.dotfiles
+$ cd /home/.dotfiles/macos
+$ dotctrl link --force
 ```
 
 ## Donation
