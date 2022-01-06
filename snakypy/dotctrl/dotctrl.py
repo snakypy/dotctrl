@@ -1,15 +1,17 @@
 """CLI Dotctrl"""
+from os.path import join
+from sys import platform
+
 from snakypy.helpers.decorators import denying_os
 
 from snakypy.dotctrl import HOME, ROOT
-from snakypy.dotctrl.actions.check import CheckCommand
 from snakypy.dotctrl.actions.config import ConfigCommand
 from snakypy.dotctrl.actions.credits import CreditsCommand
+from snakypy.dotctrl.actions.find import FindCommand
 from snakypy.dotctrl.actions.init import InitCommand
 from snakypy.dotctrl.actions.link import LinkCommand
-from snakypy.dotctrl.actions.list import ListCommand
 from snakypy.dotctrl.actions.pull import PullCommand
-from snakypy.dotctrl.actions.remove import RemoveCommand
+from snakypy.dotctrl.actions.repo import RepoCommand
 from snakypy.dotctrl.actions.restore import RestoreCommand
 from snakypy.dotctrl.actions.unlink import UnlinkCommand
 from snakypy.dotctrl.utils import arguments
@@ -21,7 +23,12 @@ args = arguments()
 
 @assign_cli(args, "init")
 def run_init():
-    InitCommand(ROOT, HOME).main(args)
+    if args["--auto"] is True:
+        paths = ("/tmp", "linux") if platform == "linux" else ("/Users", "macos")
+        root_auto = join(paths[0], ".dotfiles", paths[1])
+        InitCommand(root_auto, HOME).main(args)
+    else:
+        InitCommand(ROOT, HOME).main(args)
 
 
 @assign_cli(args, "pull")
@@ -39,29 +46,24 @@ def run_unlink():
     UnlinkCommand(ROOT, HOME).main(args)
 
 
+@assign_cli(args, "find")
+def run_find():
+    FindCommand(ROOT, HOME).main(args)
+
+
 @assign_cli(args, "config")
 def run_config():
     ConfigCommand(ROOT, HOME).main(args)
 
 
-@assign_cli(args, "check")
-def run_check():
-    CheckCommand(ROOT, HOME).main()
-
-
-@assign_cli(args, "list")
-def run_list():
-    ListCommand(ROOT, HOME).main()
+@assign_cli(args, "repo")
+def run_repo():
+    RepoCommand(ROOT, HOME).main(args)
 
 
 @assign_cli(args, "restore")
 def run_restore():
     RestoreCommand(ROOT, HOME).main(args)
-
-
-@assign_cli(args, "remove")
-def run_remove():
-    RemoveCommand(ROOT, HOME).main(args)
 
 
 @assign_cli(args, "--credits")
@@ -75,9 +77,8 @@ def main():
     run_pull()
     run_link()
     run_unlink()
-    run_check()
-    run_list()
+    run_repo()
+    run_find()
     run_config()
     run_restore()
-    run_remove()
     run_credits()
