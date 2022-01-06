@@ -4,10 +4,11 @@ from shutil import move
 from sys import exit
 
 from snakypy.helpers import FG, printer
+from snakypy.helpers.files import create_json, read_json
 from snakypy.helpers.os import rmdir_blank
 
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import (  # rm_garbage_config
+from snakypy.dotctrl.utils import (
     check_init,
     listing_files,
     path_creation,
@@ -45,6 +46,16 @@ def restore_action(repo_path: str, src: str, dst: str, arguments: dict) -> None:
         rmdir_blank(repo_path)
 
 
+def rm_registry(arguments: dict, config: str, obj: str) -> None:
+    if arguments["--rm-registry"]:
+        parsed = read_json(config)
+        elements = parsed["dotctrl"]["elements"]
+        if obj in elements:
+            elements.remove(obj)
+            parsed["dotctrl"]["elements"] = elements
+            create_json(parsed, config, force=True)
+
+
 class RestoreCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
@@ -64,7 +75,12 @@ class RestoreCommand(Base):
             if "/" in arguments["--element"]:
                 path_creation(self.HOME, arguments["--element"])
             with ThreadPoolExecutor() as e:
-                e.submit(restore_action, self.repo_path, file_repo, file_home, arguments)
+                e.submit(
+                    restore_action, self.repo_path, file_repo, file_home, arguments
+                )
+                e.submit(
+                    rm_registry, arguments, self.config_path, arguments["--element"]
+                )
         else:
             objects = [
                 *listing_files(self.repo_path, only_rc_files=True),
@@ -76,7 +92,10 @@ class RestoreCommand(Base):
                 if "/" in item:
                     path_creation(self.HOME, item)
                 with ThreadPoolExecutor() as e:
-                    e.submit(restore_action, self.repo_path, file_repo, file_home, arguments)
+                    e.submit(
+                        restore_action, self.repo_path, file_repo, file_home, arguments
+                    )
+                    e.submit(rm_registry, arguments, self.config_path, item)
             if len(objects) == 0:
                 printer(
                     "Empty repository. Nothing to restore.", foreground=FG().WARNING

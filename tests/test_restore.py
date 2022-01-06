@@ -1,6 +1,7 @@
 from os.path import exists, isfile, islink, join
 
 import pytest
+from snakypy.helpers.files.json import read_json
 
 from snakypy.dotctrl.actions.restore import RestoreCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
@@ -16,15 +17,12 @@ def test_restore_command(base):  # noqa: F811
     test_unlink_command(base)
 
     RestoreCommand(base["root"], base["home"]).main(
-        arguments(argv=["restore", f"--element={elements(base)[0]}", "--force"])
+        arguments(argv=["restore", f"--element={elements(base)[1]}", "--force"])
     )
 
-    linked_file = join(class_base(base).HOME, elements(base)[0])
+    linked_file = join(class_base(base).HOME, elements(base)[1])
     if not isfile(linked_file):
         assert False
-
-    with pytest.raises(SystemExit):
-        RestoreCommand(base["root"], base["home"]).main(arguments(argv=["restore"]))
 
     RestoreCommand(base["root"], base["home"]).main(
         arguments(argv=["restore", "--force"])
@@ -39,7 +37,24 @@ def test_restore_command(base):  # noqa: F811
         elem_repo = join(class_base(base).repo_path, item)
         if exists(elem_repo):
             assert False
+
     for item in class_base(base).editors_config:
         elem_home = join(class_base(base).HOME, item)
         if islink(elem_home):
             assert False
+
+    # test: rm_registry
+    RestoreCommand(base["root"], base["home"]).main(
+        arguments(
+            argv=[
+                "restore",
+                f"--element={elements(base)[1]}",
+                "--force",
+                "--rm-registry",
+            ]
+        )
+    )
+
+    parsed = read_json(class_base(base).config_path)
+    if elements(base)[1] in parsed["dotctrl"]["elements"]:
+        assert False
