@@ -47,7 +47,7 @@ _________________
 
 _________________
 
-`Dotctrl` is a package for managing your "dotfiles" on Linux. `Dotctrl` works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
+`Dotctrl` is a package for managing your "dotfiles" on Linux or macOS. `Dotctrl` works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
 
 Features
 --------
@@ -61,8 +61,9 @@ Requirements
 
 To work correctly, you will first need:
 
-* `python`_ (v3.8 or recent) must be installed.
+* `python`_ (v3.9 or recent) must be installed.
 * `pip`_ (v19.3 or recent) must be installed.
+* `git`_ (v2.0 or recent) must be installed.
 
 Installing
 ----------
@@ -123,5 +124,6 @@ See, `AUTHORS`_.
 .. _`home page`: https://github.com/snakypy/dotctrl
 .. _`python`: https://python.org
 .. _pip: https://pip.pypa.io/en/stable/quickstart/
+.. _git: https://git-scm.com/downloads
 .. _MIT License: https://github.com/snakypy/dotctrl/blob/master/LICENSE
 .. _William Canin: http://williamcanin.github.io
