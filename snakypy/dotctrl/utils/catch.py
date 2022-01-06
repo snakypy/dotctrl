@@ -34,3 +34,14 @@ def listing_files(directory, only_rc_files=False) -> list:
             elem = elem.replace(f"{directory}/", "")
             objects.append(elem)
     return objects
+
+
+def count_objects(path: str) -> tuple:
+    directories, files = [], []
+    for r, d, f in walk(path):
+        for file in f:
+            files.append(file)
+        for dir_ in d:
+            directories.append(dir_)
+    total = files + directories
+    return len(files), len(directories), len(total)
