@@ -61,7 +61,7 @@
 
 To work correctly, you will first need:
 
-- [`Python`](https://python.org) (v3.7 or recent);
+- [`Python`](https://python.org) (v3.9 or recent);
 - [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 or recent) must be installed;
 - [`Git`](https://git-scm.com/downloads) (v2.0 or recent);
 - One of that editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/) or [emacs](https://www.gnu.org/software/emacs/) must be installed;
@@ -107,6 +107,13 @@ dotctrl init
 
 > TIP: You can create several subfolders with different Dotctrl repository.
 
+You can circumvent all of these commands above using the `--auto` option. **Dotctrl** will automatically create the base
+directory to store the data, however, you need to have a superuser password.
+
+```shell
+dotctrl init --auto
+```
+
 **Pull**
 
 Pull an element into the **Dotctrl** repository:
@@ -148,15 +155,24 @@ dotctrl link
 Make a check to see if there are elements to be linked:
 
 ```shell
-dotctrl check
+dotctrl repo --check
 ```
 
-**List**
+**Imported**
 
-List the elements of the repository:
+Check the elements already imported in the registry (`dotctrl.json`) of the **Dotctrl**.
 
 ```shell
-dotctrl list
+dotctrl repo --imported
+```
+
+**Info repo**
+
+With the command below you can see some information from the **Dotctrl** repository, such as folder and file quantities,
+the absolute path of the repository, and if the `DOTCTRL_PATH` environment variable is active.
+
+```shell
+dotctrl repo --info
 ```
 
 **Unlink**
@@ -190,30 +206,16 @@ If you want to perform a massive **restore**, do:
 ```shell
 dotctrl restore
 ```
-> Note: > Note: If there is already an element created in the original location, **Dotctrl** will inform you to use the `--force` option.
+> Note: > Note: If there is already an element created in the original location, **Dotctrl** will inform you to use
+> the `--force` option.
 
-**Remove** `(DANGER)`
+By default, when restoring elements to the source location, Dotctrl does not remove the element from the registry
+(`dotctrl.json`), to do this use the `--rm-registry` option.
 
-The **remove** option is irreversible. Removes element (s) from the repository and its symbolic links in the place of origin if it exists.
-
-This option of **remove**, is interactive, that is, you will have questions precisely because it is an irreversible option.
-
-To remove an element from the repository and its symbolic link, do:
-
+Example:
 ```shell
-dotctrl remove
+dotctrl restore --element=".zprofile" --rm-registry
 ```
-This will open a list of elements from the repository for the remove user. The user can only choose one element at a time.
-
-If you want to remove elements in bulk, use the `--all` option
-
-```/shell
-dotctrl remove --all
-```
-
-To perform the removal without interactive mode, use the `--noconfirm` option. DANGER!
-
-
 
 **For more command, run: `dotctrl -h`**
 
@@ -340,6 +342,7 @@ Linux:
 ```shell
 export DOTCTRL_PATH="/home/.dotfiles/linux"
 ```
+or
 
 macOS:
 
