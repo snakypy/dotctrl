@@ -18,7 +18,7 @@ class Base:
         self.repo_path = join(self.ROOT, "dotctrl")
         self.config_path = join(self.ROOT, __info__["config"])
         self.gitignore_path = join(self.ROOT, ".gitignore_path")
-        self.readme = join(self.ROOT, "README.md")
+        self.readme = join(self.ROOT, "README.txt")
         self.atom = [".atom/config.cson", ".atom/github.cson", ".atom/snippets.cson"]
         self.vscode_data = {
             "linux": [
