@@ -12,7 +12,7 @@ def check_init(root) -> None:
     if not exists(join(root, __info__["config"])):
         printer(
             f"The repository was not created. "
-            f"Use \"{__info__['pkg_name']} init\". Aborted",
+            f"Use \"{__info__['pkg_name']} init [--auto | --git]\". Aborted",
             foreground=FG().WARNING,
         )
         exit(1)
