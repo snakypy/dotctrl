@@ -1,5 +1,5 @@
-from os.path import exists, islink, join
 from concurrent.futures import ThreadPoolExecutor
+from os.path import exists, islink, join
 
 from snakypy.helpers import FG, printer
 
