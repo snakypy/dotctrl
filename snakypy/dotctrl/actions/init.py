@@ -23,9 +23,9 @@ class InitCommand(Base):
         """Base repository method."""
         init_auto = False
 
-        # if exists(self.config_path):
-        #     printer("Repository is already defined.", foreground=FG().FINISH)
-        #     exit(0)
+        if exists(self.config_path):
+            printer("Repository is already defined.", foreground=FG().FINISH)
+            exit(0)
 
         if not arguments["--auto"]:
             create_path(self.repo_path)
@@ -47,7 +47,7 @@ class InitCommand(Base):
             message_initial = dedent(
                 f"""
             [ATTENTION!]
-            You must have sudo permission on your machine to proceed with this step and create
+            You must have SUDO permission on your machine to proceed with this step and create
             an automatic repository with {__info__["name"]}. You can approach the operation by
             pressing Ctrl + C.
 
@@ -55,7 +55,7 @@ class InitCommand(Base):
             """
             )
             printer(message_initial, foreground=FG().YELLOW)
-            printer("[ Enter superuser password ]", foreground=FG().QUESTION)
+            printer("[ Enter password for sudo ]", foreground=FG().QUESTION)
             user_current = whoami()
             commands = [
                 f"mkdir -p {join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])}",
