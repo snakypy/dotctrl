@@ -1,6 +1,5 @@
 """CLI Dotctrl"""
 from os.path import join
-from sys import platform
 
 from snakypy.helpers.decorators import denying_os
 
@@ -24,7 +23,6 @@ args = arguments()
 @assign_cli(args, "init")
 def run_init():
     if args["--auto"] is True:
-        # paths = ("/tmp/test1", "linux") if platform == "linux" else ("/Users", "macos")
         root_auto = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
         InitCommand(root_auto, HOME).main(args)
     else:
