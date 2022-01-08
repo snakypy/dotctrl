@@ -83,14 +83,16 @@ python3 -m pip install dotctrl --user
 
 **Init**
 
-After installing the package, you need to create the Dotctrl repository in an empty folder in the location of your choice. We recommend always creating in the users' root directory, because creating in the user's folder you can get lost if the user is deleted. With that, the example below:
+After installing the package, you need to create the **Dotctrl** repository in an empty folder in the location of your choice.
+We recommend always creating in the users' root directory, because creating in the user's folder you can get lost if the
+user is deleted. With that, the example below:
 
 Linux:
 
 ```shell
 sudo mkdir -p /home/.dotfiles/linux
-sudo chown <YOU USER> /home/.dotfiles
-sudo chmod 700 -R /home/.dotfiles
+sudo chown -R <YOU USER> /home/.dotfiles
+sudo chmod -R 700 /home/.dotfiles
 mkdir /home/.dotfiles/linux; cd $_
 dotctrl init
 ```
@@ -99,8 +101,8 @@ macOS:
 
 ```shell
 sudo mkdir -p /Users/.dotfiles/linux
-sudo chown <YOU USER> /Users/.dotfiles
-sudo chmod 700 -R /Users/.dotfiles
+sudo chown -R <YOU USER> /Users/.dotfiles
+sudo chmod -R 700 /Users/.dotfiles
 mkdir /Users/.dotfiles/linux; cd $_
 dotctrl init
 ```
@@ -407,7 +409,7 @@ Linux:
 
 ```shell
 sudo mkdir /home/.dotfiles
-sudo chmod 770 -R /home/.dotfiles
+sudo chmod -R 770 /home/.dotfiles
 git clone git@github.com:<YOUR USER>/dotfiles.git /home/.dotfiles
 cd /home/.dotfiles/linux
 dotctrl link --force
@@ -417,7 +419,7 @@ macOS:
 
 ```shell
 sudo mkdir /Users/.dotfiles
-sudo chmod 770 -R /Users/.dotfiles
+sudo chmod -R 770 /Users/.dotfiles
 git clone git@github.com:<YOUR USER>/dotfiles.git /Users/.dotfiles
 cd /home/.dotfiles/macos
 dotctrl link --force
