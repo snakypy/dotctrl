@@ -2,7 +2,6 @@ from getpass import getpass
 from os.path import isdir
 from shutil import which
 from subprocess import PIPE, Popen, call, run
-from textwrap import dedent
 
 from snakypy.helpers.ansi import FG
 from snakypy.helpers.console import printer
@@ -14,25 +13,28 @@ def git_init_command() -> None:
         call(["git", "init"], stdout=PIPE)
 
 
-def super_command(command):
+def super_command(commands: list) -> bool:
     """Command super user"""
     try:
         run(["sudo", "-k"])
         get_pass = getpass()
-        # command = dedent(command).replace("\n", " ").strip()
-        command = " ".join(dedent(command).split())
-        cmd = "echo {} | sudo -S {};".format(get_pass, command)
-        p = Popen(
-            cmd,
-            stdin=PIPE,
-            stderr=PIPE,
-            stdout=PIPE,
-            universal_newlines=True,
-            shell=True,
-        )
-        out, err = p.communicate(get_pass + "\n")
-        run(["sudo", "-k"])
-        return p.returncode
+        for command in commands:
+            p = Popen(
+                "echo {} | sudo -S {};".format(get_pass, command),
+                stdin=PIPE,
+                stderr=PIPE,
+                stdout=PIPE,
+                universal_newlines=True,
+                shell=True,
+            )
+            out, err = p.communicate(get_pass + "\n")
+            if p.returncode != 0:
+                printer("Error in password authentication.", foreground=FG().ERROR)
+                return False
+        return True
     except KeyboardInterrupt:
         printer("Aborted by user.", foreground=FG().WARNING)
         return False
+    finally:
+        if which("faillock"):
+            run(["faillock", "--reset"])
