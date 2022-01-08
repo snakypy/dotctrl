@@ -44,7 +44,10 @@
 <br>
 <br>
 
-**Dotctrl** is a package for managing your "dotfiles" on Linux or macOS. **Dotctrl** works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
+**Dotctrl** is a "dotfiles" manager for [Linux](https://www.kernel.org/) or [macOS](https://www.apple.com/macos/).
+**Dotctrl** manages the elements of the user's HOME directory; works on top of a configuration file which contains the
+relative paths of the source location of the dotfiles.
+
 
 ## Features
 
@@ -61,10 +64,11 @@
 
 To work correctly, you will first need:
 
-- [`Python`](https://python.org) (v3.7 or recent);
+- [`Python`](https://python.org) (v3.9 or recent);
 - [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 or recent) must be installed;
 - [`Git`](https://git-scm.com/downloads) (v2.0 or recent);
-- One of that editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/) or [emacs](https://www.gnu.org/software/emacs/) must be installed;
+- One of that editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/) or
+- [emacs](https://www.gnu.org/software/emacs/) must be installed;
 
 
 ## Installing
@@ -75,7 +79,8 @@ It's time to install **Dotctrl**. To do this, do:
 python3 -m pip install dotctrl --user
 ```
 
-> NOTE: If you are installing to the user's local environment, be sure to add the environment variables to the `zshrc` or `.bashrc` file.
+> NOTE: If you are installing to the user's local environment, be sure to add the environment variables to the `zshrc`
+> or `.bashrc` file.
 
 ## Using
 
@@ -83,14 +88,16 @@ python3 -m pip install dotctrl --user
 
 **Init**
 
-After installing the package, you need to create the Dotctrl repository in an empty folder in the location of your choice. We recommend always creating in the users' root directory, because creating in the user's folder you can get lost if the user is deleted. With that, the example below:
+After installing the package, you need to create the **Dotctrl** repository in an empty folder in the location of your
+choice. We recommend always creating in the users' root directory, because creating in the user's folder, it can be
+lost if the user is deleted. With that, see the example below:
 
 Linux:
 
 ```shell
 sudo mkdir -p /home/.dotfiles/linux
-sudo chown <YOU USER> /home/.dotfiles
-sudo chmod 700 -R /home/.dotfiles
+sudo chown -R <YOU USER> /home/.dotfiles
+sudo chmod -R 700 /home/.dotfiles
 mkdir /home/.dotfiles/linux; cd $_
 dotctrl init
 ```
@@ -99,15 +106,21 @@ macOS:
 
 ```shell
 sudo mkdir -p /Users/.dotfiles/linux
-sudo chown <YOU USER> /Users/.dotfiles
-sudo chmod 700 -R /Users/.dotfiles
+sudo chown -R <YOU USER> /Users/.dotfiles
+sudo chmod -R 700 /Users/.dotfiles
 mkdir /Users/.dotfiles/linux; cd $_
 dotctrl init
 ```
+You can circumvent all of these commands above using the `--auto` option. **Dotctrl** will automatically create the base
+directory to store the data, however, you must have sudo permission.
 
-> TIP: You can create several subfolders with different Dotctrl repository.
+```shell
+dotctrl init --auto
+```
 
 **Pull**
+
+With the base already created, it's time for you to retrieve your files to the Dotctrl base with the `pull` command.
 
 Pull an element into the **Dotctrl** repository:
 
@@ -115,7 +128,7 @@ Pull an element into the **Dotctrl** repository:
 dotctrl pull --element=".zprofile"
 ```
 
-> Note: You must enter the element path without the `HOME` path.
+> Note: You must enter an element without the absolute path.
 
 If you want to perform a massive **pull**, do:
 
@@ -133,7 +146,7 @@ After pulling the element(s), create symbolic links to them in their original lo
 dotctrl link --element=".zprofile"
 ```
 
-> Note: You must enter the element path without the `HOME` path.
+> Note: You must enter an element without the absolute path.
 
 If you want to perform a massive **link**, do:
 
@@ -148,15 +161,26 @@ dotctrl link
 Make a check to see if there are elements to be linked:
 
 ```shell
-dotctrl check
+dotctrl repo --check
 ```
 
-**List**
+> NOTE: If you don't have elements to link, nothing will be displayed.
 
-List the elements of the repository:
+**Imported**
+
+Check the elements already imported in the registry (`dotctrl.json`) of the **Dotctrl**.
 
 ```shell
-dotctrl list
+dotctrl repo --imported
+```
+
+**Information repository**
+
+With the command below you can see some information from the **Dotctrl** repository, such as folder and file quantities,
+the absolute path of the repository, and if the `DOTCTRL_PATH` environment variable is active.
+
+```shell
+dotctrl repo --info
 ```
 
 **Unlink**
@@ -166,8 +190,6 @@ Unlink element from the repository with the source location:
 ```shell
 dotctrl unlink --element=".zprofile"
 ```
-
-> NOTE: You must enter the element path without the `HOME` path.
 
 If you want to perform a massive **unlink**, do:
 
@@ -183,37 +205,23 @@ Restore an element from the repository to its original location:
 dotctrl restore --element=".zprofile"
 ```
 
-> NOTE: You must enter the element path without the `HOME` path.
+> NOTE: You must enter an element without the absolute path.
 
 If you want to perform a massive **restore**, do:
 
 ```shell
 dotctrl restore
 ```
-> Note: > Note: If there is already an element created in the original location, **Dotctrl** will inform you to use the `--force` option.
+> Note: If there is already an element created in the original location, **Dotctrl** will inform you to use
+> the `--force` option.
 
-**Remove** `(DANGER)`
+By default, when restoring elements to the source location, Dotctrl does not remove the element from the registry
+(`dotctrl.json`), to do this use the `--rm-registry` option.
 
-The **remove** option is irreversible. Removes element (s) from the repository and its symbolic links in the place of origin if it exists.
-
-This option of **remove**, is interactive, that is, you will have questions precisely because it is an irreversible option.
-
-To remove an element from the repository and its symbolic link, do:
-
+Example:
 ```shell
-dotctrl remove
+dotctrl restore --element=".zprofile" --rm-registry
 ```
-This will open a list of elements from the repository for the remove user. The user can only choose one element at a time.
-
-If you want to remove elements in bulk, use the `--all` option
-
-```/shell
-dotctrl remove --all
-```
-
-To perform the removal without interactive mode, use the `--noconfirm` option. DANGER!
-
-
 
 **For more command, run: `dotctrl -h`**
 
@@ -231,7 +239,9 @@ dotctrl config --open
 
 #### Section `config`:
 
-* In the **editor** key, you can choose an editor of your choice. You must enter the publisher's binary, for example: **vim**, **nano**, etc. If you leave it blank, **Dotctrl** will select one of these terminal text editors: **vim**, **nano**, **emacs**, and **micro**.
+* In the **editor** key, you can choose an editor of your choice. You must enter the publisher's binary, for example:
+**vim**, **nano**, etc. If you leave it blank, **Dotctrl** will select one of these terminal text editors: **vim**,
+**nano**, **emacs**, and **micro**.
 
 ```json
 {
@@ -245,7 +255,8 @@ dotctrl config --open
 
 #### Section `elements`:
 
-* **elements**: As the name says, "*elements*" will store the absolute path of the elements you want to place inside the **Dotctrl** repository in a **list**. Examples:
+* **elements**: As the name says, "*elements*" will store the absolute path of the elements you want to place inside
+the **Dotctrl** repository in a **list**. Examples:
 
 ```json
 {
@@ -279,13 +290,15 @@ For madness but true, **Dotctrl** also manages files and folders without points:
 }
 ```
 
-You must place files (<u>or folders</u>) that are inside the user's **$HOME**, as this is how **Dotctrl** works, only with elements in the user's $HOME.
+You must place files (or folders) that are inside the user's **$HOME**, as this is how **Dotctrl** works,
+only with elements in the user's `$HOME`.
 
 
 
 #### Section `smart`:
 
-This section is very cool. It is the smart section of **Dotctrl**, where you will find configuration files and dotfiles for certain applications. :)
+This section is very cool. It is the smart section of **Dotctrl**, where you will find configuration files and dotfiles
+for certain applications. :)
 
 ```json
 {
@@ -340,6 +353,7 @@ Linux:
 ```shell
 export DOTCTRL_PATH="/home/.dotfiles/linux"
 ```
+or
 
 macOS:
 
@@ -368,7 +382,8 @@ dotctrl --help
 
 ## Saving and Clone your dotfiles through Github (bonus)
 
-Now that you have control of your dotfiles, it's time to save them. This example below will show you how to save to Github and performing clone.
+Now that you have control of your dotfiles, it's time to save them. This example below will show you how to save to
+GitHub and performing clone.
 
 1 - **Save:**
 
@@ -403,8 +418,8 @@ You can clone any directory of your choice as well, but let's keep the example b
 Linux:
 
 ```shell
-sudo mkdir /home/.dotfiles
-sudo chmod 770 -R /home/.dotfiles
+sudo mkdir -p /home/.dotfiles
+sudo chmod -R 770 /home/.dotfiles
 git clone git@github.com:<YOUR USER>/dotfiles.git /home/.dotfiles
 cd /home/.dotfiles/linux
 dotctrl link --force
@@ -413,8 +428,8 @@ dotctrl link --force
 macOS:
 
 ```shell
-sudo mkdir /Users/.dotfiles
-sudo chmod 770 -R /Users/.dotfiles
+sudo mkdir -p /Users/.dotfiles
+sudo chmod -R 770 /Users/.dotfiles
 git clone git@github.com:<YOUR USER>/dotfiles.git /Users/.dotfiles
 cd /home/.dotfiles/macos
 dotctrl link --force

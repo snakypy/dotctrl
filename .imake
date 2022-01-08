@@ -4,6 +4,28 @@ header = "Build project ..."
 commands = ["python -m snakypy.dotctrl", "poetry build"]
 footer = "Compilation command terminated!"
 
+[binary]
+description = "Generate binary"
+initial_message = "Generate binary..."
+commands = [
+"""
+pyinstaller binary.spec
+python -c '
+import platform
+import shutil
+from pathlib import Path
+from os.path import join
+if platform.system() == "Linux":
+    Path(join("binary", "linux")).mkdir(parents=True, exist_ok=True)
+    shutil.move(join("dist", "dotctrl"), join("binary", "linux", "dotctrl"))
+elif platform.system() == "Darwin":
+    Path(join("binary", "macos")).mkdir(parents=True, exist_ok=True)
+    shutil.move(join("dist", "dotctrl"), join("binary", "macos", "dotctrl"))
+'
+"""
+]
+final_message = "Generate binary terminated!"
+
 [install]
 description = "Performs the installation of project dependencies and installs the same."
 header = "Installing package and dependencies ..."
