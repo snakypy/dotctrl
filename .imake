@@ -1,7 +1,7 @@
 [build]
 description = "Compile the project for publication and installation."
 header = "Build project ..."
-commands = ["imake binary", "python -m snakypy.dotctrl", "poetry build"]
+commands = ["python -m snakypy.dotctrl", "poetry build"]
 footer = "Compilation command terminated!"
 
 [binary]
