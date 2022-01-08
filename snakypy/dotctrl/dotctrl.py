@@ -4,7 +4,7 @@ from sys import platform
 
 from snakypy.helpers.decorators import denying_os
 
-from snakypy.dotctrl import HOME, ROOT
+from snakypy.dotctrl import HOME, ROOT, AUTO_PATH
 from snakypy.dotctrl.actions.config import ConfigCommand
 from snakypy.dotctrl.actions.credits import CreditsCommand
 from snakypy.dotctrl.actions.find import FindCommand
@@ -24,8 +24,8 @@ args = arguments()
 @assign_cli(args, "init")
 def run_init():
     if args["--auto"] is True:
-        paths = ("/tmp", "linux") if platform == "linux" else ("/Users", "macos")
-        root_auto = join(paths[0], ".dotfiles", paths[1])
+        # paths = ("/tmp/test1", "linux") if platform == "linux" else ("/Users", "macos")
+        root_auto = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
         InitCommand(root_auto, HOME).main(args)
     else:
         InitCommand(ROOT, HOME).main(args)
