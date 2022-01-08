@@ -4,7 +4,7 @@ from sys import platform
 
 from snakypy.helpers.decorators import denying_os
 
-from snakypy.dotctrl import HOME, ROOT, AUTO_PATH
+from snakypy.dotctrl import AUTO_PATH, HOME, ROOT
 from snakypy.dotctrl.actions.config import ConfigCommand
 from snakypy.dotctrl.actions.credits import CreditsCommand
 from snakypy.dotctrl.actions.find import FindCommand

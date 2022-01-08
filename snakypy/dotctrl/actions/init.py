@@ -8,7 +8,7 @@ from snakypy.helpers.checking import whoami
 from snakypy.helpers.files import create_file, create_json
 from snakypy.helpers.path import create as create_path
 
-from snakypy.dotctrl import __info__, AUTO_PATH
+from snakypy.dotctrl import AUTO_PATH, __info__
 from snakypy.dotctrl.config import config, gitignore, readme
 from snakypy.dotctrl.config.base import Base
 from snakypy.dotctrl.utils import git_init_command
@@ -36,23 +36,20 @@ class InitCommand(Base):
             git_init_command()
             create_file(gitignore.content, self.gitignore_path, force=True)
         elif arguments["--auto"]:
-            # TODO: Problema com autentificação de sudo
-
-            # paths = ("/tmp/test1", "linux") if platform == "linux" else ("/Users", "macos")
             path_current = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
-            # if exists(join(path_current, __info__["config"])):
-            #     dir_ = f"{FG().BLUE}{path_current}{FG().YELLOW}"
-            #     printer(
-            #         f'{__info__["name"]} is already configured in this directory "{dir_}"',
-            #         foreground=FG().WARNING,
-            #     )
-            #     exit(0)
+            if exists(join(path_current, __info__["config"])):
+                dir_ = f"{FG().BLUE}{path_current}{FG().YELLOW}"
+                printer(
+                    f'{__info__["name"]} is already configured in this directory "{dir_}"',
+                    foreground=FG().WARNING,
+                )
+                exit(0)
             message_initial = dedent(
                 f"""
             [ATTENTION!]
             You must have sudo permission on your machine to proceed with this step and create
             an automatic repository with {__info__["name"]}. You can approach the operation by
-            pressing ctrl + c.
+            pressing Ctrl + C.
 
             NOTE: The {__info__['name']} directory will be created in: "{FG().BLUE}{path_current}{FG().YELLOW}".
             """
@@ -60,17 +57,15 @@ class InitCommand(Base):
             printer(message_initial, foreground=FG().YELLOW)
             printer("[ Enter superuser password ]", foreground=FG().QUESTION)
             user_current = whoami()
-            super_scripts = f"""mkdir -p {join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])} &&
-            chown -R {user_current} {join(AUTO_PATH[0], '.dotfiles')} &&
-            chmod -R 700 {join(AUTO_PATH[0], '.dotfiles')}"""
-            #
-            # super_scripts = " ".join(dedent(super_scripts).split())
-            # # print(super_scripts)
-            # # exit(0)
-            # os.system(super_scripts)
+            commands = [
+                f"mkdir -p {join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])}",
+                f"chown -R {user_current} {join(AUTO_PATH[0], '.dotfiles')}",
+                f"chmod -R 700 {join(AUTO_PATH[0], '.dotfiles')}",
+            ]
 
-            # if super_command(super_scripts) != 0:
-            #     exit(0)
+            sp = super_command(commands)
+            if not sp:
+                exit(1)
 
             create_path(self.repo_path)
             create_json(config.content, self.config_path, force=True)
