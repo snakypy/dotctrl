@@ -1,6 +1,6 @@
 from snakypy.dotctrl import __info__
 
-content = f"""### {__info__['name']} ###
+content = f"""##### {__info__['name']} #####
 
 NOTE: This is an informational README only.
 
@@ -23,7 +23,7 @@ To check the files via the command line, do:
 
 $ du -a ./dotctrl | more
 
-## Management
+[ Management ]
 
 These "dotfiles" were generated with the Dotctrl package.
 To use, allow yourself to visit the project "{__info__['home_page']}"
