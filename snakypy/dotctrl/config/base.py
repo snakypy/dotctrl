@@ -38,11 +38,9 @@ class Base:
 
         self.sublime_data = {
             "linux": [
-                ".config/sublime-text/Packages/User/" "Preferences.sublime-settings",
-                ".config/sublime-text/Packages/User/"
-                "Package Control.sublime-settings",
-                ".config/sublime-text/Packages/User/"
-                "Distraction Free.sublime-settings",
+                ".config/sublime-text/Packages/User/Preferences.sublime-settings",
+                ".config/sublime-text/Packages/User/Package Control.sublime-settings",
+                ".config/sublime-text/Packages/User/Distraction Free.sublime-settings",
             ],
             "macos": [
                 "Library/Application Support/Sublime Text/Packages/User/"
