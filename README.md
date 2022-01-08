@@ -84,8 +84,8 @@ python3 -m pip install dotctrl --user
 **Init**
 
 After installing the package, you need to create the **Dotctrl** repository in an empty folder in the location of your choice.
-We recommend always creating in the users' root directory, because creating in the user's folder you can get lost if the
-user is deleted. With that, the example below:
+We recommend always creating in the users' root directory, because creating in the user's folder, it can be lost if the
+user is deleted. With that, see the example below:
 
 Linux:
 
@@ -110,7 +110,7 @@ dotctrl init
 > TIP: You can create several subfolders with different Dotctrl repository.
 
 You can circumvent all of these commands above using the `--auto` option. **Dotctrl** will automatically create the base
-directory to store the data, however, you need to have a superuser password.
+directory to store the data, however, you must have sudo permission.
 
 ```shell
 dotctrl init --auto
