@@ -1,4 +1,3 @@
-from concurrent.futures import ThreadPoolExecutor
 from os.path import exists, islink, join
 
 from snakypy.helpers import FG, printer
@@ -37,8 +36,7 @@ class PullCommand(Base):
                     "Nothing was pulled. Nonexistent element.", foreground=FG().ERROR
                 )
                 return False
-            with ThreadPoolExecutor() as e:
-                e.submit(to_move, file_home, file_repo, arguments["--force"])
+            to_move(file_home, file_repo, arguments["--force"])
             return True
         else:
             if len(self.data) == 0:
@@ -53,6 +51,5 @@ class PullCommand(Base):
                 if "/" in item:
                     if not islink(file_home) and exists(file_home):
                         path_creation(self.repo_path, item)
-                with ThreadPoolExecutor() as e:
-                    e.submit(to_move, file_home, file_repo, arguments["--force"])
+                to_move(file_home, file_repo, arguments["--force"])
             return True
