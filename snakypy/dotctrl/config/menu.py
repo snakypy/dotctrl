@@ -53,6 +53,7 @@ OPTIONS:
     {FG().BLUE}--imported{NONE} ------------ Lists imported elements.
     {FG().BLUE}--name=<object>{NONE} ------- Receives the name of an object, it can be a folder or a file.
     {FG().BLUE}--force{NONE} --------------- Complete the command regardless of whether or not files exist.
+                             ATTENTION! Using this option will replace existing files.
     {FG().BLUE}--rm-registry{NONE} ---------- Removes the object in the {__info__["name"]} registry
                                              ({__info__["config"]}).
     {FG().BLUE}--version{NONE} ------------- Show version.
