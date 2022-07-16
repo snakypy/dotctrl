@@ -129,6 +129,9 @@ dmypy.json
 # Pycharm
 .idea/
 
+# Visual Studio Code
+.vscode
+
 # Ignore file docs
 # docs/modules.rst
 # docs/dotctrl*.rst
