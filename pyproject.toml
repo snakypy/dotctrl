@@ -1,26 +1,26 @@
 [tool.poetry]
-name = "dotctrl"
-version = "1.4.1"
-description = "Dotctrl is a package for managing your dotfiles on Linux."
 authors = ["William C. Canin <william.costa.canin@gmail.com>"]
-readme = "README.rst"
-license = "MIT license"
-keywords=["dotfiles", "snakypy", "dot", "linux"]
+description = "Dotctrl is a package for managing your dotfiles on Linux."
 homepage = "https://github.com/snakypy/dotctrl"
-repository = "https://github.com/snakypy/dotctrl"
 include = ["LICENSE"]
+keywords = ["dotfiles", "snakypy", "dot", "linux"]
+license = "MIT license"
+name = "dotctrl"
+readme = "README.rst"
+repository = "https://github.com/snakypy/dotctrl"
+version = "1.4.1"
 
 classifiers = [
-    "Intended Audience :: Developers",
-    "Environment :: Console",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: POSIX :: Linux",
-    "Operating System :: MacOS",
-    "Programming Language :: Python :: 3"
+  "Intended Audience :: Developers",
+  "Environment :: Console",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3",
 ]
 
 packages = [
-    { include = "snakypy" }
+  {include = "snakypy"},
 ]
 
 [tool.poetry.scripts]
@@ -30,25 +30,23 @@ dotctrl = "snakypy.dotctrl.dotctrl:main"
 "Bug Tracker" = "https://github.com/snakypy/dotctrl/issues"
 
 [tool.poetry.dependencies]
-python = "^3.9"
 docopt = "^0.6.2"
-snakypy-helpers = "^0.3.0"
+python = "^3.9"
+snakypy-helpers = "^0.3.1"
+tomlkit = "^0.7.2"
 
 [tool.poetry.dev-dependencies]
-flake8 = "^3.9.1"
-tox = "^3.23.0"
-pytest = "^6.2.3"
-ipython = "^7.23.1"
-black = "^21.5b1"
-pre-commit = "^2.13.0"
-mypy = "^0.812"
+black = "^22.6.0"
+flake8 = "^4.0.1"
 imake = "^0.3.0"
+ipython = "^7.23.1"
 isort = "^5.8.0"
+mypy = "^0.812"
+pre-commit = "^2.13.0"
+pytest = "^6.2.3"
+tox = "^3.23.0"
 
 [tool.black]
-line-length = 88
-target-version = ['py38']
-include = '\.pyi?$'
 exclude = '''
 
 (
@@ -69,22 +67,25 @@ exclude = '''
   )/
 )
 '''
+include = '\.pyi?$'
+line-length = 88
+target-version = ['py38']
 
 [tool.isort]
-profile = "black"
-multi_line_output = 3
-src_paths = ["snakypy", "tests"]
-line_length = 88
-include_trailing_comma = true
 force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 88
+multi_line_output = 3
+profile = "black"
+src_paths = ["snakypy", "tests"]
 use_parentheses = true
 
 [tool.pytest.ini_options]
-minversion = "6.0"
 cache_dir = "/tmp/.pytest_cache"
+minversion = "6.0"
 # addopts = "-ra -q"
 testpaths = ["tests"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
