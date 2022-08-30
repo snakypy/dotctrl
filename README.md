@@ -125,10 +125,11 @@ With the base already created, it's time for you to retrieve your files to the D
 Pull an element into the **Dotctrl** repository:
 
 ```shell
-dotctrl pull --element .zprofile
+dotctrl pull --e .zprofile
 ```
 
-> Note: You must enter an element without the absolute path.
+> Note 1: You must enter an element without the absolute path.
+> Note 2: If the element has spaces, wrap it in double quotes, or use the backslash.
 
 If you want to perform a massive **pull**, do:
 
@@ -143,10 +144,11 @@ dotctrl pull
 After pulling the element(s), create symbolic links to them in their original locations:
 
 ```shell
-dotctrl link --element .zprofile
+dotctrl link --e .zprofile
 ```
 
-> Note: You must enter an element without the absolute path.
+> Note 1: You must enter an element without the absolute path.
+> Note 2: If the element has spaces, wrap it in double quotes, or use the backslash.
 
 If you want to perform a massive **link**, do:
 
@@ -154,7 +156,7 @@ If you want to perform a massive **link**, do:
 dotctrl link
 ```
 
-> Note: If there is a link already created, **Dotctrl** will inform you to use the `--force` option.
+> Note: If there is a link already created, **Dotctrl** will inform you to use the `--force` or `--f` option.
 
 **Check**
 
@@ -188,8 +190,11 @@ dotctrl repo --info
 Unlink element from the repository with the source location:
 
 ```shell
-dotctrl unlink --element .zprofile
+dotctrl unlink --e .zprofile
 ```
+
+> Note 1: You must enter an element without the absolute path.
+> Note 2: If the element has spaces, wrap it in double quotes, or use the backslash.
 
 If you want to perform a massive **unlink**, do:
 
@@ -202,10 +207,11 @@ dotctrl unlink
 Restore an element from the repository to its original location:
 
 ```shell
-dotctrl restore --element .zprofile
+dotctrl restore --e .zprofile
 ```
 
-> NOTE: You must enter an element without the absolute path.
+> Note 1: You must enter an element without the absolute path.
+> Note 2: If the element has spaces, wrap it in double quotes, or use the backslash.
 
 If you want to perform a massive **restore**, do:
 
@@ -213,14 +219,14 @@ If you want to perform a massive **restore**, do:
 dotctrl restore
 ```
 > Note: If there is already an element created in the original location, **Dotctrl** will inform you to use
-> the `--force` option.
+> the `--force` or `--f` option.
 
-By default, when restoring elements to the source location, Dotctrl does not remove the element from the registry
-(`dotctrl.json`), to do this use the `--rm-registry` option.
+By default, when restoring elements to their source location, Dotctrl removes the element from the registry
+(`dotctrl.json`). To keep the element in the registry use the `--keep-record` option.
 
 Example:
 ```shell
-dotctrl restore --element .zprofile --rm-registry
+dotctrl restore --e .zprofile --keep-record
 ```
 
 **For more command, run: `dotctrl -h`**
