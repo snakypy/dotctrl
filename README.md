@@ -4,7 +4,7 @@
   </a>
 </h1>
 
-<h1 align="center"> The dotfile management tool. </h1>
+<h1 align="center"> The dotfiles control tool. </h1>
 
 [![Tests](https://github.com/snakypy/dotctrl/workflows/Tests/badge.svg)](https://github.com/snakypy/dotctrl/actions)
 [![Python Versions](https://img.shields.io/pypi/pyversions/dotctrl)](https://pyup.io/repos/github/snakypy/dotctrl/)
