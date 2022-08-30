@@ -52,12 +52,12 @@ relative paths of the source location of the dotfiles.
 ## Features
 
 * Create multiple repositories for your files;
-* Stay free to create manual links;
+* Don't create huge manual symlinks;
 * Automatically manages dotfiles ending with rc in the user's `$HOME`;
-* Automatically manages the main configuration files of the editors: Atom, Sublime Text, Visual Studio Code;
+* Automatically manages the main configuration files of the editors: Atom, Sublime Text and Visual Studio Code;
 * The **Dotctrl** repository stores the same path structure as its original location;
 * Manage single or bulk elements;
-* Restores the elements of the repository to their original location with a single command;
+* Restores repository elements to their original location with a single command;
 * And much more :)
 
 ## Requirements
