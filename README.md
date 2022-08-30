@@ -49,6 +49,10 @@
 relative paths of the source location of the dotfiles.
 
 
+See a demo:
+
+![](https://raw.githubusercontent.com/snakypy/assets/main/dotctrl/gifs/demo.gif)
+
 ## Features
 
 * Create multiple repositories for your files;
@@ -137,7 +141,9 @@ If you want to perform a massive **pull**, do:
 dotctrl pull
 ```
 
-> Note: This option is only possible if you pass the [elements](#section-elements) in the **dotctrl.json** file.
+> Note 1: This option is only possible if you pass the [elements](#section-elements) in the **dotctrl.json** file.
+
+> Note 2: If any property of the "**smart**" section is set to `true`, these files will be placed in the **Dotctrl** repo automatically.
 
 **Link**
 
@@ -305,6 +311,8 @@ only with elements in the user's `$HOME`.
 
 This section is very cool. It is the smart section of **Dotctrl**, where you will find configuration files and dotfiles
 for certain applications. :)
+
+> This option only works with the `dotctrl pull` command.
 
 ```json
 {
