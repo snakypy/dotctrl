@@ -13,6 +13,18 @@ class UnlinkCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
 
+    @staticmethod
+    def force(arguments: dict) -> dict:
+        if arguments["--force"]:
+            return arguments["--force"]
+        return arguments["--f"]
+
+    @staticmethod
+    def element(arguments: dict) -> dict:
+        if arguments["--element"]:
+            return arguments["--element"]
+        return arguments["--e"]
+
     def main(self, arguments: dict) -> bool:
         """Method to unlink point files from the repository
         with their place of origin."""
@@ -20,8 +32,11 @@ class UnlinkCommand(Base):
 
         rm_garbage_config(self.HOME, self.repo_path, self.config_path)
 
-        if arguments["--element"]:
-            file_home = join_two(self.HOME, arguments["--element"])
+        element = self.element(arguments)
+        force = self.force(arguments)
+
+        if element:
+            file_home = join_two(self.HOME, element)
             if islink(file_home):
                 with suppress(Exception):
                     remove(file_home)
@@ -38,10 +53,10 @@ class UnlinkCommand(Base):
             ]
             for item in objects:
                 file_home = join(self.HOME, item)
-                if not islink(file_home) and not arguments["--force"]:
+                if not islink(file_home) and not force:
                     printer(
-                        "Unlinked elements were found. Use the --element option "
-                        "to unlink unique links or use --force.",
+                        "Unlinked elements were found. Use the --element or --e option "
+                        "to unlink unique links or use --force or --f.",
                         foreground=FG().WARNING,
                     )
                     exit(0)

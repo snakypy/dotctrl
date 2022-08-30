@@ -1,13 +1,12 @@
 from os.path import exists, isfile, islink, join
 
-import pytest
 from snakypy.helpers.files.json import read_json
 
 from snakypy.dotctrl.actions.restore import RestoreCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
 
 from .test_unlink import test_unlink_command
-from .utilities import base  # noqa: E261
+from .utilities import base  # noqa: E261, F401
 from .utilities import arguments, class_base, elements
 
 
@@ -17,7 +16,7 @@ def test_restore_command(base):  # noqa: F811
     test_unlink_command(base)
 
     RestoreCommand(base["root"], base["home"]).main(
-        arguments(argv=["restore", f"--element={elements(base)[1]}", "--force"])
+        arguments(argv=["restore", f"--e={elements(base)[1]}", "--f"])
     )
 
     linked_file = join(class_base(base).HOME, elements(base)[1])
@@ -25,7 +24,7 @@ def test_restore_command(base):  # noqa: F811
         assert False
 
     RestoreCommand(base["root"], base["home"]).main(
-        arguments(argv=["restore", "--force"])
+        arguments(argv=["restore", "--f"])
     )
 
     for item in elements(base):
@@ -50,7 +49,7 @@ def test_restore_command(base):  # noqa: F811
                 "restore",
                 f"--element={elements(base)[1]}",
                 "--force",
-                "--rm-registry",
+                "--keep-record",
             ]
         )
     )
