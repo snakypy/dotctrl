@@ -125,7 +125,7 @@ With the base already created, it's time for you to retrieve your files to the D
 Pull an element into the **Dotctrl** repository:
 
 ```shell
-dotctrl pull --element=".zprofile"
+dotctrl pull --element .zprofile
 ```
 
 > Note: You must enter an element without the absolute path.
@@ -143,7 +143,7 @@ dotctrl pull
 After pulling the element(s), create symbolic links to them in their original locations:
 
 ```shell
-dotctrl link --element=".zprofile"
+dotctrl link --element .zprofile
 ```
 
 > Note: You must enter an element without the absolute path.
@@ -188,7 +188,7 @@ dotctrl repo --info
 Unlink element from the repository with the source location:
 
 ```shell
-dotctrl unlink --element=".zprofile"
+dotctrl unlink --element .zprofile
 ```
 
 If you want to perform a massive **unlink**, do:
@@ -202,7 +202,7 @@ dotctrl unlink
 Restore an element from the repository to its original location:
 
 ```shell
-dotctrl restore --element=".zprofile"
+dotctrl restore --element .zprofile
 ```
 
 > NOTE: You must enter an element without the absolute path.
@@ -220,7 +220,7 @@ By default, when restoring elements to the source location, Dotctrl does not rem
 
 Example:
 ```shell
-dotctrl restore --element=".zprofile" --rm-registry
+dotctrl restore --element .zprofile --rm-registry
 ```
 
 **For more command, run: `dotctrl -h`**
