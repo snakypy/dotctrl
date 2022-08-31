@@ -1,5 +1,4 @@
 """Modulate to store records and data."""
-import sys
 from os.path import exists, join
 from sys import exit, platform
 

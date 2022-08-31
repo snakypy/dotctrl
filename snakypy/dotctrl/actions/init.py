@@ -1,6 +1,5 @@
-import os
 from os.path import exists, join
-from sys import exit, platform
+from sys import exit
 from textwrap import dedent
 
 from snakypy.helpers import FG, printer
@@ -24,7 +23,10 @@ class InitCommand(Base):
         init_auto = False
 
         if exists(self.config_path):
-            printer("Repository is already defined.", foreground=FG().FINISH)
+            printer(
+                f'Repository is already defined in "{self.config_path}".',
+                foreground=FG().FINISH,
+            )
             exit(0)
 
         if not arguments["--auto"]:
