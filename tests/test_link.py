@@ -4,7 +4,7 @@ from snakypy.dotctrl.actions.link import LinkCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
 
 from .test_pull import test_pull_command
-from .utilities import base  # noqa: E261
+from .utilities import base  # noqa: E261, F401
 from .utilities import arguments, class_base, elements
 
 
@@ -14,7 +14,7 @@ def test_link_command(base):  # noqa: F811
     test_pull_command(base)
 
     LinkCommand(base["root"], base["home"]).main(
-        arguments(argv=["link", f"--element={elements(base)[0]}", "--force"])
+        arguments(argv=["link", f"--e={elements(base)[0]}", "--force"])
     )
 
     f = join(class_base(base).HOME, elements(base)[0])

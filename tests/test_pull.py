@@ -3,7 +3,7 @@ from os.path import exists, islink, join
 from snakypy.dotctrl.actions.pull import PullCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
 
-from .utilities import base  # noqa: E261
+from .utilities import base  # noqa: E261,F401
 from .utilities import (
     arguments,
     class_base,
@@ -22,7 +22,7 @@ def test_pull_command(base):  # noqa: F811
     update_config_elements(base, ".config/foo.txt", ".config/bar.txt")
 
     PullCommand(base["root"], base["home"]).main(
-        arguments(argv=["pull", f"--element={elements(base)[0]}", "--force"])
+        arguments(argv=["pull", f"--e={elements(base)[0]}", "--force"])
     )
 
     file_linked = join(class_base(base).HOME, elements(base)[0])

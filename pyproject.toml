@@ -8,7 +8,7 @@ license = "MIT license"
 name = "dotctrl"
 readme = "README.rst"
 repository = "https://github.com/snakypy/dotctrl"
-version = "1.4.2"
+version = "1.5.0"
 
 classifiers = [
   "Intended Audience :: Developers",
