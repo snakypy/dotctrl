@@ -71,8 +71,7 @@ To work correctly, you will first need:
 - [`Python`](https://python.org) (v3.9 or recent);
 - [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 or recent) must be installed;
 - [`Git`](https://git-scm.com/downloads) (v2.0 or recent);
-- One of that editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/) or
-- [emacs](https://www.gnu.org/software/emacs/) must be installed;
+- One of that editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/) or [emacs](https://www.gnu.org/software/emacs/) must be installed;
 
 
 ## Installing
