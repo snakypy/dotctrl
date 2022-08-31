@@ -19,8 +19,8 @@ def create_symlink(src, dst, arguments) -> bool:
         if exists(dst) and not arguments:
             printer(
                 "Some symbolic links already exist according to the ones you want to create.\n"
-                "Use the --element option to create unique links "
-                "or use --force.",
+                "Use the --element (--e) option to create unique links "
+                "or use --force (--f).",
                 foreground=FG().WARNING,
             )
             exit(0)
@@ -55,7 +55,7 @@ def to_move(src: str, dst: str, arguments) -> bool:
         if exists(src) and exists(dst) and not arguments:
             printer(
                 "The same files were found in the dotctrl repository"
-                " and in the source location. Use --force",
+                " and in the source location. Use --force or --f",
                 foreground=FG().WARNING,
             )
             exit(0)
