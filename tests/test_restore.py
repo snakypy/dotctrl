@@ -23,9 +23,7 @@ def test_restore_command(base):  # noqa: F811
     if not isfile(linked_file):
         assert False
 
-    RestoreCommand(base["root"], base["home"]).main(
-        arguments(argv=["restore", "--f"])
-    )
+    RestoreCommand(base["root"], base["home"]).main(arguments(argv=["restore", "--f"]))
 
     for item in elements(base):
         elem_repo = join(class_base(base).repo_path, item)
@@ -42,7 +40,7 @@ def test_restore_command(base):  # noqa: F811
         if islink(elem_home):
             assert False
 
-    # test: rm_registry
+    # test: keep_record
     RestoreCommand(base["root"], base["home"]).main(
         arguments(
             argv=[
