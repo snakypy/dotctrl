@@ -1,1 +1,1 @@
-import snakypy.dotctrl
+import snakypy.dotctrl  # noqa
