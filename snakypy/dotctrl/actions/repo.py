@@ -19,7 +19,7 @@ class RepoCommand(Base):
 
     def listing_data(self, arguments) -> Any:
         for item in {*listing_files(self.repo_path, only_rc_files=True), *self.data}:
-            if arguments["--imported"]:
+            if arguments["--reg"]:
                 if exists(join(self.repo_path, item)):
                     yield item
             elif arguments["--check"]:
@@ -49,17 +49,19 @@ class RepoCommand(Base):
                 # printer("Nothing to check.", foreground=FG().FINISH)
                 return True
             printer(
+                f"The elements below are {FG().RED}NOT{FG().YELLOW} linked! ",
+                foreground=FG(warning_icon="\n[!] ").WARNING,
+            )
+            printer(
                 "\nElement(s):",
                 foreground=FG().CYAN,
             )
             for item in self.listing_data(arguments):
-                status = f"{FG().YELLOW}[Not linked]{NONE}"
+                # status = f"{FG().YELLOW}[Unbound]{NONE}"
                 if isdir(join(self.repo_path, item)):
-                    print(
-                        f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item} {status}"
-                    )
+                    print(f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item}")
                 else:
-                    print(f"{FG().CYAN}➜{FG().MAGENTA} File: {NONE}{item} {status}")
+                    print(f"{FG().CYAN}➜{FG().MAGENTA} File: {NONE}{item}")
 
             return False
         elif arguments["--info"]:
@@ -69,18 +71,25 @@ class RepoCommand(Base):
                 f"""
             {SGR().BOLD}Repository info{NONE}
             {FG().BLUE}Path: {FG().GREEN}{self.ROOT}
-            {FG().BLUE}Files: {FG().GREEN} {counts[0]}
-            {FG().BLUE}Directories: {FG().GREEN} {counts[1]}
-            {FG().BLUE}Total: {FG().GREEN} {counts[2]}
+            {FG().BLUE}Files: {FG().YELLOW} {SGR().BOLD} {counts[0]} {NONE} {FG().GREEN} unit(s)
+            {FG().BLUE}Directories: {FG().YELLOW} {SGR().BOLD} {counts[1]} {NONE} {FG().GREEN} unit(s)
+            {FG().BLUE}Total: {FG().YELLOW} {SGR().BOLD} {counts[2]} {NONE} {FG().GREEN} element(s)
             {FG().BLUE}DOTCTRL_PATH: {FG().GREEN}{dotctrl_path}"""
             )
             print(info)
             return True
-        elif arguments["--imported"]:
+        elif arguments["--reg"]:
             if len(list(self.listing_data(arguments))) == 0:
-                printer("Repository is empty. No elements.", foreground=FG().WARNING)
+                printer(
+                    "The repository is empty of registration. No elements.",
+                    foreground=FG(warning_icon="[!] ").WARNING,
+                )
                 return False
-            elements = [f'{FG().CYAN}[ Imported elements ] (Type "q" to exit) {NONE}']
+
+            elements = [
+                f"{FG().YELLOW}Dotctrl repository element registration.{NONE}\n",
+                f'{FG().CYAN}[ Element(s) ] (Type "q" to exit) {NONE}',
+            ]
             for item in self.listing_data(arguments):
                 if isdir(join(self.repo_path, item)):
                     elements.append(
