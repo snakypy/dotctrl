@@ -19,7 +19,7 @@ USAGE:
     {__info__['executable']} link [--e=<object> | --element=<object>] [--f | --force]
     {__info__['executable']} unlink [--e=<object> | --element=<object>] [--f | --force]
     {__info__['executable']} restore [--e=<object> | --element=<object>] [--f | --force] [--keep-record]
-    {__info__['executable']} repo (--check | --imported | --info)
+    {__info__['executable']} repo (--check | --reg | --info)
     {__info__['executable']} find (--name=<object>)
     {__info__['executable']} config (--open | --view)
     {__info__['executable']} --help
@@ -50,7 +50,7 @@ OPTIONS:
                                   directory. On Linux it will create in "/home", on macOS in "/Users".
                                   You must have super user permission.
     {FG().BLUE}--info{NONE} ---------------------- Shows detailed information for the Do Ctrl repository.
-    {FG().BLUE}--imported{NONE} ------------------ Lists imported elements.
+    {FG().BLUE}--reg{NONE} ----------------------- Registration of imported elements.
     {FG().BLUE}--name <object>{NONE} ------------- Receives the name of an object, it can be a folder or a file.
     {FG().BLUE}--f | --force{NONE} --------------- Complete the command regardless of whether or not files exist.
                                   ATTENTION! Using this option will replace existing files.
