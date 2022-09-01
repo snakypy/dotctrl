@@ -17,7 +17,7 @@ from snakypy.dotctrl.utils import (
     shorten_path,
 )
 
-# --keep-record
+# TODO: O comando "dotctrl restore" está com muito bug. Corrigir. BUG CRITICAL
 
 
 def restore_action(
@@ -114,5 +114,6 @@ class RestoreCommand(Base):
                     e.submit(keep_record, arguments, self.config_path, item)
             if len(objects) == 0:
                 printer(
-                    "Empty repository. Nothing to restore.", foreground=FG().WARNING
+                    "Empty repository. Nothing to restore.",
+                    foreground=FG(warning_icon="[!] ").WARNING,
                 )
