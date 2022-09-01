@@ -1,4 +1,4 @@
-from os.path import exists, join
+from os.path import exists, join, realpath
 from sys import exit
 
 from snakypy.helpers import FG, printer
@@ -16,3 +16,9 @@ def check_init(root) -> None:
             foreground=FG().WARNING,
         )
         exit(1)
+
+
+def is_repo_symbolic_link(pathlink: str, repopath: str) -> bool:
+    if realpath(pathlink) == repopath:
+        return True
+    return False

@@ -8,7 +8,7 @@ from snakypy.helpers import FG, printer
 from snakypy.helpers.files import create_json, read_json
 from snakypy.helpers.os import rmdir_blank
 
-from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.config.base import Base, ElementForce
 from snakypy.dotctrl.utils import (
     check_init,
     listing_files,
@@ -61,21 +61,11 @@ def keep_record(arguments: dict, config: str, obj: str) -> None:
             create_json(parsed, config, force=True)
 
 
-class RestoreCommand(Base):
+# TODO: Bugfix
+class RestoreCommand(Base, ElementForce):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
-
-    @staticmethod
-    def element(arguments: dict) -> str:
-        if arguments["--element"]:
-            return arguments["--element"]
-        return arguments["--e"]
-
-    @staticmethod
-    def force(arguments: dict) -> Union[None, bool]:
-        if arguments["--force"]:
-            return arguments["--force"]
-        return arguments["--f"]
+        ElementForce.__init__(self)
 
     def main(self, arguments: dict) -> None:
         """Method to restore dotfiles from the repository to their
@@ -84,7 +74,7 @@ class RestoreCommand(Base):
         check_init(self.ROOT)
 
         # Uncomment to remove the element from the registry.
-        # rm_garbage_config(self.HOME, self.repo_path, self.config_path, only_repo=True)
+        # rm_garbage_config(self.HOME, self.repo_path, self.config_path)
 
         element = self.element(arguments)
         force = self.force(arguments)
@@ -98,10 +88,7 @@ class RestoreCommand(Base):
                 e.submit(restore_action, self.repo_path, file_repo, file_home, force)
                 e.submit(keep_record, arguments, self.config_path, element)
         else:
-            objects = [
-                *listing_files(self.repo_path, only_rc_files=True),
-                *self.data,
-            ]
+            objects = [*listing_files(self.repo_path), *self.data]
             for item in objects:
                 file_home = join(self.HOME, item)
                 file_repo = join(self.repo_path, item)

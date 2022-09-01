@@ -1,41 +1,71 @@
 from os import environ, listdir
-from os.path import exists, isdir, islink, join
+from os.path import exists, isdir, join, realpath
 from pydoc import pager
 from textwrap import dedent
 from typing import Any
+from os import walk
 
 from snakypy.helpers import FG, SGR, printer
 from snakypy.helpers.ansi import NONE
 
 from snakypy.dotctrl import __info__
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import check_init, listing_files
-from snakypy.dotctrl.utils.catch import count_objects
+from snakypy.dotctrl.utils import check_init, listing_files, is_repo_symbolic_link
 
 
 class RepoCommand(Base):
+    # TODO: Verifica se o link existente é o mesmo do repo do Dotctrl.
     def __init__(self, root, home):
         Base.__init__(self, root, home)
+        self.opts = ("--reg", "--check", "--info")
+
+    @staticmethod
+    def count_elements(path: str) -> tuple:
+        directories, files = [], []
+        for _, dirs_, files_ in walk(path):
+            for file in files_:
+                files.append(file)
+            for d in dirs_:
+                directories.append(d)
+        total = files + directories
+        return len(files), len(directories), len(total)
 
     def listing_data(self, arguments) -> Any:
-        for item in {*listing_files(self.repo_path, only_rc_files=True), *self.data}:
-            if arguments["--reg"]:
+        if arguments[self.opts[0]]:
+
+            # Lists all folders and files contained in the Dotctrl repository
+            for item in {*listing_files(self.repo_path), *self.data}:
                 if exists(join(self.repo_path, item)):
                     yield item
-            elif arguments["--check"]:
-                if exists(join(self.repo_path, item)) and not islink(
-                    join(self.HOME, item)
-                ):
+
+        elif arguments[self.opts[1]]:
+
+            #
+            for item in {*self.data}:
+                src = join(self.repo_path, item)
+                dest = join(self.HOME, item)
+                if exists(src) and is_repo_symbolic_link(dest, src) is False:
                     yield item
 
     def main(self, arguments: dict) -> bool:
         check_init(self.ROOT)
-        if arguments["--check"]:
+
+        # --check
+        if arguments[self.opts[1]]:
             count_repo = len(listdir(self.repo_path)) == 0
-            count_repo_opt = len(list(self.listing_data(arguments))) == 0
-            if count_repo or count_repo_opt:
-                # printer("Nothing to check.", foreground=FG().FINISH)
+            count_unlinked = len(list(self.listing_data(arguments))) == 0
+
+            if count_repo:
+                printer("Empty repository. Nothing to link.", foreground=FG().FINISH)
                 return True
+
+            if count_unlinked:
+                printer(
+                    f"{FG().MAGENTA}Congratulations! {FG().GREEN}All elements are linked.",
+                    foreground=FG().FINISH,
+                )
+                return True
+
             printer(
                 f"The elements below are {FG().RED}NOT{FG().YELLOW} linked! ",
                 foreground=FG(warning_icon="\n[!] ").WARNING,
@@ -44,17 +74,19 @@ class RepoCommand(Base):
                 "\nElement(s):",
                 foreground=FG().CYAN,
             )
+
             for item in self.listing_data(arguments):
-                # status = f"{FG().YELLOW}[Unbound]{NONE}"
                 if isdir(join(self.repo_path, item)):
                     print(f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item}")
                 else:
                     print(f"{FG().CYAN}➜{FG().MAGENTA} File: {NONE}{item}")
 
             return False
-        elif arguments["--info"]:
+
+        # --info
+        elif arguments[self.opts[2]]:
             dotctrl_path = "active" if environ.get("DOTCTRL_PATH") else "disabled"
-            counts = count_objects(join(self.ROOT, __info__["pkg_name"]))
+            counts = self.count_elements(join(self.ROOT, __info__["pkg_name"]))
             info = dedent(
                 f"""
             {SGR().BOLD}Repository info{NONE}
@@ -66,7 +98,9 @@ class RepoCommand(Base):
             )
             print(info)
             return True
-        elif arguments["--reg"]:
+
+        # --reg
+        elif arguments[self.opts[0]]:
             if len(list(self.listing_data(arguments))) == 0:
                 printer(
                     "The repository is empty of registration. No elements.",
@@ -79,6 +113,7 @@ class RepoCommand(Base):
                 f'{FG().CYAN}[ Element(s) ] (Type "q" to exit) {NONE}',
             ]
             for item in self.listing_data(arguments):
+                # elem_home = join(self.HOME, item)
                 if isdir(join(self.repo_path, item)):
                     elements.append(
                         f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item}"

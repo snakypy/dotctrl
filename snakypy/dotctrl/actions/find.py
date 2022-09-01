@@ -1,6 +1,7 @@
 from os import walk
-from os.path import isdir, join
+from os.path import join
 from pydoc import pager
+from snakypy.dotctrl import __info__
 
 from snakypy.helpers import FG, NONE, printer
 
@@ -9,11 +10,16 @@ from snakypy.dotctrl.config.base import Base
 
 def listing_objects(directory) -> list:
     objects = list()
+
     for root, directories, files in walk(directory):
         for file in files:
-            objects.append(join(root, file))
+            filepath = join(root, file).replace(f"{directory}/", "")
+            objects.append(filepath)
+
         for dir_ in directories:
-            objects.append(join(root, dir_))
+            dirpath = join(root, dir_).replace(f"{directory}/", "")
+            objects.append(dirpath)
+
     return objects
 
 
@@ -25,16 +31,16 @@ class FindCommand(Base):
         if len(list(listing_objects(self.repo_path))) == 0:
             printer("Repository is empty. No elements.", foreground=FG().WARNING)
             return False
-        elements = [f'{FG().CYAN}[ Search: ] (Type "q" to exit) {NONE}']
+
+        elements = [
+            f"{FG().YELLOW}[!] The elements below are found in the "
+            f'"{FG().MAGENTA}{self.repo_path}{FG().YELLOW}" directory of {__info__["name"]}:',
+            f'\n{FG().CYAN}[ Search: ] (Type "q" to exit) {NONE}',
+        ]
+
         for item in listing_objects(self.repo_path):
             if arguments["--name"] == item.split("/")[-1]:
-                if isdir(item):
-                    elements.append(
-                        f"{FG().CYAN}➜{FG().MAGENTA} Directory path: {NONE}{item}"
-                    )
-                else:
-                    elements.append(
-                        f"{FG().CYAN}➜{FG().MAGENTA} File path: {NONE}{item}"
-                    )
+                elements.append(f"{FG().CYAN}➜{FG().MAGENTA} Element: {NONE}{item}")
+
         pager("\n".join(elements))
         return True

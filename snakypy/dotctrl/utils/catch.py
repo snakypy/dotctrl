@@ -1,7 +1,6 @@
 # import os
-from glob import glob
 from os import walk
-from os.path import isfile, islink, join
+from os.path import join
 
 from docopt import docopt
 from snakypy.helpers import FG
@@ -20,28 +19,12 @@ def arguments(argv=None) -> dict:
     return data
 
 
-def listing_files(directory, only_rc_files=False) -> list:
+def listing_files(directory) -> list:
     """Lists files from a specific directory."""
     objects = list()
-    if only_rc_files:
-        for file in glob(join(directory, ".*rc"), recursive=False):
-            if isfile(file) and not islink(file):
-                objects.append(file.split("/")[-1])
-        return objects
-    for r, d, f in walk(directory):
-        for file in f:
-            elem = join(r, file)
+    for root, _, files in walk(directory):
+        for file in files:
+            elem = join(root, file)
             elem = elem.replace(f"{directory}/", "")
             objects.append(elem)
     return objects
-
-
-def count_objects(path: str) -> tuple:
-    directories, files = [], []
-    for r, d, f in walk(path):
-        for file in f:
-            files.append(file)
-        for dir_ in d:
-            directories.append(dir_)
-    total = files + directories
-    return len(files), len(directories), len(total)

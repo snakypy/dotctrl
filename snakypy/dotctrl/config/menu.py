@@ -50,7 +50,7 @@ OPTIONS:
                                   directory. On Linux it will create in "/home", on macOS in "/Users".
                                   You must have super user permission.
     {FG().BLUE}--info{NONE} ---------------------- Shows detailed information for the Do Ctrl repository.
-    {FG().BLUE}--reg{NONE} ----------------------- Registration of imported elements.
+    {FG().BLUE}--reg{NONE} ----------------------- List all files and folders in the {__info__["name"]} repository.
     {FG().BLUE}--name <object>{NONE} ------------- Receives the name of an object, it can be a folder or a file.
     {FG().BLUE}--f | --force{NONE} --------------- Complete the command regardless of whether or not files exist.
                                   ATTENTION! Using this option will replace existing files.
