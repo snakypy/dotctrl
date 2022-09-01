@@ -30,9 +30,11 @@ class FindCommand(Base):
             if arguments["--name"] == item.split("/")[-1]:
                 if isdir(item):
                     elements.append(
-                        f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item}"
+                        f"{FG().CYAN}➜{FG().MAGENTA} Directory path: {NONE}{item}"
                     )
                 else:
-                    elements.append(f"{FG().CYAN}➜{FG().MAGENTA} File: {NONE}{item}")
+                    elements.append(
+                        f"{FG().CYAN}➜{FG().MAGENTA} File path: {NONE}{item}"
+                    )
         pager("\n".join(elements))
         return True
