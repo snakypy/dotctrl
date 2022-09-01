@@ -28,18 +28,6 @@ class RepoCommand(Base):
                 ):
                     yield item
 
-    # @property
-    # def listing_data_imported(self) -> Any:
-    #     for item in {*listing_files(self.repo_path, only_rc_files=True), *self.data}:
-    #         if exists(join(self.repo_path, item)):
-    #             yield item
-    #
-    # @property
-    # def listing_data_check(self) -> Any:
-    #     for item in {*listing_files(self.repo_path, only_rc_files=True), *self.data}:
-    #         if exists(join(self.repo_path, item)) and not islink(join(self.HOME, item)):
-    #             yield item
-
     def main(self, arguments: dict) -> bool:
         check_init(self.ROOT)
         if arguments["--check"]:
