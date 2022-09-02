@@ -66,7 +66,7 @@ def run_restore():
 
 @assign_cli(args, "--credits")
 def run_credits():
-    CreditsCommand().main()
+    CreditsCommand(ROOT, HOME).main()
 
 
 @denying_os("Windows")
