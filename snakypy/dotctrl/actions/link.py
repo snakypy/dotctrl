@@ -1,11 +1,9 @@
 from os.path import join, exists
 
 from snakypy.helpers import FG, printer
-from snakypy.dotctrl import __info__
 
 from snakypy.dotctrl.config.base import Base, ElementForce
 from snakypy.dotctrl.utils import (
-    check_init,
     create_symlink,
     path_creation,
     rm_garbage_config,
@@ -37,8 +35,6 @@ class LinkCommand(Base, ElementForce):
 
         rm_garbage_config(self.HOME, self.repo_path, self.config_path)
 
-        check_init(self.ROOT)
-
         element = self.element(arguments)
         force = self.force(arguments)
 
@@ -55,28 +51,23 @@ class LinkCommand(Base, ElementForce):
                 and is_repo_symbolic_link(file_home, file_repo) is False
                 and not force
             ):
-                printer(
-                    "Link(s) was found, but maybe it can be linked from another location, but it's not "
-                    f"from the {__info__['name']} repository. \n"
-                    f"If you want to link to the {__info__['name']} repository, use the --force (--f) option."
-                    " option to recreate.",
-                    foreground=FG().WARNING,
-                )
+                printer(f"{self.msg['str:11']}", foreground=FG().WARNING)
                 return False
 
             status = create_symlink(file_repo, file_home, force)
 
             if not status:
                 printer(
-                    f'Element "{file_repo}" not linked. Review the same in the repository.',
+                    f'{self.msg["words"][3]} "{file_repo}" {self.msg["str:12"]} {self.msg["str:13"]}',
                     foreground=FG().ERROR,
                 )
 
+            printer(f"{self.msg['str:15']}", foreground=FG().FINISH)
             return True
 
         # If you don't use the --element flag (--e)
         if len(self.links_to_do(self.data, self.repo_path, self.HOME)) == 0:
-            printer("Nothing to linked, en masse.", foreground=FG().WARNING)
+            printer(f"{self.msg['str:14']}", foreground=FG().WARNING)
             return False
         else:
             for item in self.links_to_do(self.data, self.repo_path, self.HOME):
@@ -91,15 +82,9 @@ class LinkCommand(Base, ElementForce):
                     and is_repo_symbolic_link(file_home, file_repo) is False
                     and not force
                 ):
-                    printer(
-                        "Link(s) was found, but maybe it can be linked from another location, but it's not "
-                        f"from the {__info__['name']} repository. \n"
-                        f"If you want to link to the {__info__['name']} repository, use the --force (--f) option."
-                        " option to recreate.",
-                        foreground=FG(warning_icon="[!] ").WARNING,
-                    )
+                    printer(f"{self.msg['str:11']}", foreground=FG().WARNING)
                     return False
 
                 create_symlink(file_repo, file_home, force)
 
-            printer("Element(s) linked successfully!", foreground=FG().FINISH)
+            printer(f"{self.msg['str:15']}", foreground=FG().FINISH)

@@ -1,5 +1,5 @@
 from os import environ, listdir
-from os.path import exists, isdir, join, realpath
+from os.path import exists, isdir, join
 from pydoc import pager
 from textwrap import dedent
 from typing import Any
@@ -10,11 +10,10 @@ from snakypy.helpers.ansi import NONE
 
 from snakypy.dotctrl import __info__
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import check_init, listing_files, is_repo_symbolic_link
+from snakypy.dotctrl.utils import listing_files, is_repo_symbolic_link
 
 
 class RepoCommand(Base):
-    # TODO: Verifica se o link existente é o mesmo do repo do Dotctrl.
     def __init__(self, root, home):
         Base.__init__(self, root, home)
         self.opts = ("--reg", "--check", "--info")
@@ -48,7 +47,6 @@ class RepoCommand(Base):
                     yield item
 
     def main(self, arguments: dict) -> bool:
-        check_init(self.ROOT)
 
         # --check
         if arguments[self.opts[1]]:
@@ -56,70 +54,84 @@ class RepoCommand(Base):
             count_unlinked = len(list(self.listing_data(arguments))) == 0
 
             if count_repo:
-                printer("Empty repository. Nothing to link.", foreground=FG().FINISH)
+                printer(f"{self.msg['str:19']}", foreground=FG().FINISH)
                 return True
 
             if count_unlinked:
                 printer(
-                    f"{FG().MAGENTA}Congratulations! {FG().GREEN}All elements are linked.",
+                    f"{FG().MAGENTA}{self.msg['words'][7]} {FG().GREEN}{self.msg['str:21']}",
                     foreground=FG().FINISH,
                 )
                 return True
 
             printer(
-                f"The elements below are {FG().RED}NOT{FG().YELLOW} linked! ",
-                foreground=FG(warning_icon="\n[!] ").WARNING,
+                f"{self.msg['str:22']}", foreground=FG(warning_icon="\n[!] ").WARNING
             )
             printer(
-                "\nElement(s):",
+                f"\n{self.msg['words'][3]}(s):",
                 foreground=FG().CYAN,
             )
 
             for item in self.listing_data(arguments):
                 if isdir(join(self.repo_path, item)):
-                    print(f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item}")
+                    print(
+                        f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][5]}: {NONE}{item}"
+                    )
                 else:
-                    print(f"{FG().CYAN}➜{FG().MAGENTA} File: {NONE}{item}")
+                    print(
+                        f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][0]}: {NONE}{item}"
+                    )
 
             return False
 
         # --info
         elif arguments[self.opts[2]]:
-            dotctrl_path = "active" if environ.get("DOTCTRL_PATH") else "disabled"
-            counts = self.count_elements(join(self.ROOT, __info__["pkg_name"]))
-            info = dedent(
-                f"""
-            {SGR().BOLD}Repository info{NONE}
-            {FG().BLUE}Path: {FG().GREEN}{self.ROOT}
-            {FG().BLUE}Files: {FG().YELLOW} {SGR().BOLD} {counts[0]} {NONE} {FG().GREEN} unit(s)
-            {FG().BLUE}Directories: {FG().YELLOW} {SGR().BOLD} {counts[1]} {NONE} {FG().GREEN} unit(s)
-            {FG().BLUE}Total: {FG().YELLOW} {SGR().BOLD} {counts[2]} {NONE} {FG().GREEN} element(s)
-            {FG().BLUE}DOTCTRL_PATH: {FG().GREEN}{dotctrl_path}"""
+            dotctrl_path = (
+                self.msg["words"][9]
+                if environ.get("DOTCTRL_PATH")
+                else self.msg["words"][10]
             )
-            print(info)
+            counts = self.count_elements(join(self.ROOT, __info__["pkg_name"]))
+
+            path_ = f'{FG().BLUE}{self.msg["words"][2]}'
+            files_ = f'{FG().BLUE}{self.msg["words"][1]}'
+            unit_ = f"{self.msg['words'][8]}(s)"
+            dirs_ = f'{FG().BLUE}{self.msg["words"][6]}'
+            elem_ = f"{self.msg['words'][3]}(s)"
+
+            info = f"""
+            {SGR().BOLD}{self.msg['str:23']}{NONE}
+            {path_}: {FG().GREEN}{self.ROOT}
+            {files_}: {FG().YELLOW}{SGR().BOLD}{counts[0]}{NONE}{FG().GREEN} {unit_}
+            {dirs_}: {FG().YELLOW} {SGR().BOLD} {counts[1]} {NONE} {FG().GREEN} {unit_}
+            {FG().BLUE}Total: {FG().YELLOW} {SGR().BOLD} {counts[2]} {NONE} {FG().GREEN} {elem_}
+            {FG().BLUE}DOTCTRL_PATH: {FG().GREEN}{dotctrl_path}"""
+
+            print(dedent(info))
             return True
 
         # --reg
         elif arguments[self.opts[0]]:
             if len(list(self.listing_data(arguments))) == 0:
                 printer(
-                    "The repository is empty of registration. No elements.",
-                    foreground=FG(warning_icon="[!] ").WARNING,
+                    f"{self.msg['str:24']}", foreground=FG(warning_icon="[!] ").WARNING
                 )
                 return False
 
             elements = [
-                f"{FG().YELLOW}Dotctrl repository element registration.{NONE}\n",
-                f'{FG().CYAN}[ Element(s) ] (Type "q" to exit) {NONE}',
+                f"{FG().YELLOW}{self.msg['str:25']}{NONE}\n",
+                f"{FG().CYAN}{self.msg['str:26']} {NONE}",
             ]
             for item in self.listing_data(arguments):
                 # elem_home = join(self.HOME, item)
                 if isdir(join(self.repo_path, item)):
                     elements.append(
-                        f"{FG().CYAN}➜{FG().MAGENTA} Directory: {NONE}{item}"
+                        f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][5]}: {NONE}{item}"
                     )
                 else:
-                    elements.append(f"{FG().CYAN}➜{FG().MAGENTA} File: {NONE}{item}")
+                    elements.append(
+                        f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][0]}: {NONE}{item}"
+                    )
             pager("\n".join(elements))
             return True
         return False

@@ -1,7 +1,6 @@
 from os import walk
 from os.path import join
 from pydoc import pager
-from snakypy.dotctrl import __info__
 
 from snakypy.helpers import FG, NONE, printer
 
@@ -28,19 +27,21 @@ class FindCommand(Base):
         Base.__init__(self, root, home)
 
     def main(self, arguments: dict):
+
         if len(list(listing_objects(self.repo_path))) == 0:
-            printer("Repository is empty. No elements.", foreground=FG().WARNING)
+            printer(f"{self.msg['str:2']}", foreground=FG().WARNING)
             return False
 
         elements = [
-            f"{FG().YELLOW}[!] The elements below are found in the "
-            f'"{FG().MAGENTA}{self.repo_path}{FG().YELLOW}" directory of {__info__["name"]}:',
-            f'\n{FG().CYAN}[ Search: ] (Type "q" to exit) {NONE}',
+            f"{FG().YELLOW}{self.msg['str:3']}{NONE}\n",
+            f"{FG().CYAN}{self.msg['str:4']}{NONE}",
         ]
 
         for item in listing_objects(self.repo_path):
             if arguments["--name"] == item.split("/")[-1]:
-                elements.append(f"{FG().CYAN}➜{FG().MAGENTA} Element: {NONE}{item}")
+                elements.append(
+                    f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][3]}: {NONE}{item}"
+                )
 
         pager("\n".join(elements))
         return True

@@ -10,7 +10,6 @@ from snakypy.helpers.os import rmdir_blank
 
 from snakypy.dotctrl.config.base import Base, ElementForce
 from snakypy.dotctrl.utils import (
-    check_init,
     listing_files,
     path_creation,
     remove_objects,
@@ -37,7 +36,7 @@ def restore_action(
     if exists(src) and exists(dst) and not force:
         printer(
             "Elements correspond to the repository and the place of origin. "
-            "User --force or --f.",
+            "User --force (--f).",
             foreground=FG().WARNING,
         )
         exit(0)
@@ -70,8 +69,6 @@ class RestoreCommand(Base, ElementForce):
     def main(self, arguments: dict) -> None:
         """Method to restore dotfiles from the repository to their
         original location."""
-
-        check_init(self.ROOT)
 
         # Uncomment to remove the element from the registry.
         # rm_garbage_config(self.HOME, self.repo_path, self.config_path)

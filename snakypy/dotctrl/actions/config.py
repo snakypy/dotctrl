@@ -7,7 +7,6 @@ from sys import exit
 from snakypy.helpers.files import read_file
 
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import check_init
 
 
 def editor_run(editor, config):
@@ -25,7 +24,6 @@ class ConfigCommand(Base):
 
     def main(self, arguments) -> None:
         """Method for opening or viewing the configuration file."""
-        check_init(self.ROOT)
 
         if arguments["--open"]:
             editor_conf = self.parsed["dotctrl"]["config"]["editor"]

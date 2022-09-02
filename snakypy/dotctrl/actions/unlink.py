@@ -6,12 +6,10 @@ from snakypy.helpers import FG, printer
 
 from snakypy.dotctrl.config.base import Base, ElementForce
 from snakypy.dotctrl.utils import (
-    check_init,
     join_two,
     rm_garbage_config,
     is_repo_symbolic_link,
 )
-from snakypy.dotctrl import __info__
 
 
 def unlinks_to_do(data, repo_dir, home_dir):
@@ -33,8 +31,6 @@ class UnlinkCommand(Base, ElementForce):
         """Method to unlink point files from the repository
         with their place of origin."""
 
-        check_init(self.ROOT)
-
         rm_garbage_config(self.HOME, self.repo_path, self.config_path)
 
         element = self.element(arguments)
@@ -51,10 +47,7 @@ class UnlinkCommand(Base, ElementForce):
                 and not force
             ):
                 printer(
-                    f"{__info__['name']} found links in the source location, but they are not "
-                    f"from the {__info__['name']} repository. If you want to turn it off, "
-                    "use the --force (--f) option.",
-                    foreground=FG().WARNING,
+                    f"{self.msg['str:27']}", foreground=FG(warning_icon="[!]").WARNING
                 )
                 return False
 
@@ -64,15 +57,16 @@ class UnlinkCommand(Base, ElementForce):
                     remove(file_home)
                     return True
 
+            # Element not found.
             printer(
-                f'Element "{file_home}" not unlinked. Element not found.',
-                foreground=FG().ERROR,
+                f'{self.msg["words"][3]} "{file_home}" {self.msg["str:28"]}. {self.msg["str:29"]}',
+                foreground=FG(error_icon="[x] ").ERROR,
             )
             return False
 
         # Not use option --element (--e)
         if len(unlinks_to_do(self.data, self.repo_path, self.HOME)) == 0:
-            printer("Nothing to unlinked, en masse.", foreground=FG().WARNING)
+            printer(f'{self.msg["str:30"]}', foreground=FG().WARNING)
             return False
         else:
             for item in unlinks_to_do(self.data, self.repo_path, self.HOME):
@@ -82,5 +76,5 @@ class UnlinkCommand(Base, ElementForce):
                     with suppress(Exception):
                         remove(file_home)
 
-            printer("Massively unlinked links successfully!", foreground=FG().FINISH)
+            printer(f'{self.msg["str:31"]}', foreground=FG().FINISH)
         return True

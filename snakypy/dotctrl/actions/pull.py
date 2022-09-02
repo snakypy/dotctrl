@@ -5,7 +5,6 @@ from snakypy.helpers import FG, printer
 from snakypy.dotctrl.config.base import Base, ElementForce
 from snakypy.dotctrl.utils import (
     add_element_config,
-    check_init,
     join_two,
     path_creation,
     rm_garbage_config,
@@ -32,8 +31,6 @@ class PullCommand(Base, ElementForce):
         """Method responsible for pulling the elements from the
         place of origin to the repository."""
 
-        check_init(self.ROOT)
-
         rm_garbage_config(self.HOME, self.repo_path, self.config_path)
 
         element = self.element(arguments)
@@ -50,9 +47,7 @@ class PullCommand(Base, ElementForce):
             add_element_config(file_home, element, self.config_path)
 
             if not exists(file_home) or islink(file_home):
-                printer(
-                    "Nothing was pulled. Nonexistent element.", foreground=FG().ERROR
-                )
+                printer(f"{self.msg['str:16']}", foreground=FG().ERROR)
                 return False
 
             to_move(file_home, file_repo, force)
@@ -60,7 +55,7 @@ class PullCommand(Base, ElementForce):
 
         # If you don't use the --element flag (--e)
         if len(pulled_to_do(self.data, self.HOME)) == 0:
-            printer("Nothing to pull, in droves.", foreground=FG().WARNING)
+            printer(f"{self.msg['str:17']}", foreground=FG().WARNING)
             return False
 
         for item in self.data:
@@ -70,5 +65,5 @@ class PullCommand(Base, ElementForce):
                 if not islink(file_home) and exists(file_home):
                     path_creation(self.repo_path, item)
             to_move(file_home, file_repo, force)
-        printer("Element(s) pulled successfully!", foreground=FG().FINISH)
+        printer(f"{self.msg['str:18']}", foreground=FG().FINISH)
         return True

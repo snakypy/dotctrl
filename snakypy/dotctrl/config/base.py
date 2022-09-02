@@ -6,6 +6,8 @@ from snakypy.helpers import FG, printer
 from snakypy.helpers.files import read_json
 
 from snakypy.dotctrl import __info__
+from snakypy.dotctrl.utils import lang_sys
+from snakypy.dotctrl.config.lang import LANG
 
 
 class Base:
@@ -23,15 +25,34 @@ class Base:
             self.parsed = read_json(self.config_path)
             self.elements = list(self.parsed["dotctrl"]["elements"])
             self.data = self.elements
-        except FileNotFoundError as err:
-            printer("Configuration file not found.", str(err), foreground=FG().ERROR)
-        except Exception as err:
+
+        except FileNotFoundError:
+
             printer(
-                "An error occurred while reading the configuration file.",
-                str(err),
-                foreground=FG().ERROR,
+                f"{self.msg['str:32']} ({self.config_path}).",
+                foreground=FG(error_icon="[x] ").ERROR,
             )
+            printer(f"{self.msg['str:34']}", foreground=FG(warning_icon="[!] ").WARNING)
             exit(1)
+
+        except Exception as err:
+            printer(f"{self.msg['str:33']}", str(err), foreground=FG().ERROR)
+            exit(1)
+
+    @property
+    def msg(self):
+        return LANG[lang_sys(LANG)]
+
+    # def check_init(root) -> None:
+    #     """Function that ends commands that depend on the created repository, but
+    #     the repository was not created."""
+    #     if not exists(join(root, __info__["config"])):
+    #         printer(
+    #             f"The repository was not created. "
+    #             f"Use \"{__info__['pkg_name']} init [--auto | --git]\". Aborted",
+    #             foreground=FG().WARNING,
+    #         )
+    #         exit(1)
 
 
 class ElementForce:
