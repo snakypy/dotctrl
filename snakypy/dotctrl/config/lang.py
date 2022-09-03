@@ -67,6 +67,11 @@ LANG = {
         "str:34": "Probably the repository was not created. Use: dotctrl init [--auto | --git ]",
         "str:35": "Cleaning completed!",
         "str:36": "Nothing to clean!",
+        "str:37": f"""
+
+        Files with the same name were found in the {__info__['name']} repository and source location.
+        To override those in the {__info__['name']} repository, use the --force (--f) option.
+        """,
     },
     "pt_BR": {
         "words": (
@@ -133,5 +138,10 @@ LANG = {
         "str:34": "Provavelmente o repositório não foi criado. Use: dotctrl init [--auto | --git ]",
         "str:35": "Limpeza concluida!",
         "str:36": "Nada a limpar!",
+        "str:37": f"""
+
+        Arquivos com o mesmo nome foram encontrados no repositório {__info__['name']} e no local de origem.
+        Para substituir os do repositorio do {__info__['name']}, use a opção --force (--f).
+        """,
     },
 }
