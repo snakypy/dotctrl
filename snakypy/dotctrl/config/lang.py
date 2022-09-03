@@ -47,12 +47,15 @@ LANG = {
         "str:17": "Nothing to pull, in droves.",
         "str:18": "Element(s) pulled successfully!",
         "str:19": "Empty repository. Nothing to link.",
+        "str:20": "Not linked!",
         "str:21": "All elements are linked.",
         "str:22": "The elements below are NOT linked!",
         "str:23": f"{__info__['name']} Repository info:",
         "str:24": "The repository is empty of registration. No elements.",
-        "str:25": f"{__info__['name']} repository element(s) list.",
-        "str:26": '[ Element(s) ] (Type "q" to exit)',
+        "str:25": (
+            f'{__info__["name"]} repository element(s) list. (Type "q" to exit)'
+        ),
+        "str:26": "   Type  | Element  |  Simbolic Link\n",
         "str:27": f"""
 
         {__info__['name']} found links in the source location, but they are not
@@ -119,12 +122,16 @@ LANG = {
         "str:17": "Nada para puxar, em massa.",
         "str:18": "Elemento(s) puxado(s) com sucesso!",
         "str:19": "Repositório vazio. Nada a ligar.",
+        "str:20": "Não linkado!",
         "str:21": "Todos os elementos estão ligados.",
         "str:22": "Os elementos abaixo NÃO estão vinculados!",
         "str:23": f"Informações do repositório {__info__['name']}:",
         "str:24": "O repositório está vazio de registro. Sem elementos.",
-        "str:25": f"Lista do(s) elemento(s) do repositório {__info__['name']}.",
-        "str:26": '[ Elementos ] (Digite "q" para sair)',
+        "str:25": (
+            f'Lista do(s) elemento(s) do repositório {__info__["name"]}. '
+            '(Digite "q" para sair)'
+        ),
+        "str:26": "   Tipo  | Elemento  |  Link simbólico\n",
         "str:27": f"""
 
         {__info__['name']} encontrou links no local de origem, mas eles não são
