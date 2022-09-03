@@ -55,6 +55,8 @@ class UnlinkCommand(Base, ElementForce):
                     remove(file_home)
                     return True
 
+            # TODO: Add message print UNLINKED
+
             # Element not found.
             printer(
                 f'{self.msg["words"][3]} "{file_home}" {self.msg["str:28"]}. {self.msg["str:29"]}',

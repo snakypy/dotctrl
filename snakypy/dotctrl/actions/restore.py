@@ -61,9 +61,10 @@ class RestoreCommand(Base, ElementForce):
         rmdir_blank(self.repo_path)
 
     def restore(self, obj_origin: str, obj_repo: str):
-        # TODO: Criar lógica
+        # TODO: BUGFIX Restore logical
 
         if not exists(obj_repo):
+            # TODO: Changing printer
             printer("Use dotctrl config --autoclean")
             exit(0)
 
@@ -73,6 +74,7 @@ class RestoreCommand(Base, ElementForce):
             elif islink(obj_origin):
                 if not is_repo_symbolic_link(obj_origin, obj_repo):
                     # TODO: [Adicionar o texto do print AQUI]
+                    # TODO: Changing printer
                     print(
                         "Existe link mas não é vinculado com o repositorio do Dotctrl"
                         "Faça a manutenção manualmente"
