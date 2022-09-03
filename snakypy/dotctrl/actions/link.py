@@ -6,7 +6,6 @@ from snakypy.dotctrl.config.base import Base, ElementForce
 from snakypy.dotctrl.utils import (
     create_symlink,
     path_creation,
-    rm_garbage_config,
     is_repo_symbolic_link,
 )
 
@@ -33,8 +32,6 @@ class LinkCommand(Base, ElementForce):
         """Method responsible for creating symbolic links from the
         repository to the place of origin of the elements."""
 
-        rm_garbage_config(self.HOME, self.repo_path, self.config_path)
-
         element = self.element(arguments)
         force = self.force(arguments)
 
@@ -57,16 +54,19 @@ class LinkCommand(Base, ElementForce):
             status = create_symlink(file_repo, file_home, force)
 
             if not status:
+                # TODO: [Adicionar o texto do print AQUI]
                 printer(
                     f'{self.msg["words"][3]} "{file_repo}" {self.msg["str:12"]} {self.msg["str:13"]}',
                     foreground=FG().ERROR,
                 )
 
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f"{self.msg['str:15']}", foreground=FG().FINISH)
             return True
 
         # If you don't use the --element flag (--e)
         if len(self.links_to_do(self.data, self.repo_path, self.HOME)) == 0:
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f"{self.msg['str:14']}", foreground=FG().WARNING)
             return False
         else:
@@ -82,9 +82,11 @@ class LinkCommand(Base, ElementForce):
                     and is_repo_symbolic_link(file_home, file_repo) is False
                     and not force
                 ):
+                    # TODO: [Adicionar o texto do print AQUI]
                     printer(f"{self.msg['str:11']}", foreground=FG().WARNING)
                     return False
 
                 create_symlink(file_repo, file_home, force)
 
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f"{self.msg['str:15']}", foreground=FG().FINISH)
