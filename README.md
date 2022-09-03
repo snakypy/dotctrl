@@ -57,8 +57,6 @@ See a demo:
 
 * Create multiple repositories for your files;
 * Don't create huge manual symlinks;
-* Automatically manages dotfiles ending with rc in the user's `$HOME`;
-* Automatically manages the main configuration files of the editors: Atom, Sublime Text and Visual Studio Code;
 * The **Dotctrl** repository stores the same path structure as its original location;
 * Manage single or bulk elements;
 * Restores repository elements to their original location with a single command;
