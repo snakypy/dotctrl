@@ -15,6 +15,8 @@ LANG = {
             "Unit",
             "Active",
             "Disabled",
+            "Yes",
+            "No",
         ),
         "str:1": "Offered by:",
         "str:2": "Repository is empty. No elements.",
@@ -49,7 +51,7 @@ LANG = {
         "str:22": "The elements below are NOT linked!",
         "str:23": f"{__info__['name']} Repository info:",
         "str:24": "The repository is empty of registration. No elements.",
-        "str:25": f"{__info__['name']} repository element(s) registration.",
+        "str:25": f"{__info__['name']} repository element(s) list.",
         "str:26": '[ Element(s) ] (Type "q" to exit)',
         "str:27": f"""
 
@@ -63,6 +65,8 @@ LANG = {
         "str:32": "Configuration file not found",
         "str:33": "An error occurred while reading the configuration file.",
         "str:34": "Probably the repository was not created. Use: dotctrl init [--auto | --git ]",
+        "str:35": "Cleaning completed!",
+        "str:36": "Nothing to clean!",
     },
     "pt_BR": {
         "words": (
@@ -77,6 +81,8 @@ LANG = {
             "Unidade",
             "Ativo",
             "Desativado",
+            "Sim",
+            "Não",
         ),
         "str:1": "Oferecido por:",
         "str:2": "Repositório está vazio. Sem elementos.",
@@ -112,7 +118,7 @@ LANG = {
         "str:22": "Os elementos abaixo NÃO estão vinculados!",
         "str:23": f"Informações do repositório {__info__['name']}:",
         "str:24": "O repositório está vazio de registro. Sem elementos.",
-        "str:25": f"Registro do(s) elemento(s) do repositório {__info__['name']}.",
+        "str:25": f"Lista do(s) elemento(s) do repositório {__info__['name']}.",
         "str:26": '[ Elementos ] (Digite "q" para sair)',
         "str:27": f"""
 
@@ -125,5 +131,7 @@ LANG = {
         "str:32": "Arquivo de configuração não encontrado",
         "str:33": "Ocorreu um erro ao ler o arquivo de configuração.",
         "str:34": "Provavelmente o repositório não foi criado. Use: dotctrl init [--auto | --git ]",
+        "str:35": "Limpeza concluida!",
+        "str:36": "Nada a limpar!",
     },
 }
