@@ -29,6 +29,12 @@ class RepoCommand(Base):
         total = files + directories
         return len(files), len(directories), len(total)
 
+    def simlink_path(self, linkpath: str, repopath: str) -> str:
+        if is_repo_symbolic_link(linkpath, repopath):
+            return f"{NONE}{linkpath}"
+        # TODO: [Adicionar o texto do print AQUI]
+        return f"{FG().RED}{SGR().BOLD}{self.msg['str:20']}{NONE}"
+
     def listing_data(self, arguments) -> Any:
         if arguments[self.opts[0]]:
 
@@ -129,21 +135,25 @@ class RepoCommand(Base):
                 )
                 return False
 
+            # TODO: [Adicionar o texto do print AQUI]
             elements = [
                 f"{FG().YELLOW}{self.msg['str:25']}{NONE}\n",
                 f"{FG().CYAN}{self.msg['str:26']} {NONE}",
             ]
+            sep = f"{FG().CYAN} | {NONE}"
 
-            # TODO: Mostrar vinculo. Ex: file.txt -> dotctrl/file.txt
             for item in self.listing_data(arguments):
                 # elem_home = join(self.HOME, item)
+                ret = self.simlink_path(
+                    join(self.HOME, item), join(self.repo_path, item)
+                )
                 if isdir(join(self.repo_path, item)):
                     elements.append(
-                        f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][5]}: {NONE}{item}"
+                        f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][5]}{FG().GREEN}{item}{sep}{ret}"
                     )
                 else:
                     elements.append(
-                        f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][0]}: {NONE}{item}"
+                        f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][0]}{sep}{FG().GREEN}{item}{sep}{ret}"
                     )
             pager("\n".join(elements))
             return True
