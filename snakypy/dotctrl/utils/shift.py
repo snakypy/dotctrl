@@ -9,11 +9,9 @@ from snakypy.helpers.files import create_json, read_json
 
 
 def create_symlink(src, dst, arguments) -> bool:
-    """Creates symbolic links. In this case, the "src" is the
-        repository for dotctrl.
-    :param src: Dotctrl repository location
-    :param dst: Element source location
-    :param arguments: Receive a Docopt dictionary
+    """
+    Creates symbolic links. In this case, the "src" is the
+    repository for dotctrl.
     """
     if exists(src):
         # if exists(dst) and not arguments:
@@ -45,20 +43,14 @@ def create_symlink(src, dst, arguments) -> bool:
     return False
 
 
-def to_move(src: str, dst: str, arguments) -> bool:
-    """Moves the dot files from the drive to the repository.
-    :param arguments: Receive "Docopt" argument output
-    :param src: Element source location
-    :param dst: Dotctrl repository location
-    """
+def to_move(src: str, dst: str, message: str, force: bool) -> bool:
+    """Moves the dot files from the drive to the repository."""
+
     if not islink(src):
-        if exists(src) and exists(dst) and not arguments:
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(
-                "The same files were found in the dotctrl repository"
-                " and in the source location. Use --force (--f)",
-                foreground=FG().WARNING,
-            )
+        if exists(src) and exists(dst) and not force:
+            # Files with the same name were found in the Dotctrl repository and source location.
+            # To override those in the Dotctrl repository, use the --force (--f) option.
+            printer(message, foreground=FG(warning_icon="[!] ").WARNING)
             exit(0)
         else:
             with suppress(Exception):
