@@ -29,6 +29,8 @@ class FindCommand(Base):
     def main(self, arguments: dict):
 
         if len(list(listing_objects(self.repo_path))) == 0:
+
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f"{self.msg['str:2']}", foreground=FG().WARNING)
             return False
 

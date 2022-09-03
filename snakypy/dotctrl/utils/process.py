@@ -29,10 +29,12 @@ def super_command(commands: list) -> bool:
             )
             out, err = p.communicate(get_pass + "\n")
             if p.returncode != 0:
+                # TODO: [Adicionar o texto do print AQUI]
                 printer("Error in password authentication.", foreground=FG().ERROR)
                 return False
         return True
     except KeyboardInterrupt:
+        # TODO: [Adicionar o texto do print AQUI]
         printer("Aborted by user.", foreground=FG().WARNING)
         return False
     finally:

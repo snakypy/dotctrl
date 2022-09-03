@@ -28,31 +28,23 @@ class Base:
 
         except FileNotFoundError:
 
+            # TODO: [Adicionar o texto do print AQUI]
             printer(
                 f"{self.msg['str:32']} ({self.config_path}).",
                 foreground=FG(error_icon="[x] ").ERROR,
             )
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f"{self.msg['str:34']}", foreground=FG(warning_icon="[!] ").WARNING)
             exit(1)
 
         except Exception as err:
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f"{self.msg['str:33']}", str(err), foreground=FG().ERROR)
             exit(1)
 
     @property
     def msg(self):
         return LANG[lang_sys(LANG)]
-
-    # def check_init(root) -> None:
-    #     """Function that ends commands that depend on the created repository, but
-    #     the repository was not created."""
-    #     if not exists(join(root, __info__["config"])):
-    #         printer(
-    #             f"The repository was not created. "
-    #             f"Use \"{__info__['pkg_name']} init [--auto | --git]\". Aborted",
-    #             foreground=FG().WARNING,
-    #         )
-    #         exit(1)
 
 
 class ElementForce:

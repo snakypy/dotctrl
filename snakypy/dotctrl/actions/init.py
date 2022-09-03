@@ -23,6 +23,8 @@ class InitCommand(Base):
         init_auto = False
 
         if exists(self.config_path):
+
+            # TODO: [Adicionar o texto do print AQUI]
             printer(
                 f'{self.msg["str:6"]} "{self.config_path}".',
                 foreground=FG().FINISH,
@@ -44,6 +46,7 @@ class InitCommand(Base):
             if exists(join(path_current, __info__["config"])):
                 dir_ = f"{FG().BLUE}{path_current}{FG().YELLOW}"
 
+                # TODO: [Adicionar o texto do print AQUI]
                 printer(
                     f'{__info__["name"]} {self.msg["str:7"]} "{dir_}"',
                     foreground=FG().WARNING,
@@ -56,7 +59,10 @@ class InitCommand(Base):
             """
             )
 
+            # TODO: [Adicionar o texto do print AQUI]
             printer(message_initial, foreground=FG().YELLOW)
+
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f"{self.msg['str:9']}", foreground=FG().QUESTION)
 
             user_current = whoami()
@@ -74,6 +80,7 @@ class InitCommand(Base):
             create_json(config.content, self.config_path, force=True)
             create_file(readme.content, self.readme, force=True)
 
+            # TODO: [Adicionar o texto do print AQUI]
             printer(
                 f"{self.msg['str:10']} {join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])}",
                 foreground=FG().FINISH,
@@ -82,4 +89,5 @@ class InitCommand(Base):
             init_auto = True
 
         if not init_auto:
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f"{self.msg['str:10']} {self.repo_path}", foreground=FG().FINISH)
