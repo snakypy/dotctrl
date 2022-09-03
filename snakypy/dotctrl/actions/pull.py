@@ -49,7 +49,7 @@ class PullCommand(Base, ElementForce):
                 printer(f"{self.msg['str:16']}", foreground=FG().ERROR)
                 return False
 
-            to_move(file_home, file_repo, force)
+            to_move(file_home, file_repo, self.msg["str:37"], force)
             return True
 
         # If you don't use the --element flag (--e)
@@ -64,7 +64,7 @@ class PullCommand(Base, ElementForce):
             if "/" in item:
                 if not islink(file_home) and exists(file_home):
                     path_creation(self.repo_path, item)
-            to_move(file_home, file_repo, force)
+            to_move(file_home, file_repo, self.msg["str:37"], force)
 
         # TODO: [Adicionar o texto do print AQUI]
         printer(f"{self.msg['str:18']}", foreground=FG().FINISH)
