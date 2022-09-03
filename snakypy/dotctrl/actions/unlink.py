@@ -7,7 +7,6 @@ from snakypy.helpers import FG, printer
 from snakypy.dotctrl.config.base import Base, ElementForce
 from snakypy.dotctrl.utils import (
     join_two,
-    rm_garbage_config,
     is_repo_symbolic_link,
 )
 
@@ -31,8 +30,6 @@ class UnlinkCommand(Base, ElementForce):
         """Method to unlink point files from the repository
         with their place of origin."""
 
-        rm_garbage_config(self.HOME, self.repo_path, self.config_path)
-
         element = self.element(arguments)
         force = self.force(arguments)
 
@@ -46,6 +43,7 @@ class UnlinkCommand(Base, ElementForce):
                 and is_repo_symbolic_link(elem_home, elem_repo) is False
                 and not force
             ):
+                # TODO: [Adicionar o texto do print AQUI]
                 printer(
                     f"{self.msg['str:27']}", foreground=FG(warning_icon="[!]").WARNING
                 )
@@ -66,6 +64,7 @@ class UnlinkCommand(Base, ElementForce):
 
         # Not use option --element (--e)
         if len(unlinks_to_do(self.data, self.repo_path, self.HOME)) == 0:
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f'{self.msg["str:30"]}', foreground=FG().WARNING)
             return False
         else:
@@ -76,5 +75,6 @@ class UnlinkCommand(Base, ElementForce):
                     with suppress(Exception):
                         remove(file_home)
 
+            # TODO: [Adicionar o texto do print AQUI]
             printer(f'{self.msg["str:31"]}', foreground=FG().FINISH)
         return True

@@ -1,6 +1,6 @@
 from contextlib import suppress
 from os import remove, symlink
-from os.path import exists, isfile, islink, join
+from os.path import exists, isfile, islink
 from shutil import move, rmtree
 from sys import exit
 
@@ -53,6 +53,7 @@ def to_move(src: str, dst: str, arguments) -> bool:
     """
     if not islink(src):
         if exists(src) and exists(dst) and not arguments:
+            # TODO: [Adicionar o texto do print AQUI]
             printer(
                 "The same files were found in the dotctrl repository"
                 " and in the source location. Use --force (--f)",
@@ -66,46 +67,47 @@ def to_move(src: str, dst: str, arguments) -> bool:
     return False
 
 
-def remove_objects(obj):
+def remove_objects(object_path: str) -> None:
     """Removes objects according to the type of folder,
     file or symbolic link.
     :param obj: Object to be removed (files or folders).
     """
-    if isfile(obj) or islink(obj):
+    if isfile(object_path) or islink(object_path):
         with suppress(Exception):
-            remove(obj)
+            remove(object_path)
     else:
         with suppress(Exception):
-            rmtree(obj)
+            rmtree(object_path)
 
 
-def rm_garbage_config(
-    repo: str, home: str, config: str, only_repo: bool = False
-) -> None:
-    """Deletes elements in the configuration file that is
-    neither in the Dotctrl repository nor in the source location."""
-    parsed = read_json(config)
-    elements = parsed["dotctrl"]["elements"]
-    new_elements = list()
-    for item in elements:
-        if only_repo:
-            if exists(join(repo, item)):
-                new_elements.append(item)
-        else:
-            if exists(join(repo, item)) or exists(join(home, item)):
-                new_elements.append(item)
-    parsed["dotctrl"]["elements"] = new_elements
-    create_json(parsed, config, force=True)
+# # DEPRECATED
+# def rm_garbage_config(
+#     repo: str, home: str, config: str, only_repo: bool = False
+# ) -> None:
+#     """Deletes elements in the configuration file that is
+#     neither in the Dotctrl repository nor in the source location."""
+#     parsed = read_json(config)
+#     elements = parsed["dotctrl"]["elements"]
+#     new_elements = list()
+#     for item in elements:
+#         if only_repo:
+#             if exists(join(repo, item)):
+#                 new_elements.append(item)
+#         else:
+#             if exists(join(repo, item)) or exists(join(home, item)):
+#                 new_elements.append(item)
+#     parsed["dotctrl"]["elements"] = new_elements
+#     create_json(parsed, config, force=True)
 
 
-def add_element_config(src, element, config) -> bool:
+def add_element_config(src: str, element: str, config_path: str) -> bool:
     """Function that adds element to the configuration file
     when using the "pull --element=<object>" option."""
-    parsed = read_json(config)
+    parsed = read_json(config_path)
     if element not in parsed["dotctrl"]["elements"] and exists(src):
         lst = list(parsed["dotctrl"]["elements"])
         lst.append(element)
         parsed["dotctrl"]["elements"] = lst
-        create_json(parsed, config, force=True)
+        create_json(parsed, config_path, force=True)
         return True
     return False
