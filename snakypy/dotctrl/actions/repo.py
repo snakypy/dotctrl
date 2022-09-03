@@ -16,7 +16,7 @@ from snakypy.dotctrl.utils import listing_files, is_repo_symbolic_link
 class RepoCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
-        self.opts = ("--reg", "--check", "--info")
+        self.opts = ("--list", "--check", "--info")
 
     @staticmethod
     def count_elements(path: str) -> tuple:
@@ -54,19 +54,24 @@ class RepoCommand(Base):
             count_unlinked = len(list(self.listing_data(arguments))) == 0
 
             if count_repo:
+                # TODO: [Adicionar o texto do print AQUI]
                 printer(f"{self.msg['str:19']}", foreground=FG().FINISH)
                 return True
 
             if count_unlinked:
+                # TODO: [Adicionar o texto do print AQUI]
                 printer(
                     f"{FG().MAGENTA}{self.msg['words'][7]} {FG().GREEN}{self.msg['str:21']}",
                     foreground=FG().FINISH,
                 )
                 return True
 
+            # TODO: [Adicionar o texto do print AQUI]
             printer(
                 f"{self.msg['str:22']}", foreground=FG(warning_icon="\n[!] ").WARNING
             )
+
+            # TODO: [Adicionar o texto do print AQUI]
             printer(
                 f"\n{self.msg['words'][3]}(s):",
                 foreground=FG().CYAN,
@@ -74,10 +79,14 @@ class RepoCommand(Base):
 
             for item in self.listing_data(arguments):
                 if isdir(join(self.repo_path, item)):
+
+                    # TODO: [Adicionar o texto do print AQUI]
                     print(
                         f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][5]}: {NONE}{item}"
                     )
                 else:
+
+                    # TODO: [Adicionar o texto do print AQUI]
                     print(
                         f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][0]}: {NONE}{item}"
                     )
@@ -110,9 +119,11 @@ class RepoCommand(Base):
             print(dedent(info))
             return True
 
-        # --reg
+        # --list
         elif arguments[self.opts[0]]:
             if len(list(self.listing_data(arguments))) == 0:
+
+                # TODO: [Adicionar o texto do print AQUI]
                 printer(
                     f"{self.msg['str:24']}", foreground=FG(warning_icon="[!] ").WARNING
                 )
@@ -122,6 +133,8 @@ class RepoCommand(Base):
                 f"{FG().YELLOW}{self.msg['str:25']}{NONE}\n",
                 f"{FG().CYAN}{self.msg['str:26']} {NONE}",
             ]
+
+            # TODO: Mostrar vinculo. Ex: file.txt -> dotctrl/file.txt
             for item in self.listing_data(arguments):
                 # elem_home = join(self.HOME, item)
                 if isdir(join(self.repo_path, item)):
