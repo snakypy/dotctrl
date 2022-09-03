@@ -19,7 +19,6 @@ def menu():
         {__info__['executable']} init [--auto | --git]
         {__info__['executable']} pull [--e=<object> | --element=<object>] [--f | --force]
         {__info__['executable']} link [--e=<object> | --element=<object>] [--f | --force]
-        {__info__['executable']} copy [--e=<object> | --element=<object>] [--f | --force]
         {__info__['executable']} unlink [--e=<object> | --element=<object>] [--f | --force]
         {__info__['executable']} restore [--e=<object> | --element=<object>] [--f | --force]
         {__info__['executable']} repo (--check | --list | --info)
@@ -76,7 +75,6 @@ def menu():
         {__info__['executable']} init [--auto | --git]
         {__info__['executable']} pull [--e=<object> | --element=<object>] [--f | --force]
         {__info__['executable']} link [--e=<object> | --element=<object>] [--f | --force]
-        {__info__['executable']} copy [--e=<object> | --element=<object>] [--f | --force]
         {__info__['executable']} unlink [--e=<object> | --element=<object>] [--f | --force]
         {__info__['executable']} restore [--e=<object> | --element=<object>] [--f | --force]
         {__info__['executable']} repo (--check | --list | --info)
