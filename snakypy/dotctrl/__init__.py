@@ -21,7 +21,7 @@ from snakypy.helpers.files import eqversion
 
 __info__ = {
     "name": "Dotctrl",
-    "version": "1.6.0b1",
+    "version": "2.0.0b1",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
     "pkg_name": "dotctrl",
     "executable": "dotctrl",
