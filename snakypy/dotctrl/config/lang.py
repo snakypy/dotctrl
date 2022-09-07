@@ -27,7 +27,7 @@ LANG = {
         ),
         "cod:04": "",
         "cod:05": "[Cod:05] Elemento não linkado. Revise o mesmo no repositório:",
-        "cod:06": "O repositório já está definido em",
+        "cod:06": "O repositório já está definido em: ",
         "cod:07": f"{__info__['name']} já está configurado no diretório: ",
         "cod:08": (
             "Você deve ter permissão SUDO em sua máquina para prosseguir com esta etapa e criar "
