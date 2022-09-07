@@ -17,7 +17,7 @@ EN_US = f"""
 {__info__['name']} - Managing your dotfiles in $HOME on Linux or macOS.
 
 USAGE:
-    {__info__['executable']} init [--auto | --git]
+    {__info__['executable']} init [--auto] [--git]
     {__info__['executable']} pull [--e=<object> | --element=<object>] [--f | --force]
     {__info__['executable']} link [--e=<object> | --element=<object>] [--f | --force]
     {__info__['executable']} unlink [--e=<object> | --element=<object>] [--f | --force]
@@ -73,7 +73,7 @@ PT_BR = f"""
 {__info__['name']} - Gerenciando seus dotfiles do HOME no Linux ou macOS.
 
 USAGE:
-    {__info__['executable']} init [--auto | --git]
+    {__info__['executable']} init [--auto] [--git]
     {__info__['executable']} pull [--e=<object> | --element=<object>] [--f | --force]
     {__info__['executable']} link [--e=<object> | --element=<object>] [--f | --force]
     {__info__['executable']} unlink [--e=<object> | --element=<object>] [--f | --force]
