@@ -2,9 +2,8 @@ from contextlib import suppress
 from os import remove
 from os.path import islink, join, exists
 
-from snakypy.helpers import FG, printer
-
-from snakypy.dotctrl.config.base import Base, ElementForce
+from snakypy.dotctrl.config.base import Base, Options
+from snakypy.helpers import printer
 from snakypy.dotctrl.utils import (
     join_two,
     is_repo_symbolic_link,
@@ -21,62 +20,62 @@ def unlinks_to_do(data, repo_dir, home_dir):
     return objects
 
 
-class UnlinkCommand(Base, ElementForce):
+class UnlinkCommand(Base, Options):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
-        ElementForce.__init__(self)
+        Options.__init__(self)
 
     def main(self, arguments: dict) -> bool:
         """Method to unlink point files from the repository
         with their place of origin."""
+
+        self.checking_init()
 
         element = self.element(arguments)
         force = self.force(arguments)
 
         # Use option --element (--e)
         if element:
-            elem_repo = join(self.repo_path, element)
-            elem_home = join(self.HOME, element)
+            element_repo = join(self.repo_path, element)
+            element_home = join(self.home, element)
 
             if (
-                exists(elem_home)
-                and is_repo_symbolic_link(elem_home, elem_repo) is False
+                islink(element_home)
+                and is_repo_symbolic_link(element_home, element_repo) is False
                 and not force
             ):
                 # TODO: [Adicionar o texto do print AQUI]
-                printer(
-                    f"{self.msg['str:27']}", foreground=FG(warning_icon="[!]").WARNING
-                )
+                self.error_symlink(element_home)
                 return False
 
-            file_home = join_two(self.HOME, element)
-            if islink(file_home):
-                with suppress(Exception):
-                    remove(file_home)
-                    return True
+            element_home_ = join_two(self.home, element)
 
-            # TODO: Add message print UNLINKED
+            if islink(element_home_):
+                with suppress(Exception):
+                    remove(element_home_)
+                    # TODO: [Adicionar o texto do print AQUI]
+                    printer(self.cod["cod:12"], foreground=self.FINISH)
+                    return True
 
             # Element not found.
             printer(
-                f'{self.msg["words"][3]} "{file_home}" {self.msg["str:28"]}. {self.msg["str:29"]}',
-                foreground=FG(error_icon="[x] ").ERROR,
+                self.cod["cod:29"], f"Object: {element_home_}", foreground=self.ERROR
             )
             return False
 
         # Not use option --element (--e)
-        if len(unlinks_to_do(self.data, self.repo_path, self.HOME)) == 0:
+        if len(unlinks_to_do(self.data, self.repo_path, self.home)) == 0:
             # TODO: [Adicionar o texto do print AQUI]
-            printer(f'{self.msg["str:30"]}', foreground=FG().WARNING)
+            printer(self.cod["cod:30"], foreground=self.WARNING)
             return False
         else:
-            for item in unlinks_to_do(self.data, self.repo_path, self.HOME):
-                file_home = join(self.HOME, item)
+            for item in unlinks_to_do(self.data, self.repo_path, self.home):
+                element_home = join(self.home, item)
 
-                if islink(file_home):
+                if islink(element_home):
                     with suppress(Exception):
-                        remove(file_home)
+                        remove(element_home)
 
             # TODO: [Adicionar o texto do print AQUI]
-            printer(f'{self.msg["str:31"]}', foreground=FG().FINISH)
+            printer(self.cod["cod:31"], foreground=self.FINISH)
         return True

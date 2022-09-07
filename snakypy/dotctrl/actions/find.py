@@ -1,8 +1,8 @@
 from os import walk
-from os.path import join
+from os.path import join, isdir
 from pydoc import pager
 
-from snakypy.helpers import FG, NONE, printer
+from snakypy.helpers import printer
 
 from snakypy.dotctrl.config.base import Base
 
@@ -28,22 +28,30 @@ class FindCommand(Base):
 
     def main(self, arguments: dict):
 
+        self.checking_init()
+
         if len(list(listing_objects(self.repo_path))) == 0:
 
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:2']}", foreground=FG().WARNING)
+            # Repository is empty. No elements.
+            printer(self.cod["cod:02"], foreground=self.WARNING)
+
             return False
 
+        # The elements below are found in the Dotctrl directory.
+        # [ Result: ] (Type "q" to exit)
         elements = [
-            f"{FG().YELLOW}{self.msg['str:3']}{NONE}\n",
-            f"{FG().CYAN}{self.msg['str:4']}{NONE}",
+            self.yellow(self.cod["cod:03"]),
+            f"{self.cyan(self.cod['cod:w15'])}:\n",
         ]
 
         for item in listing_objects(self.repo_path):
             if arguments["--name"] == item.split("/")[-1]:
-                elements.append(
-                    f"{FG().CYAN}➜{FG().MAGENTA} {self.msg['words'][3]}: {NONE}{item}"
-                )
+
+                # Element:
+                if isdir(join(self.repo_path, item)):
+                    elements.append(f"> {self.magenta(self.cod['cod:w14'])}: {item}")
+                else:
+                    elements.append(f"> {self.magenta(self.cod['cod:w10'])}: {item}")
 
         pager("\n".join(elements))
         return True

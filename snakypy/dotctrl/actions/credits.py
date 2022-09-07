@@ -10,12 +10,16 @@ class CreditsCommand(Base):
         Base.__init__(self, root, home)
 
     def main(self):
-        print("\n")
-        printer(f'{self.msg["str:1"]}'.center(50), foreground=FG().GREEN)
+
+        # Offered by:
+        printer(self.cod["cod:01"], foreground=self.GREEN)
+
         billboard(
             __info__["organization_name"], justify="center", foreground=FG().YELLOW
         )
+
         printer("Copyright (c) since 2020\n".center(100), foreground=FG().GREEN)
+
         credence(
             __info__["name"],
             __info__["version"],

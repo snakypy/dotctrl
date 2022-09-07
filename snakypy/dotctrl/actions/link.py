@@ -1,8 +1,9 @@
-from os.path import join, exists
+from genericpath import isfile
+from os.path import join, exists, islink
 
-from snakypy.helpers import FG, printer
+from snakypy.helpers import printer
 
-from snakypy.dotctrl.config.base import Base, ElementForce
+from snakypy.dotctrl.config.base import Base, Options
 from snakypy.dotctrl.utils import (
     create_symlink,
     path_creation,
@@ -10,10 +11,10 @@ from snakypy.dotctrl.utils import (
 )
 
 
-class LinkCommand(Base, ElementForce):
+class LinkCommand(Base, Options):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
-        ElementForce.__init__(self)
+        Options.__init__(self)
 
     @staticmethod
     def links_to_do(data: list, repo_dir: str, home_dir: str) -> list:
@@ -32,61 +33,87 @@ class LinkCommand(Base, ElementForce):
         """Method responsible for creating symbolic links from the
         repository to the place of origin of the elements."""
 
+        self.checking_init()
+
         element = self.element(arguments)
         force = self.force(arguments)
 
         # If you use the --element flag (--e)
         if element:
-            file_home = join(self.HOME, element)
-            file_repo = join(self.repo_path, element)
+            element_home = join(self.home, element)
+            element_repo = join(self.repo_path, element)
 
             if "/" in element:
-                path_creation(self.HOME, element)
+                path_creation(self.home, element)
 
             if (
-                exists(file_home)
-                and is_repo_symbolic_link(file_home, file_repo) is False
+                islink(element_home)
+                and is_repo_symbolic_link(element_home, element_repo) is False
                 and not force
             ):
-                printer(f"{self.msg['str:11']}", foreground=FG().WARNING)
-                return False
+                cod = self.error_symlink(element_home)
 
-            status = create_symlink(file_repo, file_home, force)
+                return {"bool": False, "cod": cod["cod"]}
+
+            if not exists(element_repo):
+
+                printer(self.cod["cod:11"], foreground=self.WARNING)
+
+                return {"bool": False, "cod": "cod:11"}
+
+            if isfile(element_home) and not force:
+                # TODO: [Adicionar o texto do print AQUI]
+                printer(self.cod["cod:27"], foreground=self.WARNING)
+
+                return {"bool": False, "cod": "cod:27"}
+
+            status = create_symlink(element_repo, element_home, force)
 
             if not status:
+
                 # TODO: [Adicionar o texto do print AQUI]
-                printer(
-                    f'{self.msg["words"][3]} "{file_repo}" {self.msg["str:12"]} {self.msg["str:13"]}',
-                    foreground=FG().ERROR,
-                )
+                printer(self.cod["cod:05"], element_repo, foreground=self.WARNING)
+
+                return {"bool": False, "cod": "cod:05"}
 
             # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:15']}", foreground=FG().FINISH)
-            return True
+            printer(self.cod["cod:15"], foreground=self.FINISH)
+
+            return {"bool": True, "cod": "cod:15"}
 
         # If you don't use the --element flag (--e)
-        if len(self.links_to_do(self.data, self.repo_path, self.HOME)) == 0:
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:14']}", foreground=FG().WARNING)
-            return False
-        else:
-            for item in self.links_to_do(self.data, self.repo_path, self.HOME):
-                if "/" in item:
-                    path_creation(self.HOME, item)
+        if len(self.links_to_do(self.data, self.repo_path, self.home)) == 0:
 
-                file_home = join(self.HOME, item)
-                file_repo = join(self.repo_path, item)
+            # TODO: [Adicionar o texto do print AQUI]
+            printer(self.cod["cod:14"], foreground=self.FINISH)
+
+            return {"bool": False, "cod": "cod:14"}
+
+        else:
+            for item in self.links_to_do(self.data, self.repo_path, self.home):
+                if "/" in item:
+                    path_creation(self.home, item)
+
+                element_home = join(self.home, item)
+                element_repo = join(self.repo_path, item)
 
                 if (
-                    exists(file_home)
-                    and is_repo_symbolic_link(file_home, file_repo) is False
+                    islink(element_home)
+                    and is_repo_symbolic_link(element_home, element_repo) is False
                     and not force
                 ):
-                    # TODO: [Adicionar o texto do print AQUI]
-                    printer(f"{self.msg['str:11']}", foreground=FG().WARNING)
-                    return False
+                    cod = self.error_symlink(element_home)
 
-                create_symlink(file_repo, file_home, force)
+                    return {"bool": False, "cod": cod["cod"]}
+
+                if isfile(element_home) and not force:
+                    # TODO: [Adicionar o texto do print AQUI]
+                    printer(self.cod["cod:27"], foreground=self.WARNING)
+
+                    return {"bool": False, "cod": "cod:27"}
+
+                create_symlink(element_repo, element_home, force)
 
             # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:15']}", foreground=FG().FINISH)
+            printer(self.cod["cod:15"], foreground=self.FINISH)
+            return {"bool": True, "cod": "cod:15"}

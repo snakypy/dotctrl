@@ -1,53 +1,49 @@
 """Modulate to store records and data."""
+from contextlib import suppress
+from genericpath import exists
 from os.path import join
 from sys import exit
 
-from snakypy.helpers import FG, printer
+from snakypy.helpers import printer
 from snakypy.helpers.files import read_json
 
 from snakypy.dotctrl import __info__
-from snakypy.dotctrl.utils import lang_sys
-from snakypy.dotctrl.config.lang import LANG
+
+from snakypy.dotctrl.utils import get_key
+
+from snakypy.dotctrl.utils.messages import Messages
 
 
-class Base:
+class Base(Messages):
     """Class to retrieve data"""
 
     def __init__(self, root, home):
-        self.ROOT = root
-        self.HOME = home
-        self.repo_path = join(self.ROOT, "dotctrl")
-        self.config_path = join(self.ROOT, __info__["config"])
-        self.gitignore_path = join(self.ROOT, ".gitignore_path")
-        self.readme = join(self.ROOT, "README.txt")
+        self.root = root
+        self.home = home
+        self.data: list = list()
+        self.config_path = join(self.root, __info__["config"])
+        self.repo_path = join(self.root, "dotctrl")
+        self.gitignore_path = join(self.root, ".gitignore")
+        self.readme = join(self.root, "README.txt")
+        Messages.__init__(self, self.config_path)
 
-        try:
+        with suppress(FileNotFoundError):
             self.parsed = read_json(self.config_path)
-            self.elements = list(self.parsed["dotctrl"]["elements"])
-            self.data = self.elements
+            self.elements = list(get_key(self.parsed, "dotctrl", "elements"))
+            self.data: list = self.elements
 
-        except FileNotFoundError:
-
-            # TODO: [Adicionar o texto do print AQUI]
+    def checking_init(self):
+        if not exists(join(self.root, __info__["config"])):
             printer(
-                f"{self.msg['str:32']} ({self.config_path}).",
-                foreground=FG(error_icon="[x] ").ERROR,
+                f"The repository was not created. "
+                f"Use \"{__info__['pkg_name']} init [--auto | --git]\". Aborted",
+                foreground=self.WARNING,
             )
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:34']}", foreground=FG(warning_icon="[!] ").WARNING)
             exit(1)
-
-        except Exception as err:
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:33']}", str(err), foreground=FG().ERROR)
-            exit(1)
-
-    @property
-    def msg(self):
-        return LANG[lang_sys(LANG)]
+            # return {"bool": False, "cod": "xxx"}
 
 
-class ElementForce:
+class Options:
     def __init__(self):
         self.opts = {
             "element": ["--element", "--e"],

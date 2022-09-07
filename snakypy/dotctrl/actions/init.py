@@ -1,6 +1,5 @@
 from os.path import exists, join
 from sys import exit
-from textwrap import dedent
 
 from snakypy.helpers import FG, printer
 from snakypy.helpers.checking import whoami
@@ -24,11 +23,9 @@ class InitCommand(Base):
 
         if exists(self.config_path):
 
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(
-                f'{self.msg["str:6"]} "{self.config_path}".',
-                foreground=FG().FINISH,
-            )
+            # Repository is already defined in: /path/to/repo
+            printer(self.cod["cod:06"], f'"{self.repo_path}"', foreground=self.WARNING)
+
             exit(0)
 
         if not arguments["--auto"]:
@@ -44,26 +41,21 @@ class InitCommand(Base):
             path_current = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
 
             if exists(join(path_current, __info__["config"])):
-                dir_ = f"{FG().BLUE}{path_current}{FG().YELLOW}"
+                directory = f"{FG().BLUE}{path_current}{FG().YELLOW}"
 
-                # TODO: [Adicionar o texto do print AQUI]
-                printer(
-                    f'{__info__["name"]} {self.msg["str:7"]} "{dir_}"',
-                    foreground=FG().WARNING,
-                )
+                # Dotctrl is already configured in this directory:
+                printer(self.cod["cod:07"], directory, foreground=self.WARNING)
 
                 exit(0)
 
-            message_initial = dedent(
-                f"""{self.msg["str:8"]} "{FG().BLUE}{path_current}{FG().YELLOW}".
-            """
-            )
+            # You must have SUDO permission on your machine to proceed with this step and create
+            # an automatic repository with Dotctrl. You can approach the operation by
+            # pressing Ctrl + C.
+            # NOTE: The Dotctrl directory will be created in:
+            printer(self.cod["cod:08"], path_current, foreground=self.WARNING)
 
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(message_initial, foreground=FG().YELLOW)
-
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:9']}", foreground=FG().QUESTION)
+            # [ Enter password for sudo ]
+            printer(self.cod["cod:09"], foreground=self.QUESTION)
 
             user_current = whoami()
 
@@ -73,21 +65,19 @@ class InitCommand(Base):
                 f"chmod -R 700 {join(AUTO_PATH[0], '.dotfiles')}",
             ]
 
-            if not super_command(commands):
+            if not super_command(commands, self.cod["cod:49"], self.cod["cod:42"]):
                 exit(1)
 
             create_path(self.repo_path)
             create_json(config.content, self.config_path, force=True)
             create_file(readme.content, self.readme, force=True)
 
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(
-                f"{self.msg['str:10']} {join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])}",
-                foreground=FG().FINISH,
-            )
+            # Initialized Dotctrl repository in
+            path = f"{join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])}"
+            printer(self.cod["cod:10"], path, foreground=self.FINISH)
 
             init_auto = True
 
         if not init_auto:
-            # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:10']} {self.repo_path}", foreground=FG().FINISH)
+            # # Initialized Dotctrl repository in
+            printer(self.cod["cod:10"], self.repo_path, foreground=self.FINISH)
