@@ -3,9 +3,6 @@ from os.path import isdir, join
 from shutil import which
 from subprocess import PIPE, Popen, call, run
 
-from snakypy.helpers.ansi import FG
-from snakypy.helpers.console import printer
-
 
 def git_init_command(directory: str) -> None:
     """Function to start a Git repository in the Dotctrl repository."""
@@ -13,7 +10,7 @@ def git_init_command(directory: str) -> None:
         call(["git", "init", directory], stdout=PIPE)
 
 
-def super_command(commands: list, msg_err: str, msg_interrupt: str) -> bool:
+def super_command(commands: list) -> dict:
     """Command super user"""
     try:
         run(["sudo", "-k"])
@@ -29,14 +26,10 @@ def super_command(commands: list, msg_err: str, msg_interrupt: str) -> bool:
             )
             out, err = p.communicate(get_pass + "\n")
             if p.returncode != 0:
-                # TODO: [Adicionar o texto do print AQUI]
-                printer(msg_err, foreground=FG().ERROR)
-                return False
-        return True
+                return {"bool": False, "str": "err"}
+        return {"bool": True, "str": "success"}
     except KeyboardInterrupt:
-        # TODO: [Adicionar o texto do print AQUI]
-        printer(msg_interrupt, foreground=FG().WARNING)
-        return False
+        return {"bool": False, "str": "interrupt"}
     finally:
         if which("faillock"):
             run(["faillock", "--reset"])
