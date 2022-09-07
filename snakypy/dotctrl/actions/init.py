@@ -34,7 +34,7 @@ class InitCommand(Base):
             create_file(readme.content, self.readme, force=True)
 
         if arguments["--git"]:
-            git_init_command()
+            git_init_command(self.root)
             create_file(gitignore.content, self.gitignore_path, force=True)
         elif arguments["--auto"]:
 
