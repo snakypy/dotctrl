@@ -13,7 +13,7 @@ def git_init_command() -> None:
         call(["git", "init"], stdout=PIPE)
 
 
-def super_command(commands: list) -> bool:
+def super_command(commands: list, msg_err: str, msg_interrupt: str) -> bool:
     """Command super user"""
     try:
         run(["sudo", "-k"])
@@ -30,12 +30,12 @@ def super_command(commands: list) -> bool:
             out, err = p.communicate(get_pass + "\n")
             if p.returncode != 0:
                 # TODO: [Adicionar o texto do print AQUI]
-                printer("Error in password authentication.", foreground=FG().ERROR)
+                printer(msg_err, foreground=FG().ERROR)
                 return False
         return True
     except KeyboardInterrupt:
         # TODO: [Adicionar o texto do print AQUI]
-        printer("Aborted by user.", foreground=FG().WARNING)
+        printer(msg_interrupt, foreground=FG().WARNING)
         return False
     finally:
         if which("faillock"):

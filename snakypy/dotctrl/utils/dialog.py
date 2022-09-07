@@ -13,6 +13,8 @@ def pick_options(
     index: bool = False,
     lowercase: bool = False,
     ctrl_c_message: bool = False,
+    cancel_msg: str,
+    opt_msg: str,
 ) -> Union[tuple[int, Any], bool, None]:
     if not colorful:
         FG().QUESTION = ""
@@ -22,7 +24,7 @@ def pick_options(
         FG().ERROR = ""
         FG().WARNING = ""
     ctrl_c = "(Ctrl+C to Cancel)" if ctrl_c_message else ""
-    printer(title, ctrl_c, foreground=FG().QUESTION)
+    printer(title, ctrl_c, foreground=FG(question_icon="\n-> ").QUESTION)
     count = 1
     for option in options:
         print(f"{FG().GREEN}[{count}] {FG().MAGENTA}{option}{NONE}")
@@ -38,10 +40,10 @@ def pick_options(
             return options[pos].lower()
         return options[pos]
     except (IndexError, ValueError):
-        printer("Option invalid!", foreground=FG().ERROR)
+        printer(opt_msg, foreground=FG(error_icon="[x] ").ERROR)
         return False
     except KeyboardInterrupt:
-        printer("Canceled by user.", foreground=FG().WARNING)
+        printer(cancel_msg, foreground=FG(warning_icon=" [!] ").WARNING)
         return
 
 
@@ -54,6 +56,8 @@ def pick(
     colorful: bool = False,
     lowercase: bool = False,
     ctrl_c_message: bool = False,
+    cancel_msg: str = "Canceled by user.",
+    opt_msg: str = "Option invalid!",
 ) -> Union[tuple[int, Any], bool, None]:
 
     if not type(options) is list:
@@ -76,6 +80,8 @@ def pick(
                 colorful=colorful,
                 lowercase=lowercase,
                 ctrl_c_message=ctrl_c_message,
+                cancel_msg=cancel_msg,
+                opt_msg=opt_msg,
             )
             if option or option is None:
                 break

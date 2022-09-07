@@ -7,15 +7,20 @@ from snakypy.helpers import FG
 from snakypy.helpers.ansi import NONE
 
 from snakypy.dotctrl import __info__
-from snakypy.dotctrl.config.menu import menu
 
 
-def arguments(argv=None) -> dict:
+def arguments(root: str, home: str, argv=None) -> dict:
     """Function to return the option menu arguments."""
+    from snakypy.dotctrl.config.menu import Menu
+
     formatted_version = (
         f"{__info__['name']} version: " f"{FG().CYAN}{__info__['version']}{NONE}"
     )
-    data = docopt(menu(), argv=argv, version=formatted_version)
+
+    menu = Menu(root, home).__str__()
+
+    data = docopt(menu, argv=argv, version=formatted_version)
+
     return data
 
 
