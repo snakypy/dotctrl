@@ -5,8 +5,9 @@ from shutil import which
 from subprocess import call
 from sys import exit
 
+from snakypy.helpers import printer
 from snakypy.helpers.files import read_file, create_json, read_json
-from snakypy.helpers import printer, FG
+from snakypy.dotctrl.utils import pick
 
 from snakypy.dotctrl.config.base import Base
 
@@ -23,7 +24,20 @@ def editor_run(editor, config):
 class ConfigCommand(Base):
     def __init__(self, root, home):
         Base.__init__(self, root, home)
-        self.opts = ("--autoclean", "--open", "--view")
+        self.opts: tuple = ("--autoclean", "--open", "--view", "--lang")
+        self.languages: list = [
+            "English (USA)",
+            "Português (Brasil)",
+        ]
+        self.choice_language: dict = {
+            0: "en_US",
+            1: "pt_BR",
+        }
+
+    def change_language(self, lang: str):
+        parsed: dict = read_json(self.config_path)
+        parsed["dotctrl"]["config"]["language"] = lang
+        create_json(parsed, self.config_path, force=True)
 
     def autoclean(self) -> bool:
         parsed: dict = read_json(self.config_path)
@@ -42,15 +56,17 @@ class ConfigCommand(Base):
 
         if applied_cleaning:
             # TODO: [Adicionar o texto do print AQUI]
-            printer(f"{self.msg['str:35']}", foreground=FG(finish_icon="[ok] ").FINISH)
+            printer(self.cod["cod:35"], foreground=self.FINISH)
             return True
 
         # TODO: [Adicionar o texto do print AQUI]
-        printer(f"{self.msg['str:36']}", foreground=FG(warning_icon="[!] ").WARNING)
+        printer(self.cod["cod:36"], foreground=self.WARNING)
         return False
 
     def main(self, arguments) -> None:
         """Method for opening or viewing the configuration file."""
+
+        self.checking_init()
 
         # --autoclean
         if arguments[self.opts[0]]:
@@ -70,3 +86,17 @@ class ConfigCommand(Base):
         elif arguments[self.opts[2]]:
             read_config = read_file(self.config_path)
             pydoc.pager(read_config)
+
+        # --lang
+        elif arguments[self.opts[3]]:
+            title_ = self.cod["cod:47"]
+            reply = pick(
+                title_,
+                self.languages,
+                index=True,
+                cancel_msg=self.cod["cod:42"],
+                opt_msg=self.cod["cod:43"],
+            )
+            language = self.choice_language[reply[0]]
+            self.change_language(language)
+            printer(self.cod["cod:48"], foreground=self.FINISH)
