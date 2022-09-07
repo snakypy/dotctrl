@@ -1,154 +1,231 @@
 from snakypy.dotctrl import __info__
+from snakypy.dotctrl.utils.colors import Colors
 
+c = Colors()
 
 LANG = {
     "en_US": {
-        "words": (
-            "File",
-            "Files",
-            "Path",
-            "Element",
-            "Elements",
-            "Directory",
-            "Directories",
-            "Congratulations!",
-            "Unit",
-            "Active",
-            "Disabled",
-            "Yes",
-            "No",
+        "cod:w01": "Arquivo(s)",
+        "cod:w03": "Elemento(s)",
+        "cod:w04": "Diretório(s)",
+        "cod:w05": "Unidade(s)",
+        "cod:w06": "Ativado",
+        "cod:w07": "Desativado",
+        "cod:w08": "Sim",
+        "cod:w09": "Não",
+        "cod:w10": "Arquivo",
+        "cod:w11": "Diretório",
+        "cod:w12": "",
+        "cod:w13": "Total",
+        "cod:w14": "Pasta",
+        "cod:w15": "Resultado",
+        "cod:01": "Oferecido por:",
+        "cod:02": "Repositório está vazio. Sem elementos.",
+        "cod:03": (
+            f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}. "
+            f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
         ),
-        "str:1": "Offered by:",
-        "str:2": "Repository is empty. No elements.",
-        "str:3": f"The elements below are found in the {__info__['name']} directory.",
-        "str:4": '[ Result: ] (Type "q" to exit)',
-        "str:6": "Repository is already defined in",
-        "str:7": "is already configured in this directory",
-        "str:8": f"""
-        [ATTENTION!]
-
-            You must have SUDO permission on your machine to proceed with this step and create
-            an automatic repository with {__info__["name"]}. You can approach the operation by
-            pressing Ctrl + C.
-
-            NOTE: The {__info__['name']} directory will be created in:""",
-        "str:9": "[ Enter password for sudo ]",
-        "str:10": f"Initialized {__info__['name']} repository in",
-        "str:11": f"""
-        Link(s) was found, but maybe it can be linked from another location, but it's not
-        from the {__info__['name']} repository.
-        If you want to link to the {__info__['name']} repository, use the --force (--f) option.
-        option to recreate.""",
-        "str:12": "not linked.",
-        "str:13": "Review the same in the repository.",
-        "str:14": "Nothing to linked, en masse.",
-        "str:15": "Element(s) linked successfully!",
-        "str:16": "Nothing was pulled. Nonexistent element.",
-        "str:17": "Nothing to pull, in droves.",
-        "str:18": "Element(s) pulled successfully!",
-        "str:19": "Empty repository. Nothing to link.",
-        "str:20": "Not linked!",
-        "str:21": "All elements are linked.",
-        "str:22": "The elements below are NOT linked!",
-        "str:23": f"{__info__['name']} Repository info:",
-        "str:24": "The repository is empty of registration. No elements.",
-        "str:25": (
-            f'{__info__["name"]} repository element(s) list. (Type "q" to exit)'
+        "cod:04": "",
+        "cod:05": "[Cod:05] Elemento não linkado. Revise o mesmo no repositório:",
+        "cod:06": "O repositório já está definido em",
+        "cod:07": f"{__info__['name']} já está configurado no diretório: ",
+        "cod:08": (
+            "Você deve ter permissão SUDO em sua máquina para prosseguir com esta etapa e criar "
+            f"um repositório automático com {__info__['name']}. Você pode abordar a operação por "
+            "pressionando Ctrl + C.\n"
+            f"NOTA: O diretório {__info__['name']} será criado em: "
         ),
-        "str:26": "   Type  | Element  |  Simbolic Link\n",
-        "str:27": f"""
-
-        {__info__['name']} found links in the source location, but they are not
-        from the {__info__['name']} repository. If you want to turn it off,
-        use the --force (--f) option.""",
-        "str:28": "not unlinked",
-        "str:29": "Element not found.",
-        "str:30": "Nothing to unlinked, en masse.",
-        "str:31": "Massively unlinked links successfully!",
-        "str:32": "Configuration file not found",
-        "str:33": "An error occurred while reading the configuration file.",
-        "str:34": "Probably the repository was not created. Use: dotctrl init [--auto | --git ]",
-        "str:35": "Cleaning completed!",
-        "str:36": "Nothing to clean!",
-        "str:37": f"""
-
-        Files with the same name were found in the {__info__['name']} repository and source location.
-        To override those in the {__info__['name']} repository, use the --force (--f) option.
-        """,
+        "cod:09": "[ Digite a senha para sudo ]",
+        "cod:10": f"Inicializado {__info__['name']} no repositório: ",
+        "cod:11": f"[Cod:11] O elemento não existe no repositório do {__info__['name']} para ser linkado.",
+        "cod:12": "Elemento desvinculado com sucesso!",
+        "cod:13": "Tipo: | Elemento ",
+        "cod:14": "Nada a ligar, em massa.",
+        "cod:15": "Elemento(s) vinculado(s) com sucesso!",
+        "cod:16": "Nada foi puxado. Elemento inexistente.",
+        "cod:17": "Nada para puxar, em massa.",
+        "cod:18": "Elemento(s) puxado(s) com sucesso!",
+        "cod:19": "Repositório vazio. Nada a ligar.",
+        "cod:20": "Não linkado!",
+        "cod:21": "Congratulations! All elements are linked.",
+        "cod:22": (
+            "Os elementos abaixo NÃO estão vinculados! "
+            f'Use "{c.cyan("dotctrl link", c.YELLOW)}" para vinculá-los.'
+        ),
+        "cod:23": f"Informações do repositório {__info__['name']}:",
+        "cod:24": "O repositório está vazio de registro. Sem elementos.",
+        "cod:25": (
+            f'Lista do(s) elemento(s) do repositório {__info__["name"]}. '
+            f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
+        ),
+        "cod:26": "Tipo:   Elemento  <-  Link simbólico\n",
+        "cod:27": (
+            "[Cod:27] Existe um arquivo no local de origem. "
+            "Caso queira prosseguir e substituir este elemento encontrado "
+            f"pelo elemento do repositório {__info__['name']}, use a opção --force (--f).\n"
+        ),
+        "cod:28": "",
+        "cod:29": "[Cod:29] Elemento não encontrado.",
+        "cod:30": "Nada para desvinculado, em massa.",
+        "cod:31": "Links massivamente desvinculados com sucesso!",
+        "cod:32": "[Cod:32] Arquivo de configuração não encontrado",
+        "cod:33": "[Cod:33] Ocorreu um erro ao ler o arquivo de configuração.",
+        "cod:34": "Provavelmente o repositório não foi criado. Use: dotctrl init [--auto | --git ]",
+        "cod:35": "Limpeza concluida!",
+        "cod:36": "Nada a limpar!",
+        "cod:37": (
+            f"[Cod:37] Arquivos com o mesmo nome foram encontrados no repositório {__info__['name']} e no local de origem."
+            f"Para substituir os do repositorio do {__info__['name']}, use a opção --force (--f)."
+        ),
+        "cod:38": (
+            "[Cod:38] Elemento não encontrado no repositório para restaurar.\n"
+            "Isso pode ser causado porque o arquivo de configuração está desatualizado.\n"
+            "Antes de prosseguir com a restauração, use o comando: "
+            "'dotctrl config --autoclean' para atualizar. "
+        ),
+        "cod:39": (
+            f"[Cod:39] O {__info__['name']} encontrou um link simbólico de um elemento que não é "
+            f"vinculado com o repositório do {__info__['name']}.\n"
+            "Caso queira prosseguir e substituir este link simbólico encontrado "
+            f"pelo elemento do repositório {__info__['name']}, use a opção --force (--f).\n"
+            f'{c.magenta("Nota", c.YELLOW)}: Se usar a opção {c.cyan("--force (--f)", c.YELLOW)}, este link simbólico '
+            "encontrado será removido (e demais). "
+            "Recomendamos que, averigue este link simbólico antes de prosseguir com a opção --force (--f).\n\n"
+            "Link simbólico encontrado: "
+        ),
+        "cod:40": "Repositório vazio. Nada para restaurar.",
+        "cod:41": (
+            "Está opção ira fazer a restauração em massa de todos elementos "
+            "do repositório do Dotctrl para o local original.\n   Deseja continuar?\n"
+        ),
+        "cod:42": "Cancelado pelo usuário.",
+        "cod:43": "[cod:43] Opção inválida!",
+        "cod:44": (
+            f"[cod:44] O {__info__['name']} ENCONTROU um elemento no local de origem com mesmo nome do "
+            f"repositório do {__info__['name']}, e isso impediu de prosseguir com a restauração.\n"
+            f"Caso queira substituí-lo pelo elemento do repositório {__info__['name']}, "
+            "execute este comando novamente com a opção --force (--f).\n"
+            f"{c.magenta('Nota', c.YELLOW)}: Se usar a opção {c.cyan('--force (--f)', c.YELLOW)}, este elemento "
+            "encontrado (e demais) será(ão) removido(s). "
+            "Recomendamos que, averigue este (e demais) elemento(s) antes de prosseguir com a opção --force (--f).\n\n"
+            "Elemento encontrado: "
+        ),
+        "cod:45": "Operação abordada!",
+        "cod:46": "Restauração completa!",
+        "cod:47": f"Escolha um idioma para o {__info__['name']}:",
+        "cod:48": "Idioma alterado com sucesso!",
+        "cod:49": "[cod:49] Erro na autenticação da senha.",
     },
     "pt_BR": {
-        "words": (
-            "Arquivo",
-            "Arquivos",
-            "Caminho",
-            "Elemento",
-            "Elementos",
-            "Diretório",
-            "Diretórios",
-            "Parabéns!",
-            "Unidade",
-            "Ativo",
-            "Desativado",
-            "Sim",
-            "Não",
+        "cod:w01": "Arquivo(s)",
+        "cod:w03": "Elemento(s)",
+        "cod:w04": "Diretório(s)",
+        "cod:w05": "Unidade(s)",
+        "cod:w06": "Ativado",
+        "cod:w07": "Desativado",
+        "cod:w08": "Sim",
+        "cod:w09": "Não",
+        "cod:w10": "Arquivo",
+        "cod:w11": "Diretório",
+        "cod:w12": "",
+        "cod:w13": "Total",
+        "cod:w14": "Pasta",
+        "cod:w15": "Resultado",
+        "cod:01": "Oferecido por:",
+        "cod:02": "Repositório está vazio. Sem elementos.",
+        "cod:03": (
+            f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}. "
+            f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
         ),
-        "str:1": "Oferecido por:",
-        "str:2": "Repositório está vazio. Sem elementos.",
-        "str:3": f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}.",
-        "str:4": '[ Resultado: ] (Digite "q" para sair)',
-        "str:5": "Elemento:",
-        "str:6": "O repositório já está definido em",
-        "str:7": "já está configurado no diretório",
-        "str:8": f"""
-        [ATENÇÃO!]
-
-            Você deve ter permissão SUDO em sua máquina para prosseguir com esta etapa e criar
-            um repositório automático com {__info__["name"]}. Você pode abordar a operação por
-            pressionando Ctrl + C.
-
-            NOTA: O diretório {__info__['name']} será criado em:""",
-        "str:9": "[ Digite a senha para sudo ]",
-        "str:10": f"Inicializado {__info__['name']} no repositório",
-        "str:11": f"""
-        O(s) link(s) foi(m) encontrado(s), mas talvez possa ser vinculado de outro local, mas não é
-        do repositório do {__info__['name']}.
-        Se você deseja vincular do repositório do {__info__['name']}, use a opção --force (--f)
-        para substituir o atual.""",
-        "str:12": "não lincado.",
-        "str:13": "Revise o mesmo no repositório.",
-        "str:14": "Nada a ligar, em massa.",
-        "str:15": "Elemento(s) vinculado(s) com sucesso!",
-        "str:16": "Nada foi puxado. Elemento inexistente.",
-        "str:17": "Nada para puxar, em massa.",
-        "str:18": "Elemento(s) puxado(s) com sucesso!",
-        "str:19": "Repositório vazio. Nada a ligar.",
-        "str:20": "Não linkado!",
-        "str:21": "Todos os elementos estão ligados.",
-        "str:22": "Os elementos abaixo NÃO estão vinculados!",
-        "str:23": f"Informações do repositório {__info__['name']}:",
-        "str:24": "O repositório está vazio de registro. Sem elementos.",
-        "str:25": (
+        "cod:04": "",
+        "cod:05": "[Cod:05] Elemento não linkado. Revise o mesmo no repositório:",
+        "cod:06": "O repositório já está definido em",
+        "cod:07": f"{__info__['name']} já está configurado no diretório: ",
+        "cod:08": (
+            "Você deve ter permissão SUDO em sua máquina para prosseguir com esta etapa e criar "
+            f"um repositório automático com {__info__['name']}. Você pode abordar a operação por "
+            "pressionando Ctrl + C.\n"
+            f"NOTA: O diretório {__info__['name']} será criado em: "
+        ),
+        "cod:09": "[ Digite a senha para sudo ]",
+        "cod:10": f"Inicializado {__info__['name']} no repositório: ",
+        "cod:11": f"[Cod:11] O elemento não existe no repositório do {__info__['name']} para ser linkado.",
+        "cod:12": "Elemento desvinculado com sucesso!",
+        "cod:13": "Tipo: | Elemento ",
+        "cod:14": "Nada a ligar, em massa.",
+        "cod:15": "Elemento(s) vinculado(s) com sucesso!",
+        "cod:16": "Nada foi puxado. Elemento inexistente.",
+        "cod:17": "Nada para puxar, em massa.",
+        "cod:18": "Elemento(s) puxado(s) com sucesso!",
+        "cod:19": "Repositório vazio. Nada a ligar.",
+        "cod:20": "Não linkado!",
+        "cod:21": "Parabéns! Todos os elementos estão ligados.",
+        "cod:22": (
+            "Os elementos abaixo NÃO estão vinculados! "
+            f'Use "{c.cyan("dotctrl link", c.YELLOW)}" para vinculá-los.'
+        ),
+        "cod:23": f"Informações do repositório {__info__['name']}:",
+        "cod:24": "O repositório está vazio de registro. Sem elementos.",
+        "cod:25": (
             f'Lista do(s) elemento(s) do repositório {__info__["name"]}. '
-            '(Digite "q" para sair)'
+            f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
         ),
-        "str:26": "   Tipo  | Elemento  |  Link simbólico\n",
-        "str:27": f"""
-
-        {__info__['name']} encontrou links no local de origem, mas eles não são
-        do repositório {__info__['name']}. Se você quiser substitui-los use a opção --force (--f).""",
-        "str:28": "não desvinculado.",
-        "str:29": "Elemento não encontrado.",
-        "str:30": "Nada para desvinculado, em massa.",
-        "str:31": "Links massivamente desvinculados com sucesso!",
-        "str:32": "Arquivo de configuração não encontrado",
-        "str:33": "Ocorreu um erro ao ler o arquivo de configuração.",
-        "str:34": "Provavelmente o repositório não foi criado. Use: dotctrl init [--auto | --git ]",
-        "str:35": "Limpeza concluida!",
-        "str:36": "Nada a limpar!",
-        "str:37": f"""
-
-        Arquivos com o mesmo nome foram encontrados no repositório {__info__['name']} e no local de origem.
-        Para substituir os do repositorio do {__info__['name']}, use a opção --force (--f).
-        """,
+        "cod:26": "Tipo:   Elemento  <-  Link simbólico\n",
+        "cod:27": (
+            "[Cod:27] Existe um arquivo no local de origem. "
+            "Caso queira prosseguir e substituir este elemento encontrado "
+            f"pelo elemento do repositório {__info__['name']}, use a opção --force (--f).\n"
+        ),
+        "cod:28": "",
+        "cod:29": "[Cod:29] Elemento não encontrado.",
+        "cod:30": "Nada para desvinculado, em massa.",
+        "cod:31": "Links massivamente desvinculados com sucesso!",
+        "cod:32": "[Cod:32] Arquivo de configuração não encontrado",
+        "cod:33": "[Cod:33] Ocorreu um erro ao ler o arquivo de configuração.",
+        "cod:34": "Provavelmente o repositório não foi criado. Use: dotctrl init [--auto | --git ]",
+        "cod:35": "Limpeza concluida!",
+        "cod:36": "Nada a limpar!",
+        "cod:37": (
+            f"[Cod:37] Arquivos com o mesmo nome foram encontrados no repositório {__info__['name']} e no local de origem."
+            f"Para substituir os do repositorio do {__info__['name']}, use a opção --force (--f)."
+        ),
+        "cod:38": (
+            "[Cod:38] Elemento não encontrado no repositório para restaurar.\n"
+            "Isso pode ser causado porque o arquivo de configuração está desatualizado.\n"
+            "Antes de prosseguir com a restauração, use o comando: "
+            "'dotctrl config --autoclean' para atualizar. "
+        ),
+        "cod:39": (
+            f"[Cod:39] O {__info__['name']} encontrou um link simbólico de um elemento que não é "
+            f"vinculado com o repositório do {__info__['name']}.\n"
+            "Caso queira prosseguir e substituir este link simbólico encontrado "
+            f"pelo elemento do repositório {__info__['name']}, use a opção --force (--f).\n"
+            f'{c.magenta("Nota", c.YELLOW)}: Se usar a opção {c.cyan("--force (--f)", c.YELLOW)}, este link simbólico '
+            "encontrado será removido (e demais). "
+            "Recomendamos que, averigue este link simbólico antes de prosseguir com a opção --force (--f).\n\n"
+            "Link simbólico encontrado: "
+        ),
+        "cod:40": "Repositório vazio. Nada para restaurar.",
+        "cod:41": (
+            "Está opção ira fazer a restauração em massa de todos elementos "
+            "do repositório do Dotctrl para o local original.\n   Deseja continuar?\n"
+        ),
+        "cod:42": "Cancelado pelo usuário.",
+        "cod:43": "[cod:43] Opção inválida!",
+        "cod:44": (
+            f"[cod:44] O {__info__['name']} ENCONTROU um elemento no local de origem com mesmo nome do "
+            f"repositório do {__info__['name']}, e isso impediu de prosseguir com a restauração.\n"
+            f"Caso queira substituí-lo pelo elemento do repositório {__info__['name']}, "
+            "execute este comando novamente com a opção --force (--f).\n"
+            f"{c.magenta('Nota', c.YELLOW)}: Se usar a opção {c.cyan('--force (--f)', c.YELLOW)}, este elemento "
+            "encontrado (e demais) será(ão) removido(s). "
+            "Recomendamos que, averigue este (e demais) elemento(s) antes de prosseguir com a opção --force (--f).\n\n"
+            "Elemento encontrado: "
+        ),
+        "cod:45": "Operação abordada!",
+        "cod:46": "Restauração completa!",
+        "cod:47": f"Escolha um idioma para o {__info__['name']}:",
+        "cod:48": "Idioma alterado com sucesso!",
+        "cod:49": "[cod:49] Erro na autenticação da senha.",
     },
 }
