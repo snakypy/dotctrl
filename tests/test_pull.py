@@ -1,40 +1,67 @@
-from os.path import exists, islink, join
-
+from .utilities import base  # noqa: E261,F401
+from .utilities import add_elements
+from .test_init import test_init
 from snakypy.dotctrl.actions.pull import PullCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
-
-from .utilities import base  # noqa: E261,F401
-from .utilities import (
-    arguments,
-    class_base,
-    elements,
-    run_init_command,
-    update_config_elements,
-)
+from os.path import exists, join
+from shutil import copyfile
 
 
-@assign_cli(arguments(argv=["pull"]), "pull")
-def test_pull_command(base):  # noqa: F811
-    elements(base, create=True)
+def pull_massive_not_force(base):  # noqa: F811
+    args = base["Menu"].arguments(argv=["pull"])
 
-    run_init_command(base)
+    @assign_cli(args, "pull")
+    def wrapper():
+        test_init(base)
+        add_elements(base, *base["elements"])
 
-    update_config_elements(base, ".config/foo.txt", ".config/bar.txt")
+        PullCommand(base["root"], base["home"]).main(args)
 
-    PullCommand(base["root"], base["home"]).main(
-        arguments(argv=["pull", f"--e={elements(base)[0]}", "--force"])
-    )
+        for e in base["elements"]:
+            repo_path = base["Base"].repo_path
+            if not exists(join(repo_path, e)):
+                assert False
 
-    file_linked = join(class_base(base).HOME, elements(base)[0])
-    if islink(file_linked):
-        assert False
+    return wrapper()
 
-    PullCommand(base["root"], base["home"]).main(arguments(argv=["pull"]))
 
-    for item in elements(base):
-        if not exists(join(class_base(base).repo_path, item)):
+def pull_element_not_force(base):  # noqa: F811
+    args = base["Menu"].arguments(argv=["pull", f"--e={base['elements'][0]}"])
+
+    @assign_cli(args, "pull")
+    def wrapper():
+        test_init(base)
+        add_elements(base, *base["elements"])
+
+        out = PullCommand(base["root"], base["home"]).main(args)
+
+        repo_path = base["Base"].repo_path
+        if not exists(join(repo_path, base["elements"][0])):
             assert False
 
-    for item in class_base(base).editors_config:
-        if not exists(join(class_base(base).repo_path, item)):
+        if out["cod"] != "cod:18":
             assert False
+
+        out = PullCommand(base["root"], base["home"]).main(args)
+
+        if out["cod"] != "cod:16":
+            assert False
+
+        intruder = join(base["home"], "intruder.txt")
+
+        copyfile(intruder, join(base["home"], base["elements"][0]))
+
+        out = PullCommand(base["root"], base["home"]).main(args)
+
+        if out["cod"] != "cod:37":
+            assert False
+
+    return wrapper()
+
+
+def test_pull_massive_not_force(base):  # noqa: F811
+    pull_massive_not_force(base)
+
+
+def test_pull_element_not_force(base):  # noqa: F811
+    pull_element_not_force(base)

@@ -1,20 +1,35 @@
 from os.path import exists
 
 from snakypy.dotctrl.utils.decorators import assign_cli
+from snakypy.dotctrl.actions.init import InitCommand
 
-from .utilities import base  # noqa: E261
-from .utilities import arguments, class_base, elements, run_init_command
+from .utilities import base  # noqa: E261, F401
 
 
-@assign_cli(arguments(argv=["init"]), "init")
-def test_init_command(base):  # noqa: F811
+def test_init(base):  # noqa: F811
+    args = base["Menu"].arguments(argv=["init"])
 
-    elements(base, create=True)
+    @assign_cli(args, "init")
+    def wrapper():
+        InitCommand(base["root"], base["home"]).main(args)
 
-    run_init_command(base)
+        if not exists(base["Base"].config_path):
+            assert False
 
-    if not exists(class_base(base).config_path):
-        assert False
+        if not exists(base["Base"].repo_path):
+            assert False
 
-    if not exists(class_base(base).repo_path):
-        assert False
+    return wrapper()
+
+
+# WHITOUT DECORATOR
+# def test_init_command(base):  # noqa: F811
+
+#     args = base["Menu"].arguments(argv=["init"])
+#     InitCommand(base["root"], base["home"]).main(args)
+
+#     if not exists(base["Base"].config_path):
+#         assert False
+
+#     if not exists(base["Base"].repo_path):
+#         assert False

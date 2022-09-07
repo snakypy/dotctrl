@@ -1,32 +1,95 @@
-from os.path import islink, join
-
+from .utilities import base  # noqa: E261,F401
+from .test_pull import pull_massive_not_force
 from snakypy.dotctrl.actions.link import LinkCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
+from os.path import join
+from snakypy.dotctrl.utils import is_repo_symbolic_link
+from shutil import copyfile
+from os import remove, symlink
 
-from .test_pull import test_pull_command
-from .utilities import base  # noqa: E261, F401
-from .utilities import arguments, class_base, elements
 
+def link_massive_not_force(base):  # noqa: F811
+    args = base["Menu"].arguments(argv=["link"])
+    pull_massive_not_force(base)
 
-@assign_cli(arguments(argv=["link"]), "link")
-def test_link_command(base):  # noqa: F811
+    @assign_cli(args, "link")
+    def wrapper():
 
-    test_pull_command(base)
+        out = LinkCommand(base["root"], base["home"]).main(args)
 
-    LinkCommand(base["root"], base["home"]).main(
-        arguments(argv=["link", f"--e={elements(base)[0]}", "--force"])
-    )
-
-    f = join(class_base(base).HOME, elements(base)[0])
-    if not islink(f):
-        assert False
-
-    LinkCommand(base["root"], base["home"]).main(arguments(argv=["link", "--force"]))
-
-    for item in elements(base):
-        if not islink(join(class_base(base).HOME, item)):
+        if not out["bool"]:
             assert False
 
-    for item in class_base(base).editors_config:
-        if not islink(join(class_base(base).HOME, item)):
+        for e in base["elements"]:
+            elem_home = join(base["home"], e)
+            elem_repo = join(base["Base"].repo_path, e)
+
+            if not is_repo_symbolic_link(elem_home, elem_repo):
+                assert False
+
+        if out["cod"] != "cod:15":
             assert False
+
+        # Remove link
+        remove(elem_home)
+
+        # Copy file repo to origin
+        copyfile(elem_repo, elem_home)
+
+        out = LinkCommand(base["root"], base["home"]).main(args)
+
+        if not out["cod"] == "cod:27":
+            assert False
+
+    return wrapper()
+
+
+def link_element_not_force(base):  # noqa: F811
+    args = base["Menu"].arguments(argv=["link", f"--e={base['elements'][0]}"])
+    pull_massive_not_force(base)
+
+    @assign_cli(args, "link")
+    def wrapper():
+
+        out = LinkCommand(base["root"], base["home"]).main(args)
+
+        if not out["bool"]:
+            assert False
+
+        elem_home = join(base["home"], base["elements"][0])
+        elem_repo = join(base["Base"].repo_path, base["elements"][0])
+
+        if not is_repo_symbolic_link(elem_home, elem_repo):
+            assert False
+
+        # Remove link
+        remove(elem_home)
+
+        # Copy file repo to origin
+        copyfile(elem_repo, elem_home)
+
+        out = LinkCommand(base["root"], base["home"]).main(args)
+
+        if not out["cod"] == "cod:27":
+            assert False
+
+        remove(elem_home)
+
+        intruder = join(base["home"], "intruder.txt")
+
+        symlink(intruder, join(base["home"], base["elements"][0]))
+
+        out = LinkCommand(base["root"], base["home"]).main(args)
+
+        if not out["cod"] == "cod:39":
+            assert False
+
+    return wrapper()
+
+
+def test_link_massive_not_force(base):  # noqa: F811
+    link_massive_not_force(base)
+
+
+def test_link_element_not_force(base):  # noqa: F811
+    link_element_not_force(base)
