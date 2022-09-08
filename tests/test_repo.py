@@ -1,55 +1,34 @@
-# from snakypy.dotctrl.actions.link import LinkCommand
-# from snakypy.dotctrl.actions.pull import PullCommand
-# from snakypy.dotctrl.actions.repo import RepoCommand
-# from snakypy.dotctrl.utils.decorators import assign_cli
-
-# from .utilities import base  # noqa: E261,F401
-# from .utilities import arguments, elements, run_init_command, update_config_elements
-
-
-# @assign_cli(arguments(argv=["repo", "--check"]), "repo")
-# def test_repo_check(base):  # noqa: F811
-#     elements(base, create=True)
-
-#     run_init_command(base)
-
-#     update_config_elements(base, rc=True, editors=True)
-
-#     PullCommand(base["root"], base["home"]).main(arguments(argv=["pull", "--f"]))
-
-#     if not RepoCommand(base["root"], base["home"]).main(
-#         arguments(argv=["repo", "--check"])
-#     ):
-#         assert True
-
-#     LinkCommand(base["root"], base["home"]).main(arguments(argv=["link", "--force"]))
-
-#     if not RepoCommand(base["root"], base["home"]).main(
-#         arguments(argv=["repo", "--check"])
-#     ):
-#         assert False
+from os import symlink, remove
+from .utilities import base  # noqa: E261,F401
+from .test_link import link_massive
+from snakypy.dotctrl.utils.decorators import assign_cli
+from snakypy.dotctrl.actions.repo import RepoCommand
+from os.path import join
 
 
-# @assign_cli(arguments(argv=["repo", "--imported"]), "repo")
-# def test_repo_imported(base):  # noqa: F811
-#     elements(base, create=True)
+def repo_check(base):  # noqa: F811
+    args = base["Menu"].arguments(argv=["repo", "--check"])
 
-#     run_init_command(base)
+    @assign_cli(args, "repo")
+    def wrapper():
+        link_massive(base)
 
-#     if RepoCommand(base["root"], base["home"]).main(
-#         arguments(argv=["repo", "--imported"])
-#     ):
-#         assert False
+        out = RepoCommand(base["root"], base["home"]).main(args)
 
-#     update_config_elements(
-#         base, ".config/foo.txt", ".config/bar.txt", rc=True, editors=True
-#     )
+        if out["cod"] != "cod:21":
+            assert False
 
-#     PullCommand(base["root"], base["home"]).main(arguments(argv=["pull", "--f"]))
+        remove(join(base["home"], base["elements"][0]))
+        intruder = join(base["home"], "intruder.txt")
+        symlink(intruder, join(base["home"], base["elements"][0]))
 
-#     LinkCommand(base["root"], base["home"]).main(arguments(argv=["link", "--f"]))
+        out = RepoCommand(base["root"], base["home"]).main(args)
 
-#     if not RepoCommand(base["root"], base["home"]).main(
-#         arguments(argv=["repo", "--imported"])
-#     ):
-#         assert False
+        if out["cod"] != "cod:22":
+            assert False
+
+    return wrapper()
+
+
+def test_repo_check(base):  # noqa: F811
+    repo_check(base)

@@ -1,5 +1,5 @@
 from .utilities import base  # noqa: E261,F401
-from .test_pull import pull_massive_not_force
+from .test_pull import pull_massive
 from snakypy.dotctrl.actions.link import LinkCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
 from os.path import join
@@ -8,9 +8,11 @@ from shutil import copyfile
 from os import remove, symlink
 
 
-def link_massive_not_force(base):  # noqa: F811
+def link_massive(base):  # noqa: F811
     args = base["Menu"].arguments(argv=["link"])
-    pull_massive_not_force(base)
+    args_f = base["Menu"].arguments(argv=["link", "--f"])
+
+    pull_massive(base)
 
     @assign_cli(args, "link")
     def wrapper():
@@ -30,10 +32,10 @@ def link_massive_not_force(base):  # noqa: F811
         if out["cod"] != "cod:15":
             assert False
 
-        # Remove link
+        # # Checking for error if there are two elements with the same name in
+        # # the source and destination location.
         remove(elem_home)
 
-        # Copy file repo to origin
         copyfile(elem_repo, elem_home)
 
         out = LinkCommand(base["root"], base["home"]).main(args)
@@ -41,12 +43,20 @@ def link_massive_not_force(base):  # noqa: F811
         if not out["cod"] == "cod:27":
             assert False
 
+        # # Using option --force (--f)
+        out = LinkCommand(base["root"], base["home"]).main(args_f)
+
+        if not is_repo_symbolic_link(elem_home, elem_repo):
+            assert False
+
     return wrapper()
 
 
-def link_element_not_force(base):  # noqa: F811
+def link_element(base):  # noqa: F811
     args = base["Menu"].arguments(argv=["link", f"--e={base['elements'][0]}"])
-    pull_massive_not_force(base)
+    args_f = base["Menu"].arguments(argv=["link", f"--e={base['elements'][0]}", "--f"])
+
+    pull_massive(base)
 
     @assign_cli(args, "link")
     def wrapper():
@@ -62,7 +72,8 @@ def link_element_not_force(base):  # noqa: F811
         if not is_repo_symbolic_link(elem_home, elem_repo):
             assert False
 
-        # Remove link
+        # # Checking for error if there are two elements with the same name in
+        # # the source and destination location.
         remove(elem_home)
 
         # Copy file repo to origin
@@ -73,6 +84,7 @@ def link_element_not_force(base):  # noqa: F811
         if not out["cod"] == "cod:27":
             assert False
 
+        # # Creating intrusive symbolic link to force an error.
         remove(elem_home)
 
         intruder = join(base["home"], "intruder.txt")
@@ -84,12 +96,18 @@ def link_element_not_force(base):  # noqa: F811
         if not out["cod"] == "cod:39":
             assert False
 
+        # # Using option --force (--f)
+        out = LinkCommand(base["root"], base["home"]).main(args_f)
+
+        if not is_repo_symbolic_link(elem_home, elem_repo):
+            assert False
+
     return wrapper()
 
 
-def test_link_massive_not_force(base):  # noqa: F811
-    link_massive_not_force(base)
+def test_link_massive(base):  # noqa: F811
+    link_massive(base)
 
 
-def test_link_element_not_force(base):  # noqa: F811
-    link_element_not_force(base)
+def test_link_element(base):  # noqa: F811
+    link_element(base)

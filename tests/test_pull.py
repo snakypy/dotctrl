@@ -7,7 +7,7 @@ from os.path import exists, join
 from shutil import copyfile
 
 
-def pull_massive_not_force(base):  # noqa: F811
+def pull_massive(base):  # noqa: F811
     args = base["Menu"].arguments(argv=["pull"])
 
     @assign_cli(args, "pull")
@@ -25,7 +25,7 @@ def pull_massive_not_force(base):  # noqa: F811
     return wrapper()
 
 
-def pull_element_not_force(base):  # noqa: F811
+def pull_element(base):  # noqa: F811
     args = base["Menu"].arguments(argv=["pull", f"--e={base['elements'][0]}"])
 
     @assign_cli(args, "pull")
@@ -59,9 +59,9 @@ def pull_element_not_force(base):  # noqa: F811
     return wrapper()
 
 
-def test_pull_massive_not_force(base):  # noqa: F811
-    pull_massive_not_force(base)
+def test_pull_massive(base):  # noqa: F811
+    pull_massive(base)
 
 
-def test_pull_element_not_force(base):  # noqa: F811
-    pull_element_not_force(base)
+def test_pull_element(base):  # noqa: F811
+    pull_element(base)
