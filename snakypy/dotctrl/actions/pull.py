@@ -25,7 +25,7 @@ class PullCommand(Base, Options):
         Base.__init__(self, root, home)
         Options.__init__(self)
 
-    def main(self, arguments: dict) -> bool:
+    def main(self, arguments: dict):
         """Method responsible for pulling the elements from the
         place of origin to the repository."""
 
