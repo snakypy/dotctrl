@@ -117,7 +117,7 @@ footer = "Publishing command terminated!"
 
 [deploy]
 description = "Deploy to: Github(williamcanin|snakypy), Gitlab (snakypy)."
-header = "Init deploy to: Github(williamcanin|snakypy), Gitlab (snakypy) ..."
+header = "Starting deploy to: Github(williamcanin|snakypy), Gitlab (snakypy) ..."
 commands = [
     """
             git push origin;
@@ -125,4 +125,4 @@ commands = [
             git push gitlab;
 """
 ]
-footer = "Publishing command terminated!"
+footer = "Deploy command terminated!"
