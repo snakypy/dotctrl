@@ -29,7 +29,8 @@ class UnlinkCommand(Base, Options):
         """Method to unlink point files from the repository
         with their place of origin."""
 
-        self.checking_init()
+        if not self.checking_init():
+            return {"status": False, "code": "28"}
 
         element = self.element(arguments)
         force = self.force(arguments)
@@ -57,20 +58,21 @@ class UnlinkCommand(Base, Options):
                     # TODO: [Adicionar o texto do print AQUI]
                     printer(self.cod["cod:12"], foreground=self.FINISH)
 
-                    return {"bool": True, "cod": "cod:12"}
+                    return {"status": True, "code": "12"}
 
             # Element not found.
             printer(
                 self.cod["cod:29"], f"Object: {element_home_}", foreground=self.ERROR
             )
-            return {"bool": False, "cod": "cod:29"}
+
+            return {"status": False, "code": "29"}
 
         # Not use option --element (--e)
         if len(unlinks_to_do(self.data, self.repo_path, self.home)) == 0:
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:30"], foreground=self.WARNING)
 
-            return {"bool": False, "cod": "cod:30"}
+            return {"status": False, "code": "30"}
 
         else:
             for item in unlinks_to_do(self.data, self.repo_path, self.home):
@@ -83,4 +85,4 @@ class UnlinkCommand(Base, Options):
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:31"], foreground=self.FINISH)
 
-            return {"bool": True, "cod": "cod:31"}
+            return {"status": True, "code": "31"}

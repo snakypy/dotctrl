@@ -64,7 +64,10 @@ LANG = {
             "Caso queira prosseguir e substituir este elemento encontrado "
             f"pelo elemento do repositório {__info__['name']}, use a opção --force (--f).\n"
         ),
-        "cod:28": "",
+        "cod:28": (
+            "O repositório não está criado. "
+            f"Use \"{__info__['pkg_name']} init [--auto] [--git]\". Aborted"
+        ),
         "cod:29": "[Cod:29] Elemento não encontrado.",
         "cod:30": "Nada para desvinculado, em massa.",
         "cod:31": "Links massivamente desvinculados com sucesso!",
@@ -113,7 +116,7 @@ LANG = {
         "cod:45": "Operação abordada!",
         "cod:46": "Restauração completa!",
         "cod:47": f"Escolha um idioma para o {__info__['name']}:",
-        "cod:48": "Idioma alterado com sucesso!",
+        "cod:48": "Idioma alterado com sucesso! Alterado para:",
         "cod:49": "[cod:49] Erro na autenticação da senha.",
     },
     "pt_BR": {
@@ -176,7 +179,10 @@ LANG = {
             "Caso queira prosseguir e substituir este elemento encontrado "
             f"pelo elemento do repositório {__info__['name']}, use a opção --force (--f).\n"
         ),
-        "cod:28": "",
+        "cod:28": (
+            "O repositório não está criado. "
+            f"Use \"{__info__['pkg_name']} init [--auto] [--git]\". Aborted"
+        ),
         "cod:29": "[Cod:29] Elemento não encontrado.",
         "cod:30": "Nada para desvinculado, em massa.",
         "cod:31": "Links massivamente desvinculados com sucesso!",
@@ -225,7 +231,7 @@ LANG = {
         "cod:45": "Operação abordada!",
         "cod:46": "Restauração completa!",
         "cod:47": f"Escolha um idioma para o {__info__['name']}:",
-        "cod:48": "Idioma alterado com sucesso!",
+        "cod:48": "Idioma alterado com sucesso! Alterado para:",
         "cod:49": "[cod:49] Erro na autenticação da senha.",
     },
 }

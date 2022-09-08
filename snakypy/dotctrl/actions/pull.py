@@ -29,7 +29,8 @@ class PullCommand(Base, Options):
         """Method responsible for pulling the elements from the
         place of origin to the repository."""
 
-        self.checking_init()
+        if not self.checking_init():
+            return {"status": False, "code": "28"}
 
         element = self.element(arguments)
         force = self.force(arguments)
@@ -49,21 +50,21 @@ class PullCommand(Base, Options):
                 # Nothing was pulled. Nonexistent element.
                 printer(self.cod["cod:16"], foreground=self.ERROR)
 
-                return {"bool": False, "cod": "cod:16"}
+                return {"status": False, "code": "16"}
 
             if isfile(file_home) and isfile(file_repo) and not force:
 
                 # TODO: [Adicionar o texto do print AQUI]
                 printer(self.cod["cod:37"], foreground=self.WARNING)
 
-                return {"bool": False, "cod": "cod:37"}
+                return {"status": False, "code": "37"}
 
             to_move(file_home, file_repo)
 
             # Element(s) pulled successfully!
             printer(self.cod["cod:18"], foreground=self.FINISH)
 
-            return {"bool": True, "cod": "cod:18"}
+            return {"status": True, "code": "18"}
 
         # If you don't use the --element flag (--e)
         if len(pulled_to_do(self.data, self.home)) == 0:
@@ -71,7 +72,7 @@ class PullCommand(Base, Options):
             # Nothing to pull, in droves.
             printer(self.cod["cod:17"], foreground=self.WARNING)
 
-            return {"bool": False, "cod": "cod:17"}
+            return {"status": False, "code": "17"}
 
         for item in self.data:
             file_home = join(self.home, item)
@@ -86,11 +87,11 @@ class PullCommand(Base, Options):
                 # TODO: [Adicionar o texto do print AQUI]
                 printer(self.cod["cod:37"], foreground=self.WARNING)
 
-                return {"bool": False, "cod": "cod:37"}
+                return {"status": False, "code": "37"}
 
             to_move(file_home, file_repo)
 
         # Element(s) pulled successfully!
         printer(self.cod["cod:18"], foreground=self.FINISH)
 
-        return {"bool": True, "cod": "cod:18"}
+        return {"status": True, "code": "18"}

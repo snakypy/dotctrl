@@ -65,7 +65,8 @@ class RepoCommand(Base):
 
     def main(self, arguments: dict):
 
-        self.checking_init()
+        if not self.checking_init():
+            return {"status": False, "code": "28"}
 
         # --check
         if arguments[self.opts[1]]:
@@ -75,12 +76,14 @@ class RepoCommand(Base):
             if count_repo:
                 # Empty repository. Nothing to link.
                 printer(self.cod["cod:19"], foreground=self.FINISH)
-                return {"bool": False, "cod": "cod:19"}
+
+                return {"status": False, "code": "19"}
 
             if count_unlinked:
                 # Congratulations! All elements are linked.
                 printer(self.cod["cod:21"], foreground=self.FINISH)
-                return {"bool": True, "cod": "cod:21"}
+
+                return {"status": True, "code": "21"}
 
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:22"], foreground=self.WARNING, end="\n" * 2)
@@ -96,7 +99,7 @@ class RepoCommand(Base):
                     # TODO: [Adicionar o texto do print AQUI]
                     print(f"{self.magenta(self.cod['cod:w10'])}: {item}")
 
-            return {"bool": False, "cod": "cod:22"}
+            return {"status": False, "code": "22"}
 
         # --info
         elif arguments[self.opts[2]]:

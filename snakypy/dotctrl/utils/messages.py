@@ -37,4 +37,4 @@ class Messages(Colors):
 
         print(symlink[-3], symlink[-2], symlink[-1])
 
-        return {"bool": False, "cod": "cod:39"}
+        return {"status": False, "code": "39"}

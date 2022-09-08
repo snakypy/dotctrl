@@ -57,16 +57,17 @@ class ConfigCommand(Base):
         if applied_cleaning:
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:35"], foreground=self.FINISH)
-            return True
+            return {"status": True, "code": "35"}
 
         # TODO: [Adicionar o texto do print AQUI]
         printer(self.cod["cod:36"], foreground=self.WARNING)
-        return False
+        return {"status": False, "code": "36"}
 
     def main(self, arguments):
         """Method for opening or viewing the configuration file."""
 
-        self.checking_init()
+        if not self.checking_init():
+            return {"status": False, "code": "28"}
 
         # --autoclean
         if arguments[self.opts[0]]:
@@ -100,6 +101,8 @@ class ConfigCommand(Base):
             language = self.choice_language[reply[0]]
             self.change_language(language)
 
-            printer(self.cod["cod:48"], foreground=self.FINISH)
+            printer(
+                self.cod["cod:48"], f"{self.cyan(reply[1])}", foreground=self.FINISH
+            )
 
-            return {"bool": True, "cod": "cod:48"}
+            return {"status": True, "code": "48"}

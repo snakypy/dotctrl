@@ -39,12 +39,12 @@ def pull_element(base):  # noqa: F811
         if not exists(join(repo_path, base["elements"][0])):
             assert False
 
-        if out["cod"] != "cod:18":
+        if out["code"] != "18":
             assert False
 
         out = PullCommand(base["root"], base["home"]).main(args)
 
-        if out["cod"] != "cod:16":
+        if out["code"] != "16":
             assert False
 
         intruder = join(base["home"], "intruder.txt")
@@ -53,7 +53,7 @@ def pull_element(base):  # noqa: F811
 
         out = PullCommand(base["root"], base["home"]).main(args)
 
-        if out["cod"] != "cod:37":
+        if out["code"] != "37":
             assert False
 
     return wrapper()

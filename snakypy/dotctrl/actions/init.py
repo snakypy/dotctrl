@@ -20,7 +20,7 @@ class InitCommand(Base):
         create_path(join(path, "dotctrl"))
         create_json(config.content, join(path, __info__["config"]), force=True)
         create_file(readme.content, self.readme, force=True)
-        return {"bool": True, "cod": "cod:10"}
+        return {"status": True, "code": "10"}
 
     def git_repo(self, path: str):
         git_init_command(path)
@@ -34,7 +34,7 @@ class InitCommand(Base):
             # Dotctrl is already configured in this directory:
             printer(self.cod["cod:07"], directory, foreground=self.WARNING)
 
-            return {"bool": False, "cod": "cod:07"}
+            return {"status": False, "code": "07"}
 
         # You must have SUDO permission on your machine to proceed with this step and create
         # an automatic repository with Dotctrl. You can approach the operation by
@@ -55,15 +55,15 @@ class InitCommand(Base):
 
         if cmd["str"] == "err":
             printer(self.cod["cod:49"], foreground=self.ERROR)
-            return {"bool": False, "cod": "cod:49"}
+            return {"status": False, "code": "49"}
 
         if cmd["str"] == "interrupt":
             printer(self.cod["cod:42"], foreground=self.WARNING)
-            return {"bool": False, "cod": "cod:42"}
+            return {"status": False, "code": "42"}
 
         self.creator(path)
 
-        return {"bool": True, "cod": "cod:10"}
+        return {"status": True, "code": "10"}
 
     def main(self, arguments: dict):
         """Base repository method."""
@@ -71,7 +71,7 @@ class InitCommand(Base):
         if arguments["--auto"] and arguments["--git"]:
             root = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
             out = self.automatic(root)
-            if out["bool"]:
+            if out["status"]:
                 self.git_repo(root)
         elif arguments["--auto"] and not arguments["--git"]:
             root = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])

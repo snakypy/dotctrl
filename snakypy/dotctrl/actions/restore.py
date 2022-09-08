@@ -31,7 +31,7 @@ class RestoreCommand(Base, Options):
             # Element not found in repository to restore.
             printer(self.cod["cod:38"], foreground=self.WARNING)
 
-            return {"bool": False, "cod": "cod:38"}
+            return {"status": False, "code": "38"}
 
         if (
             islink(element_origin)
@@ -54,9 +54,9 @@ class RestoreCommand(Base, Options):
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:44"], element_origin, foreground=self.WARNING)
 
-            return {"bool": False, "cod": "cod:44"}
+            return {"status": False, "code": "44"}
 
-        return {"bool": True, "str": "success"}
+        return {"status": True, "str": "success"}
 
     def mass_verification(self, objects: list, force: bool) -> bool:
 
@@ -66,7 +66,7 @@ class RestoreCommand(Base, Options):
 
             checking = self.not_errors(element_origin, element_repo, force)
 
-            if not checking["bool"]:
+            if not checking["status"]:
                 return False
 
         return True
@@ -83,7 +83,8 @@ class RestoreCommand(Base, Options):
         """Method to restore dotfiles from the repository to their
         original location."""
 
-        self.checking_init()
+        if not self.checking_init():
+            return {"status": False, "code": "28"}
 
         element = self.element(arguments)
         force = self.force(arguments)
@@ -96,13 +97,13 @@ class RestoreCommand(Base, Options):
 
             checking = self.not_errors(element_origin, element_repo, force)
 
-            if checking["bool"]:
+            if checking["status"]:
                 self.restore(element_origin, element_repo)
 
                 # Complete restoration!
                 printer(self.cod["cod:46"], foreground=self.FINISH)
 
-                return {"bool": True, "cod": "cod:46"}
+                return {"status": True, "code": "46"}
 
             return checking
 
@@ -116,7 +117,7 @@ class RestoreCommand(Base, Options):
                 # Empty repository. Nothing to restore.
                 printer(self.cod["cod:40"], foreground=self.WARNING)
 
-                return {"bool": False, "cod": "cod:40"}
+                return {"status": False, "code": "40"}
 
             title_ = self.cod["cod:41"]
             options_ = [self.cod["cod:w08"], self.cod["cod:w09"]]
@@ -134,7 +135,7 @@ class RestoreCommand(Base, Options):
                 # Canceled by user.
                 printer(self.cod["cod:42"], foreground=self.WARNING)
 
-                return {"bool": False, "cod": "cod:42"}
+                return {"status": False, "code": "42"}
 
             elif reply is not None and reply[0] == 0:
 
@@ -151,4 +152,4 @@ class RestoreCommand(Base, Options):
                     # Complete restoration!
                     printer(self.cod["cod:46"], foreground=self.FINISH)
 
-                    return {"bool": True, "cod": "cod:46"}
+                    return {"status": True, "code": "46"}

@@ -15,7 +15,7 @@ def repo_check(base):  # noqa: F811
 
         out = RepoCommand(base["root"], base["home"]).main(args)
 
-        if out["cod"] != "cod:21":
+        if out["code"] != "21":
             assert False
 
         remove(join(base["home"], base["elements"][0]))
@@ -24,7 +24,7 @@ def repo_check(base):  # noqa: F811
 
         out = RepoCommand(base["root"], base["home"]).main(args)
 
-        if out["cod"] != "cod:22":
+        if out["code"] != "22":
             assert False
 
     return wrapper()

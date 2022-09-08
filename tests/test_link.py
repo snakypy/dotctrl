@@ -19,7 +19,7 @@ def link_massive(base):  # noqa: F811
 
         out = LinkCommand(base["root"], base["home"]).main(args)
 
-        if not out["bool"]:
+        if not out["status"]:
             assert False
 
         for e in base["elements"]:
@@ -29,7 +29,7 @@ def link_massive(base):  # noqa: F811
             if not is_repo_symbolic_link(elem_home, elem_repo):
                 assert False
 
-        if out["cod"] != "cod:15":
+        if out["code"] != "15":
             assert False
 
         # # Checking for error if there are two elements with the same name in
@@ -40,7 +40,7 @@ def link_massive(base):  # noqa: F811
 
         out = LinkCommand(base["root"], base["home"]).main(args)
 
-        if not out["cod"] == "cod:27":
+        if not out["code"] == "27":
             assert False
 
         # # Using option --force (--f)
@@ -63,7 +63,7 @@ def link_element(base):  # noqa: F811
 
         out = LinkCommand(base["root"], base["home"]).main(args)
 
-        if not out["bool"]:
+        if not out["status"]:
             assert False
 
         elem_home = join(base["home"], base["elements"][0])
@@ -81,7 +81,7 @@ def link_element(base):  # noqa: F811
 
         out = LinkCommand(base["root"], base["home"]).main(args)
 
-        if not out["cod"] == "cod:27":
+        if not out["code"] == "27":
             assert False
 
         # # Creating intrusive symbolic link to force an error.
@@ -93,7 +93,7 @@ def link_element(base):  # noqa: F811
 
         out = LinkCommand(base["root"], base["home"]).main(args)
 
-        if not out["cod"] == "cod:39":
+        if not out["code"] == "39":
             assert False
 
         # # Using option --force (--f)

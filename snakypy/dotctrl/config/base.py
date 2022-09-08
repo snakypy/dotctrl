@@ -2,7 +2,6 @@
 from contextlib import suppress
 from genericpath import exists
 from os.path import join
-from sys import exit
 
 from snakypy.helpers import printer
 from snakypy.helpers.files import read_json
@@ -34,13 +33,12 @@ class Base(Messages):
 
     def checking_init(self):
         if not exists(join(self.root, __info__["config"])):
-            printer(
-                f"The repository was not created. "
-                f"Use \"{__info__['pkg_name']} init [--auto | --git]\". Aborted",
-                foreground=self.WARNING,
-            )
-            exit(1)
-            # return {"bool": False, "cod": "xxx"}
+
+            printer(self.cod["cod:28"], foreground=self.WARNING)
+
+            return False
+
+        return True
 
 
 class Options:

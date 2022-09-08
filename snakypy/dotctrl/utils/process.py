@@ -26,10 +26,13 @@ def super_command(commands: list) -> dict:
             )
             out, err = p.communicate(get_pass + "\n")
             if p.returncode != 0:
-                return {"bool": False, "str": "err"}
-        return {"bool": True, "str": "success"}
+                return {"status": False, "str": "error"}
+
+        return {"status": True, "str": "success"}
+
     except KeyboardInterrupt:
-        return {"bool": False, "str": "interrupt"}
+        return {"status": False, "str": "interrupt"}
+
     finally:
         if which("faillock"):
             run(["faillock", "--reset"])

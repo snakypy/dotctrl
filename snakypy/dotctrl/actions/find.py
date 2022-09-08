@@ -28,14 +28,15 @@ class FindCommand(Base):
 
     def main(self, arguments: dict):
 
-        self.checking_init()
+        if not self.checking_init():
+            return {"status": False, "code": "28"}
 
         if len(list(listing_objects(self.repo_path))) == 0:
 
             # Repository is empty. No elements.
             printer(self.cod["cod:02"], foreground=self.WARNING)
 
-            return {"bool": False, "cod": "cod:02"}
+            return {"status": False, "code": "02"}
 
         # The elements below are found in the Dotctrl directory. (Type "q" to exit)
         # [ Result: ]
@@ -55,8 +56,8 @@ class FindCommand(Base):
             else:
                 printer(self.cod["cod:04"], foreground=self.WARNING)
 
-                return {"bool": False, "cod": "cod:04"}
+                return {"status": False, "code": "04"}
 
         pager("\n".join(elements))
 
-        return {"bool": True, "cod": "cod:03"}
+        return {"status": True, "code": "03"}
