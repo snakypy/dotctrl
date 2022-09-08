@@ -2,7 +2,7 @@ from os import environ, listdir
 from os.path import exists, isdir, join
 from pydoc import pager
 from textwrap import dedent
-from typing import Any, Union
+from typing import Any
 from os import walk
 
 from snakypy.helpers import FG, SGR, printer
@@ -63,7 +63,7 @@ class RepoCommand(Base):
                 if exists(src) and is_repo_symbolic_link(dest, src) is False:
                     yield item
 
-    def main(self, arguments: dict) -> Union[None, bool]:
+    def main(self, arguments: dict):
 
         self.checking_init()
 
@@ -75,12 +75,12 @@ class RepoCommand(Base):
             if count_repo:
                 # Empty repository. Nothing to link.
                 printer(self.cod["cod:19"], foreground=self.FINISH)
-                return None
+                return {"bool": False, "cod": "cod:19"}
 
             if count_unlinked:
                 # Congratulations! All elements are linked.
                 printer(self.cod["cod:21"], foreground=self.FINISH)
-                return True
+                return {"bool": True, "cod": "cod:21"}
 
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:22"], foreground=self.WARNING, end="\n" * 2)
@@ -96,7 +96,7 @@ class RepoCommand(Base):
                     # TODO: [Adicionar o texto do print AQUI]
                     print(f"{self.magenta(self.cod['cod:w10'])}: {item}")
 
-            return False
+            return {"bool": False, "cod": "cod:22"}
 
         # --info
         elif arguments[self.opts[2]]:
