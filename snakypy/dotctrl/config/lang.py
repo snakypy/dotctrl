@@ -25,7 +25,7 @@ LANG = {
             f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}. "
             f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
         ),
-        "cod:04": "",
+        "cod:04": "[Cod:04] Elemento não encontrado no repositório.",
         "cod:05": "[Cod:05] Elemento não linkado. Revise o mesmo no repositório:",
         "cod:06": "O repositório já está definido em: ",
         "cod:07": f"{__info__['name']} já está configurado no diretório: ",
@@ -137,7 +137,7 @@ LANG = {
             f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}. "
             f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
         ),
-        "cod:04": "",
+        "cod:04": "[Cod:04] Elemento não encontrado no repositório.",
         "cod:05": "[Cod:05] Elemento não linkado. Revise o mesmo no repositório:",
         "cod:06": "O repositório já está definido em",
         "cod:07": f"{__info__['name']} já está configurado no diretório: ",
