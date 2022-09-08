@@ -65,7 +65,7 @@ class InitCommand(Base):
 
         return {"bool": True, "cod": "cod:10"}
 
-    def main(self, arguments: dict) -> None:
+    def main(self, arguments: dict):
         """Base repository method."""
 
         if arguments["--auto"] and arguments["--git"]:
@@ -76,7 +76,6 @@ class InitCommand(Base):
         elif arguments["--auto"] and not arguments["--git"]:
             root = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
             out = self.automatic(root)
-            return out
         elif not arguments["--auto"] and arguments["--git"]:
             root = self.root
             out = self.creator(root)
