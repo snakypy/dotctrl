@@ -63,7 +63,7 @@ class ConfigCommand(Base):
         printer(self.cod["cod:36"], foreground=self.WARNING)
         return False
 
-    def main(self, arguments) -> None:
+    def main(self, arguments):
         """Method for opening or viewing the configuration file."""
 
         self.checking_init()
@@ -99,4 +99,7 @@ class ConfigCommand(Base):
             )
             language = self.choice_language[reply[0]]
             self.change_language(language)
+
             printer(self.cod["cod:48"], foreground=self.FINISH)
+
+            return {"bool": True, "cod": "cod:48"}
