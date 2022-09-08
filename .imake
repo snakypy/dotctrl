@@ -4,28 +4,6 @@ header = "Build project ..."
 commands = ["python -m snakypy.dotctrl", "poetry build"]
 footer = "Compilation command terminated!"
 
-[binary]
-description = "Generate binary"
-initial_message = "Generate binary..."
-commands = [
-    """
-pyinstaller binary.spec
-python -c '
-import platform
-import shutil
-from pathlib import Path
-from os.path import join
-if platform.system() == "Linux":
-    Path(join("binary", "linux")).mkdir(parents=True, exist_ok=True)
-    shutil.move(join("dist", "dotctrl"), join("binary", "linux", "dotctrl"))
-elif platform.system() == "Darwin":
-    Path(join("binary", "macos")).mkdir(parents=True, exist_ok=True)
-    shutil.move(join("dist", "dotctrl"), join("binary", "macos", "dotctrl"))
-'
-"""
-]
-final_message = "Generate binary terminated!"
-
 [install]
 description = "Performs the installation of project dependencies and installs the same."
 header = "Installing package and dependencies ..."
@@ -55,11 +33,11 @@ commands = [
             poetry run black snakypy/ tests/ --check;
 """
 ]
-footer = "Linter command terminated!"
+footer = "Linters command terminated!"
 
-[fixup]
-description = "Corrects the project structure with certain tools."
-header = "Correcting the project structure ..."
+[black]
+description = "Corrects the project structure with certain tools with Black and Isort."
+header = "Correcting the project structure with Black and Isort..."
 commands = [
     """
             poetry run isort --profile black snakypy/ tests/;
@@ -78,6 +56,7 @@ commands = [
             rm -rf .tox;
             rm -rf .mypy_cache;
             rm -rf docs/_build;
+            rm -rf binary;
 """
 ]
 footer = "Cleaning command finished!"
