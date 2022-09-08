@@ -1,7 +1,6 @@
 from genericpath import isdir, isfile
 from os.path import exists, join, islink
 from shutil import move
-from sys import exit
 
 
 from snakypy.helpers.os import rmdir_blank
@@ -22,7 +21,7 @@ class RestoreCommand(Base, Options):
         Base.__init__(self, root, home)
         Options.__init__(self)
 
-    def not_errors(self, element_origin: str, element_repo: str, force: bool) -> bool:
+    def not_errors(self, element_origin: str, element_repo: str, force: bool):
 
         if not exists(element_repo):
 
@@ -32,7 +31,7 @@ class RestoreCommand(Base, Options):
             # Element not found in repository to restore.
             printer(self.cod["cod:38"], foreground=self.WARNING)
 
-            return False
+            return {"bool": False, "cod": "cod:38"}
 
         if (
             islink(element_origin)
@@ -40,8 +39,8 @@ class RestoreCommand(Base, Options):
             and not force
         ):
 
-            self.error_symlink(element_origin)
-            return False
+            out = self.error_symlink(element_origin)
+            return out
 
         if (
             exists(element_repo)
@@ -54,16 +53,20 @@ class RestoreCommand(Base, Options):
 
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:44"], element_origin, foreground=self.WARNING)
-            return False
 
-        return True
+            return {"bool": False, "cod": "cod:44"}
+
+        return {"bool": True, "str": "success"}
 
     def mass_verification(self, objects: list, force: bool) -> bool:
 
         for item in objects:
             element_origin = join(self.home, item)
             element_repo = join(self.repo_path, item)
-            if not self.not_errors(element_origin, element_repo, force):
+
+            checking = self.not_errors(element_origin, element_repo, force)
+
+            if not checking["bool"]:
                 return False
 
         return True
@@ -75,7 +78,8 @@ class RestoreCommand(Base, Options):
             move(element_repo, element_origin)
             rmdir_blank(self.repo_path)
 
-    def main(self, arguments: dict) -> None:
+    # TODO: Acrescentar tipagem nos "mains" e demais locais
+    def main(self, arguments: dict):
         """Method to restore dotfiles from the repository to their
         original location."""
 
@@ -90,14 +94,30 @@ class RestoreCommand(Base, Options):
             if "/" in element:
                 path_creation(self.home, element)
 
-            if self.not_errors(element_origin, element_repo, force):
+            checking = self.not_errors(element_origin, element_repo, force)
+
+            if checking["bool"]:
                 self.restore(element_origin, element_repo)
 
                 # Complete restoration!
                 printer(self.cod["cod:46"], foreground=self.FINISH)
 
+                return {"bool": True, "cod": "cod:46"}
+
+            return checking
+
         # Not use option --element (--e) [bulk]
         else:
+            objects = [*listing_files(self.repo_path), *self.data]
+
+            # Empty repository. Nothing to restore.
+            if len(objects) == 0:
+
+                # Empty repository. Nothing to restore.
+                printer(self.cod["cod:40"], foreground=self.WARNING)
+
+                return {"bool": False, "cod": "cod:40"}
+
             title_ = self.cod["cod:41"]
             options_ = [self.cod["cod:w08"], self.cod["cod:w09"]]
 
@@ -114,19 +134,9 @@ class RestoreCommand(Base, Options):
                 # Canceled by user.
                 printer(self.cod["cod:42"], foreground=self.WARNING)
 
-                exit(0)
+                return {"bool": False, "cod": "cod:42"}
 
             elif reply is not None and reply[0] == 0:
-
-                objects = [*listing_files(self.repo_path), *self.data]
-
-                # Empty repository. Nothing to restore.
-                if len(objects) == 0:
-
-                    # Empty repository. Nothing to restore.
-                    printer(self.cod["cod:40"], foreground=self.WARNING)
-
-                    exit(0)
 
                 if self.mass_verification(objects, force):
                     for item in objects:
@@ -140,3 +150,5 @@ class RestoreCommand(Base, Options):
 
                     # Complete restoration!
                     printer(self.cod["cod:46"], foreground=self.FINISH)
+
+                    return {"bool": True, "cod": "cod:46"}
