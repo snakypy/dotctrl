@@ -25,7 +25,7 @@ class UnlinkCommand(Base, Options):
         Base.__init__(self, root, home)
         Options.__init__(self)
 
-    def main(self, arguments: dict) -> bool:
+    def main(self, arguments: dict):
         """Method to unlink point files from the repository
         with their place of origin."""
 
@@ -45,29 +45,33 @@ class UnlinkCommand(Base, Options):
                 and not force
             ):
                 # TODO: [Adicionar o texto do print AQUI]
-                self.error_symlink(element_home)
-                return False
+                out = self.error_symlink(element_home)
+                return out
 
             element_home_ = join_two(self.home, element)
 
             if islink(element_home_):
                 with suppress(Exception):
                     remove(element_home_)
+
                     # TODO: [Adicionar o texto do print AQUI]
                     printer(self.cod["cod:12"], foreground=self.FINISH)
-                    return True
+
+                    return {"bool": True, "cod": "cod:12"}
 
             # Element not found.
             printer(
                 self.cod["cod:29"], f"Object: {element_home_}", foreground=self.ERROR
             )
-            return False
+            return {"bool": False, "cod": "cod:29"}
 
         # Not use option --element (--e)
         if len(unlinks_to_do(self.data, self.repo_path, self.home)) == 0:
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:30"], foreground=self.WARNING)
-            return False
+
+            return {"bool": False, "cod": "cod:30"}
+
         else:
             for item in unlinks_to_do(self.data, self.repo_path, self.home):
                 element_home = join(self.home, item)
@@ -78,4 +82,5 @@ class UnlinkCommand(Base, Options):
 
             # TODO: [Adicionar o texto do print AQUI]
             printer(self.cod["cod:31"], foreground=self.FINISH)
-        return True
+
+            return {"bool": True, "cod": "cod:31"}
