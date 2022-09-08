@@ -35,10 +35,10 @@ class FindCommand(Base):
             # Repository is empty. No elements.
             printer(self.cod["cod:02"], foreground=self.WARNING)
 
-            return False
+            return {"bool": False, "cod": "cod:02"}
 
-        # The elements below are found in the Dotctrl directory.
-        # [ Result: ] (Type "q" to exit)
+        # The elements below are found in the Dotctrl directory. (Type "q" to exit)
+        # [ Result: ]
         elements = [
             self.yellow(self.cod["cod:03"]),
             f"{self.cyan(self.cod['cod:w15'])}:\n",
@@ -52,6 +52,11 @@ class FindCommand(Base):
                     elements.append(f"> {self.magenta(self.cod['cod:w14'])}: {item}")
                 else:
                     elements.append(f"> {self.magenta(self.cod['cod:w10'])}: {item}")
+            else:
+                printer(self.cod["cod:04"], foreground=self.WARNING)
+
+                return {"bool": False, "cod": "cod:04"}
 
         pager("\n".join(elements))
-        return True
+
+        return {"bool": True, "cod": "cod:03"}
