@@ -8,30 +8,30 @@ from contextlib import suppress
 
 
 class Messages(Colors):
-    def __init__(self, config_path: str):
-        self.config_path = config_path
+    def __init__(self, config_path: str) -> None:
+        self.lang: str = "en_US"
+        self.config_path: str = config_path
         Colors.__init__(self)
 
     @property
-    def cod(self):
-        self.lang: str = "en_US"
+    def text(self) -> dict:
 
         with suppress(FileNotFoundError):
             parsed: dict = read_json(self.config_path)
-            self.lang: str = get_key(parsed, "dotctrl", "config", "language")
+            self.lang = get_key(parsed, "dotctrl", "config", "language")
 
         if not self.lang or self.lang not in LANG:
             return LANG["en_US"]
         return LANG[self.lang]
 
-    def error_symlink(self, element_home: str) -> None:
+    def error_symlink(self, element_home: str) -> dict:
         # Operation aborted!
-        printer(self.cod["cod:45"], foreground=self.WARNING, end="\n" * 2)
+        printer(self.text["msg:45"], foreground=self.WARNING, end="\n" * 2)
 
         # TODO: [Adicionar o texto do print AQUI]
-        printer(self.cod["cod:39"], foreground=self.YELLOW, end="")
+        printer(self.text["msg:39"], foreground=self.YELLOW, end="")
 
-        symlink = check_output(
+        symlink: list = check_output(
             ["ls", "-l", element_home], universal_newlines=True
         ).split()
 

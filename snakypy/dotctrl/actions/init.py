@@ -13,26 +13,27 @@ from snakypy.dotctrl.utils.process import super_command
 
 
 class InitCommand(Base):
-    def __init__(self, root, home):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
 
-    def creator(self, path: str):
+    def creator(self, path: str) -> dict:
         create_path(join(path, "dotctrl"))
         create_json(config.content, join(path, __info__["config"]), force=True)
         create_file(readme.content, self.readme, force=True)
+
         return {"status": True, "code": "10"}
 
-    def git_repo(self, path: str):
+    def git_repo(self, path: str) -> None:
         git_init_command(path)
         create_file(gitignore.content, join(path, ".gitignore"), force=True)
 
-    def automatic(self, path: str):
+    def automatic(self, path: str) -> dict:
 
         if exists(join(path, __info__["config"])):
             directory = f"{FG().BLUE}{path}{FG().YELLOW}"
 
             # Dotctrl is already configured in this directory:
-            printer(self.cod["cod:07"], directory, foreground=self.WARNING)
+            printer(self.text["msg:07"], directory, foreground=self.WARNING)
 
             return {"status": False, "code": "07"}
 
@@ -40,33 +41,35 @@ class InitCommand(Base):
         # an automatic repository with Dotctrl. You can approach the operation by
         # pressing Ctrl + C.
         # NOTE: The Dotctrl directory will be created in:
-        printer(self.cod["cod:08"], path, foreground=self.WARNING)
+        printer(self.text["msg:08"], path, foreground=self.WARNING)
 
         # [ Enter password for sudo ]
-        printer(self.cod["cod:09"], foreground=self.QUESTION)
+        printer(self.text["msg:09"], foreground=self.QUESTION)
 
-        commands = [
+        commands: list[str] = [
             f"mkdir -p {join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])}",
             f"chown -R {whoami()} {join(AUTO_PATH[0], '.dotfiles')}",
             f"chmod -R 700 {join(AUTO_PATH[0], '.dotfiles')}",
         ]
 
-        cmd = super_command(commands)
+        cmd: dict = super_command(commands)
 
         if cmd["str"] == "err":
-            printer(self.cod["cod:49"], foreground=self.ERROR)
+            printer(self.text["msg:49"], foreground=self.ERROR)
             return {"status": False, "code": "49"}
 
         if cmd["str"] == "interrupt":
-            printer(self.cod["cod:42"], foreground=self.WARNING)
+            printer(self.text["msg:42"], foreground=self.WARNING)
             return {"status": False, "code": "42"}
 
         self.creator(path)
 
         return {"status": True, "code": "10"}
 
-    def main(self, arguments: dict):
+    def main(self, arguments: dict) -> dict:
         """Base repository method."""
+        root: str = self.root
+        out: dict = dict()
 
         if arguments["--auto"] and arguments["--git"]:
             root = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
@@ -77,13 +80,11 @@ class InitCommand(Base):
             root = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
             out = self.automatic(root)
         elif not arguments["--auto"] and arguments["--git"]:
-            root = self.root
             out = self.creator(root)
             self.git_repo(root)
         elif not arguments["--auto"] and not arguments["--git"]:
-            root = self.root
             out = self.creator(root)
 
         # Initialized Dotctrl repository in: path/to/root
-        printer(self.cod["cod:10"], root, foreground=self.FINISH)
+        printer(self.text["msg:10"], root, foreground=self.FINISH)
         return out

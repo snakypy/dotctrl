@@ -10,22 +10,25 @@ from snakypy.dotctrl.utils import (
 )
 
 
-def unlinks_to_do(data, repo_dir, home_dir):
-    objects = list()
+def unlinks_to_do(data: list, repo_dir: str, home_dir: str):
+    objects: list = list()
+
     for item in {*data}:
-        elem_repo = join(repo_dir, item)
-        elem_home = join(home_dir, item)
+        elem_repo: str = join(repo_dir, item)
+        elem_home: str = join(home_dir, item)
+
         if islink(elem_home) and exists(elem_repo):
             objects.append(elem_repo.replace(f"{repo_dir}/", ""))
+
     return objects
 
 
 class UnlinkCommand(Base, Options):
-    def __init__(self, root, home):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
         Options.__init__(self)
 
-    def main(self, arguments: dict):
+    def main(self, arguments: dict) -> dict:
         """Method to unlink point files from the repository
         with their place of origin."""
 
@@ -37,8 +40,8 @@ class UnlinkCommand(Base, Options):
 
         # Use option --element (--e)
         if element:
-            element_repo = join(self.repo_path, element)
-            element_home = join(self.home, element)
+            element_repo: str = join(self.repo_path, element)
+            element_home: str = join(self.home, element)
 
             if (
                 islink(element_home)
@@ -46,23 +49,23 @@ class UnlinkCommand(Base, Options):
                 and not force
             ):
                 # TODO: [Adicionar o texto do print AQUI]
-                out = self.error_symlink(element_home)
+                out: dict = self.error_symlink(element_home)
                 return out
 
-            element_home_ = join_two(self.home, element)
+            element_home_: str = join_two(self.home, element)
 
             if islink(element_home_):
                 with suppress(Exception):
                     remove(element_home_)
 
                     # TODO: [Adicionar o texto do print AQUI]
-                    printer(self.cod["cod:12"], foreground=self.FINISH)
+                    printer(self.text["msg:12"], foreground=self.FINISH)
 
                     return {"status": True, "code": "12"}
 
             # Element not found.
             printer(
-                self.cod["cod:29"], f"Object: {element_home_}", foreground=self.ERROR
+                self.text["msg:29"], f"Object: {element_home_}", foreground=self.ERROR
             )
 
             return {"status": False, "code": "29"}
@@ -70,7 +73,7 @@ class UnlinkCommand(Base, Options):
         # Not use option --element (--e)
         if len(unlinks_to_do(self.data, self.repo_path, self.home)) == 0:
             # TODO: [Adicionar o texto do print AQUI]
-            printer(self.cod["cod:30"], foreground=self.WARNING)
+            printer(self.text["msg:30"], foreground=self.WARNING)
 
             return {"status": False, "code": "30"}
 
@@ -83,6 +86,6 @@ class UnlinkCommand(Base, Options):
                         remove(element_home)
 
             # TODO: [Adicionar o texto do print AQUI]
-            printer(self.cod["cod:31"], foreground=self.FINISH)
+            printer(self.text["msg:31"], foreground=self.FINISH)
 
             return {"status": True, "code": "31"}

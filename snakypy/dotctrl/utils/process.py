@@ -14,7 +14,8 @@ def super_command(commands: list) -> dict:
     """Command super user"""
     try:
         run(["sudo", "-k"])
-        get_pass = getpass()
+        get_pass: str = getpass()
+
         for command in commands:
             p = Popen(
                 "echo {} | sudo -S {};".format(get_pass, command),
@@ -24,7 +25,9 @@ def super_command(commands: list) -> dict:
                 universal_newlines=True,
                 shell=True,
             )
+
             out, err = p.communicate(get_pass + "\n")
+
             if p.returncode != 0:
                 return {"status": False, "str": "error"}
 

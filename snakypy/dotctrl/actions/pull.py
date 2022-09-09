@@ -10,35 +10,37 @@ from snakypy.dotctrl.utils import (
 )
 
 
-def pulled_to_do(data, home_path):
-    objects = list()
+def pulled_to_do(data: list, home_path: str) -> list:
+    objects: list = list()
 
     for item in {*data}:
-        elem_home = join(home_path, item)
+        elem_home: str = join(home_path, item)
+
         if exists(elem_home) and not islink(elem_home):
             objects.append(elem_home.replace(f"{home_path}/", ""))
+
     return objects
 
 
 class PullCommand(Base, Options):
-    def __init__(self, root, home):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
         Options.__init__(self)
 
-    def main(self, arguments: dict):
+    def main(self, arguments: dict) -> dict:
         """Method responsible for pulling the elements from the
         place of origin to the repository."""
 
         if not self.checking_init():
             return {"status": False, "code": "28"}
 
-        element = self.element(arguments)
-        force = self.force(arguments)
+        element: dict = self.element(arguments)
+        force: dict = self.force(arguments)
 
         # If you use the --element flag (--e)
         if element:
-            file_home = join_two(self.home, element)
-            file_repo = join_two(self.repo_path, element)
+            file_home: str = join_two(self.home, element)
+            file_repo: str = join_two(self.repo_path, element)
 
             if "/" in element:
                 path_creation(self.repo_path, element)
@@ -48,21 +50,21 @@ class PullCommand(Base, Options):
             if not exists(file_home) or islink(file_home):
 
                 # Nothing was pulled. Nonexistent element.
-                printer(self.cod["cod:16"], foreground=self.ERROR)
+                printer(self.text["msg:16"], foreground=self.ERROR)
 
                 return {"status": False, "code": "16"}
 
             if isfile(file_home) and isfile(file_repo) and not force:
 
                 # TODO: [Adicionar o texto do print AQUI]
-                printer(self.cod["cod:37"], foreground=self.WARNING)
+                printer(self.text["msg:37"], foreground=self.WARNING)
 
                 return {"status": False, "code": "37"}
 
             to_move(file_home, file_repo)
 
             # Element(s) pulled successfully!
-            printer(self.cod["cod:18"], foreground=self.FINISH)
+            printer(self.text["msg:18"], foreground=self.FINISH)
 
             return {"status": True, "code": "18"}
 
@@ -70,7 +72,7 @@ class PullCommand(Base, Options):
         if len(pulled_to_do(self.data, self.home)) == 0:
 
             # Nothing to pull, in droves.
-            printer(self.cod["cod:17"], foreground=self.WARNING)
+            printer(self.text["msg:17"], foreground=self.WARNING)
 
             return {"status": False, "code": "17"}
 
@@ -85,13 +87,13 @@ class PullCommand(Base, Options):
             if isfile(file_home) and isfile(file_repo) and not force:
 
                 # TODO: [Adicionar o texto do print AQUI]
-                printer(self.cod["cod:37"], foreground=self.WARNING)
+                printer(self.text["msg:37"], foreground=self.WARNING)
 
                 return {"status": False, "code": "37"}
 
             to_move(file_home, file_repo)
 
         # Element(s) pulled successfully!
-        printer(self.cod["cod:18"], foreground=self.FINISH)
+        printer(self.text["msg:18"], foreground=self.FINISH)
 
         return {"status": True, "code": "18"}

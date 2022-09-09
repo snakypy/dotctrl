@@ -9,9 +9,10 @@ from snakypy.dotctrl.config.base import Base
 from snakypy.dotctrl.utils import get_key
 from os.path import exists
 from docopt import docopt
+from typing import Any
 
 
-EN_US = f"""
+EN_US: str = f"""
 {__info__['name']} version: {FG().CYAN}{__info__['version']}{NONE}
 
 {__info__['name']} - Managing your dotfiles in $HOME on Linux or macOS.
@@ -125,40 +126,32 @@ OPTIONS:
 
 
 class Menu(Base):
-    def __init__(self, root, home):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
 
     @staticmethod
-    def key_menu():
+    def languages() -> dict:
         return {"pt_BR": PT_BR, "en_US": EN_US}
 
-    def get_menu(self) -> str:
+    @property
+    def menu(self) -> str:
 
         if exists(self.config_path):
-            lang: str = get_key(self.parsed, "dotctrl", "config", "language")
+            lang_current: str = get_key(self.parsed, "dotctrl", "config", "language")
 
-            if not lang or lang not in self.key_menu().keys():
-                return self.key_menu()["en_US"]
-            return self.key_menu()[lang]
+            if not lang_current or lang_current not in self.languages().keys():
+                return self.languages()["en_US"]
+            return self.languages()[lang_current]
         else:
-            return self.key_menu()["en_US"]
+            return self.languages()["en_US"]
 
-    def arguments(self, argv=None) -> dict:
+    def args(self, argv: Any = None) -> dict:
         """Function to return the option menu arguments."""
 
-        formatted_version = (
+        formatted_version: str = (
             f"{__info__['name']} version: " f"{FG().CYAN}{__info__['version']}{NONE}"
         )
 
-        menu = self.get_menu()
-
-        data = docopt(menu, argv=argv, version=formatted_version)
+        data: dict = docopt(self.menu, argv=argv, version=formatted_version)
 
         return data
-
-    # def __str__(self) -> str:
-    #     lang: str = get_key(self.parsed, "dotctrl", "config", "language")
-
-    #     if not lang or lang not in self.key_menu().keys():
-    #         return self.key_menu()["en_US"]
-    #     return self.key_menu()[lang]

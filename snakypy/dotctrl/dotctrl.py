@@ -22,10 +22,7 @@ from snakypy.dotctrl.utils.decorators import assign_cli
 from snakypy.dotctrl.config.menu import Menu
 
 # Get arguments Docopt
-# menu = Menu(ROOT, HOME)
-# args = arguments(dedent(menu.__str__()))
-# args = arguments(ROOT, HOME)
-args = Menu(ROOT, HOME).arguments()
+args: dict = Menu(ROOT, HOME).args()
 
 
 @assign_cli(args, "init")

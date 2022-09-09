@@ -17,19 +17,19 @@ from snakypy.dotctrl.utils import pick
 
 
 class RestoreCommand(Base, Options):
-    def __init__(self, root, home):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
         Options.__init__(self)
 
-    def not_errors(self, element_origin: str, element_repo: str, force: bool):
+    def not_errors(self, element_origin: str, element_repo: str, force: bool) -> dict:
 
         if not exists(element_repo):
 
             # Operation aborted!
-            printer(self.cod["cod:45"], foreground=self.ERROR)
+            printer(self.text["msg:45"], foreground=self.ERROR)
 
             # Element not found in repository to restore.
-            printer(self.cod["cod:38"], foreground=self.WARNING)
+            printer(self.text["msg:38"], foreground=self.WARNING)
 
             return {"status": False, "code": "38"}
 
@@ -39,7 +39,7 @@ class RestoreCommand(Base, Options):
             and not force
         ):
 
-            out = self.error_symlink(element_origin)
+            out: dict = self.error_symlink(element_origin)
             return out
 
         if (
@@ -49,10 +49,10 @@ class RestoreCommand(Base, Options):
             and not force
         ):
             # Operation aborted!
-            printer(self.cod["cod:45"], foreground=self.ERROR)
+            printer(self.text["msg:45"], foreground=self.ERROR)
 
             # TODO: [Adicionar o texto do print AQUI]
-            printer(self.cod["cod:44"], element_origin, foreground=self.WARNING)
+            printer(self.text["msg:44"], element_origin, foreground=self.WARNING)
 
             return {"status": False, "code": "44"}
 
@@ -61,25 +61,27 @@ class RestoreCommand(Base, Options):
     def mass_verification(self, objects: list, force: bool) -> bool:
 
         for item in objects:
-            element_origin = join(self.home, item)
-            element_repo = join(self.repo_path, item)
+            element_origin: str = join(self.home, item)
+            element_repo: str = join(self.repo_path, item)
 
-            checking = self.not_errors(element_origin, element_repo, force)
+            checking: dict = self.not_errors(element_origin, element_repo, force)
 
             if not checking["status"]:
                 return False
 
         return True
 
-    def restore(self, element_origin: str, element_repo: str):
+    def restore(self, element_origin: str, element_repo: str) -> None:
 
         if exists(element_repo):
             remove_objects(element_origin)
             move(element_repo, element_origin)
             rmdir_blank(self.repo_path)
 
+        return None
+
     # TODO: Acrescentar tipagem nos "mains" e demais locais
-    def main(self, arguments: dict):
+    def main(self, arguments: dict) -> dict:
         """Method to restore dotfiles from the repository to their
         original location."""
 
@@ -95,13 +97,13 @@ class RestoreCommand(Base, Options):
             if "/" in element:
                 path_creation(self.home, element)
 
-            checking = self.not_errors(element_origin, element_repo, force)
+            checking: dict = self.not_errors(element_origin, element_repo, force)
 
             if checking["status"]:
                 self.restore(element_origin, element_repo)
 
                 # Complete restoration!
-                printer(self.cod["cod:46"], foreground=self.FINISH)
+                printer(self.text["msg:46"], foreground=self.FINISH)
 
                 return {"status": True, "code": "46"}
 
@@ -109,31 +111,31 @@ class RestoreCommand(Base, Options):
 
         # Not use option --element (--e) [bulk]
         else:
-            objects = [*listing_files(self.repo_path), *self.data]
+            objects: list = [*listing_files(self.repo_path), *self.data]
 
             # Empty repository. Nothing to restore.
             if len(objects) == 0:
 
                 # Empty repository. Nothing to restore.
-                printer(self.cod["cod:40"], foreground=self.WARNING)
+                printer(self.text["msg:40"], foreground=self.WARNING)
 
                 return {"status": False, "code": "40"}
 
-            title_ = self.cod["cod:41"]
-            options_ = [self.cod["cod:w08"], self.cod["cod:w09"]]
+            title_: str = self.text["msg:41"]
+            options_: list[str] = [self.text["word:08"], self.text["word:09"]]
 
             reply = pick(
                 title_,
                 options_,
                 index=True,
-                cancel_msg=self.cod["cod:42"],
-                opt_msg=self.cod["cod:43"],
+                cancel_msg=self.text["msg:42"],
+                invalid_msg=self.text["msg:43"],
             )
 
             if reply is not None and reply[0] == 1:
 
                 # Canceled by user.
-                printer(self.cod["cod:42"], foreground=self.WARNING)
+                printer(self.text["msg:42"], foreground=self.WARNING)
 
                 return {"status": False, "code": "42"}
 
@@ -150,6 +152,8 @@ class RestoreCommand(Base, Options):
                         self.restore(element_origin, element_repo)
 
                     # Complete restoration!
-                    printer(self.cod["cod:46"], foreground=self.FINISH)
+                    printer(self.text["msg:46"], foreground=self.FINISH)
 
                     return {"status": True, "code": "46"}
+
+        return {"status": None}

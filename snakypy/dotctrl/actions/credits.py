@@ -6,13 +6,13 @@ from snakypy.dotctrl.config.base import Base
 
 
 class CreditsCommand(Base):
-    def __init__(self, root, home):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
 
-    def main(self):
+    def main(self) -> bool:
 
         # Offered by:
-        printer(self.cod["cod:01"], foreground=self.GREEN)
+        printer(self.text["msg:01"], foreground=self.GREEN)
 
         billboard(
             __info__["organization_name"], justify="center", foreground=FG().YELLOW
@@ -27,3 +27,5 @@ class CreditsCommand(Base):
             __info__,
             foreground=FG().CYAN,
         )
+
+        return True

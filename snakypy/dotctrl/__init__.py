@@ -9,7 +9,7 @@ dotfiles.
 
 For more information, access: 'https://github.com/snakypy/dotctrl'
 
-:copyright: Copyright 2020-2021 by Snakypy team, see AUTHORS.
+:copyright: Copyright 2020-present by Snakypy team, see AUTHORS.
 :license: MIT license, see LICENSE for details.
 """
 import os
@@ -19,7 +19,7 @@ from sys import platform
 
 from snakypy.helpers.files import eqversion
 
-__info__ = {
+__info__: dict = {
     "name": "Dotctrl",
     "version": "2.0.0b1",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
@@ -46,7 +46,7 @@ __info__ = {
 }
 
 
-def choose_root(env):
+def choose_root(env: str):
     """
     Function to return the ROOT path. If the DOTFILES environment variable
     exists then this path will be returned, otherwise it will return
@@ -54,16 +54,18 @@ def choose_root(env):
     """
     if os.environ.get(env):
         return os.environ.get(env)
+
     return os.getcwd()
 
 
 # Path current
-ROOT = choose_root(__info__["env"])
+ROOT: str = choose_root(__info__["env"])
 # HOME user
-HOME = str(Path.home())
+HOME: str = str(Path.home())
 
 AUTO_PATH = ("/home", "linux") if platform == "linux" else ("/Users", "macos")
 
 # Keep the versions the same on pyproject.toml and __init__.py
-pyproject = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
+pyproject: str = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
+
 eqversion(pyproject, __info__["version"])

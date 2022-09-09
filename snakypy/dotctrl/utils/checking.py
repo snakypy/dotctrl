@@ -6,6 +6,7 @@ from typing import Union
 def is_repo_symbolic_link(pathlink: str, repopath: str) -> bool:
     if realpath(pathlink) == repopath:
         return True
+
     return False
 
 
@@ -18,9 +19,10 @@ def get_key(dictionary: dict, *args) -> Union[str, bool, dict]:
     Returns:
         [str, bool]: Returning a str or a boolean if the object is True or False.
     """
-    data = reduce(lambda c, k: c.get(k, {}), args, dictionary)
+    data: dict = reduce(lambda c, k: c.get(k, {}), args, dictionary)
     if data == {}:
         return ""
+
     return data
 
 
@@ -36,16 +38,3 @@ def get_key(dictionary: dict, *args) -> Union[str, bool, dict]:
 #         return lang
 
 #     return "en_US"
-
-
-# # DEPRECATED
-# def check_init(root) -> None:
-#     """Function that ends commands that depend on the created repository, but
-#     the repository was not created."""
-#     if not exists(join(root, __info__["config"])):
-#         printer(
-#             f"The repository was not created. "
-#             f"Use \"{__info__['pkg_name']} init [--auto | --git]\". Aborted",
-#             foreground=FG().WARNING,
-#         )
-#         exit(1)

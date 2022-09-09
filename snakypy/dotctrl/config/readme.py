@@ -1,6 +1,6 @@
 from snakypy.dotctrl import __info__
 
-content = f"""##### {__info__['name']} #####
+content: str = f"""##### {__info__['name']} #####
 
 NOTE: This is an informational README only.
 

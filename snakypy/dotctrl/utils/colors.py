@@ -2,18 +2,18 @@ from snakypy.helpers import FG, SGR, NONE
 
 
 class Colors:
-    GREEN = FG().GREEN
-    YELLOW = FG().YELLOW
-    RED = FG().RED
-    MAGENTA = FG().MAGENTA
-    BLUE = FG().BLUE
-    CYAN = FG().CYAN
-    BOLD = SGR().BOLD
-    UNDERLINE = SGR().UNDERLINE
-    WARNING = FG(warning_icon="[!] ").WARNING
-    FINISH = FG().FINISH
-    ERROR = FG(error_icon="[x] ").ERROR
-    QUESTION = FG(question_icon="-> ").QUESTION
+    GREEN: str = FG().GREEN
+    YELLOW: str = FG().YELLOW
+    RED: str = FG().RED
+    MAGENTA: str = FG().MAGENTA
+    BLUE: str = FG().BLUE
+    CYAN: str = FG().CYAN
+    BOLD: str = SGR().BOLD
+    UNDERLINE: str = SGR().UNDERLINE
+    WARNING: str = FG(warning_icon="[!] ").WARNING
+    FINISH: str = FG().FINISH
+    ERROR: str = FG(error_icon="[x] ").ERROR
+    QUESTION: str = FG(question_icon="-> ").QUESTION
 
     @staticmethod
     def none(element: str, reset: str = NONE, end: str = "") -> str:

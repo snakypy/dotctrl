@@ -4,6 +4,7 @@ from os.path import join, exists
 from shutil import which
 from subprocess import call
 from sys import exit
+from typing import Union, Any
 
 from snakypy.helpers import printer
 from snakypy.helpers.files import read_file, create_json, read_json
@@ -22,7 +23,7 @@ def editor_run(editor, config):
 
 
 class ConfigCommand(Base):
-    def __init__(self, root, home):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
         self.opts: tuple = ("--autoclean", "--open", "--view", "--lang")
         self.languages: list = [
@@ -39,14 +40,14 @@ class ConfigCommand(Base):
         parsed["dotctrl"]["config"]["language"] = lang
         create_json(parsed, self.config_path, force=True)
 
-    def autoclean(self) -> bool:
+    def autoclean(self) -> dict:
         parsed: dict = read_json(self.config_path)
         elements: list = parsed["dotctrl"]["elements"]
-        applied_cleaning = False
+        applied_cleaning: bool = False
 
         if len(elements) != 0:
             for elem in elements[:]:
-                elem_repo = join(self.repo_path, elem)
+                elem_repo: str = join(self.repo_path, elem)
                 if not exists(elem_repo):
                     applied_cleaning = True
                     elements.remove(elem)
@@ -56,14 +57,14 @@ class ConfigCommand(Base):
 
         if applied_cleaning:
             # TODO: [Adicionar o texto do print AQUI]
-            printer(self.cod["cod:35"], foreground=self.FINISH)
+            printer(self.text["msg:35"], foreground=self.FINISH)
             return {"status": True, "code": "35"}
 
         # TODO: [Adicionar o texto do print AQUI]
-        printer(self.cod["cod:36"], foreground=self.WARNING)
+        printer(self.text["msg:36"], foreground=self.WARNING)
         return {"status": False, "code": "36"}
 
-    def main(self, arguments):
+    def main(self, arguments: dict) -> Union[dict, None]:
         """Method for opening or viewing the configuration file."""
 
         if not self.checking_init():
@@ -71,7 +72,8 @@ class ConfigCommand(Base):
 
         # --autoclean
         if arguments[self.opts[0]]:
-            self.autoclean()
+            out = self.autoclean()
+            return out
 
         # --open
         elif arguments[self.opts[1]]:
@@ -79,30 +81,36 @@ class ConfigCommand(Base):
             if editor_conf:
                 editor_run(editor_conf, self.config_path)
             else:
-                editors = ["vim", "nano", "emacs", "micro"]
+                editors: list[str] = ["vim", "nano", "emacs", "micro"]
                 for edt in editors:
                     editor_run(edt, self.config_path)
 
+            return {"status": True}
+
         # --view
         elif arguments[self.opts[2]]:
-            read_config = read_file(self.config_path)
+            read_config: str = read_file(self.config_path)
             pydoc.pager(read_config)
+
+            return {"status": True}
 
         # --lang
         elif arguments[self.opts[3]]:
-            title_ = self.cod["cod:47"]
+            title_: str = self.text["msg:47"]
             reply = pick(
                 title_,
                 self.languages,
                 index=True,
-                cancel_msg=self.cod["cod:42"],
-                opt_msg=self.cod["cod:43"],
+                cancel_msg=self.text["msg:42"],
+                opt_msg=self.text["msg:43"],
             )
-            language = self.choice_language[reply[0]]
+            language: Any = self.choice_language[reply[0]]
             self.change_language(language)
 
             printer(
-                self.cod["cod:48"], f"{self.cyan(reply[1])}", foreground=self.FINISH
+                self.text["msg:48"], f"{self.cyan(reply[1])}", foreground=self.FINISH
             )
 
             return {"status": True, "code": "48"}
+
+        return None
