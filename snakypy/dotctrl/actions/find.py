@@ -40,24 +40,28 @@ class FindCommand(Base):
 
         # The elements below are found in the Dotctrl directory. (Type "q" to exit)
         # [ Result: ]
-        elements: list = [
+        header: list = [
             self.yellow(self.text["msg:03"]),
             f"{self.cyan(self.text['word:15'])}:\n",
         ]
 
+        found: list = list()
+
         for item in listing_objects(self.repo_path):
             if arguments["--name"] == item.split("/")[-1]:
 
-                # Element:
+                # Directory: element
                 if isdir(join(self.repo_path, item)):
-                    elements.append(f"> {self.magenta(self.text['word:14'])}: {item}")
+                    found.append(f"> {self.magenta(self.text['word:14'])}: {item}")
                 else:
-                    elements.append(f"> {self.magenta(self.text['word:10'])}: {item}")
-            else:
-                printer(self.text["msg:04"], foreground=self.WARNING)
+                    # File: element
+                    found.append(f"> {self.magenta(self.text['word:10'])}: {item}")
 
-                return {"status": False, "code": "04"}
+        if len(found) == 0:
+            printer(self.text["msg:04"], foreground=self.WARNING)
 
-        pager("\n".join(elements))
+            return {"status": False, "code": "04"}
+
+        pager("\n".join(header + found))
 
         return {"status": True, "code": "03"}
