@@ -4,7 +4,6 @@ from snakypy.dotctrl.utils.decorators import assign_cli
 from snakypy.dotctrl.actions.find import FindCommand
 
 
-# TODO: Find bug test
 def find_element(base):  # noqa: F811
     args = base["Menu"].args(argv=["find", f"--name={base['elements'][0]}"])
     args_not = base["Menu"].args(argv=["find", "--name=notexists.txt"])
@@ -15,15 +14,13 @@ def find_element(base):  # noqa: F811
 
         out = FindCommand(base["root"], base["home"]).main(args)
 
-        # if out["code"] != "03":
-        #     assert False
+        if out["code"] != "03":
+            assert False
 
-        print(">>>>>>>>>>>", out)
+        out = FindCommand(base["root"], base["home"]).main(args_not)
 
-        # out = FindCommand(base["root"], base["home"]).main(args_not)
-
-        # if out["code"] != "04":
-        #     assert False
+        if out["code"] != "04":
+            assert False
 
     return wrapper()
 

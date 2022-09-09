@@ -1,37 +1,56 @@
-# from os.path import islink, join
-
-# import pytest
-
-# from snakypy.dotctrl.actions.unlink import UnlinkCommand
-# from snakypy.dotctrl.utils.decorators import assign_cli
-
-# from .test_link import test_link_command
-# from .utilities import base  # noqa: E261,F401
-# from .utilities import arguments, class_base, elements
+from .utilities import base  # noqa: E261,F401
+from .test_link import link_massive
+from snakypy.dotctrl.actions.unlink import UnlinkCommand
+from snakypy.dotctrl.utils.decorators import assign_cli
 
 
-# @assign_cli(arguments(argv=["unlink"]), "unlink")
-# def test_unlink_command(base):  # noqa: F811
+def unlink_massive(base):  # noqa: F811
+    args = base["Menu"].args(argv=["unlink"])
+    # args_f = base["Menu"].args(argv=["unlink", "--f"])
 
-#     test_link_command(base)
+    link_massive(base)
 
-#     UnlinkCommand(base["root"], base["home"]).main(
-#         arguments(argv=["unlink", f"--e={elements(base)[0]}"])
-#     )
+    @assign_cli(args, "unlink")
+    def wrapper():
 
-#     linked_file = join(class_base(base).HOME, elements(base)[0])
-#     if islink(linked_file):
-#         assert False
+        out = UnlinkCommand(base["root"], base["home"]).main(args)
 
-#     with pytest.raises(SystemExit):
-#         UnlinkCommand(base["root"], base["home"]).main(arguments(argv=["unlink"]))
+        if out["code"] != "31":
+            assert False
 
-#     UnlinkCommand(base["root"], base["home"]).main(arguments(argv=["unlink", "--f"]))
+        out = UnlinkCommand(base["root"], base["home"]).main(args)
 
-#     for item in elements(base):
-#         if islink(join(class_base(base).HOME, item)):
-#             assert False
+        if out["code"] != "30":
+            assert False
 
-#     for item in class_base(base).editors_config:
-#         if islink(join(class_base(base).HOME, item)):
-#             assert False
+    return wrapper()
+
+
+def unlink_element(base):  # noqa: F811
+    args = base["Menu"].args(argv=["unlink", f"--e={base['elements'][0]}"])
+    # args_f = base["Menu"].args(argv=["unlink", f"--e={base['elements'][0]}", "--f"])
+
+    link_massive(base)
+
+    @assign_cli(args, "unlink")
+    def wrapper():
+
+        out = UnlinkCommand(base["root"], base["home"]).main(args)
+
+        if out["code"] != "12":
+            assert False
+
+        out = UnlinkCommand(base["root"], base["home"]).main(args)
+
+        if out["code"] != "29":
+            assert False
+
+    return wrapper()
+
+
+def test_unlink_massive(base):  # noqa: F811
+    unlink_massive(base)
+
+
+def test_unlink_element(base):  # noqa: F811
+    unlink_element(base)
