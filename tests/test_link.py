@@ -9,8 +9,8 @@ from os import remove, symlink
 
 
 def link_massive(base):  # noqa: F811
-    args = base["Menu"].arguments(argv=["link"])
-    args_f = base["Menu"].arguments(argv=["link", "--f"])
+    args = base["Menu"].args(argv=["link"])
+    args_f = base["Menu"].args(argv=["link", "--f"])
 
     pull_massive(base)
 
@@ -53,8 +53,8 @@ def link_massive(base):  # noqa: F811
 
 
 def link_element(base):  # noqa: F811
-    args = base["Menu"].arguments(argv=["link", f"--e={base['elements'][0]}"])
-    args_f = base["Menu"].arguments(argv=["link", f"--e={base['elements'][0]}", "--f"])
+    args = base["Menu"].args(argv=["link", f"--e={base['elements'][0]}"])
+    args_f = base["Menu"].args(argv=["link", f"--e={base['elements'][0]}", "--f"])
 
     pull_massive(base)
 

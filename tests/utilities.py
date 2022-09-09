@@ -6,7 +6,6 @@ from snakypy.helpers.files import create_file, update_json, read_json
 from snakypy.dotctrl.config.base import Base
 from snakypy.dotctrl.utils import path_creation
 
-# from snakypy.dotctrl.utils import arguments
 from snakypy.dotctrl.config.menu import Menu
 
 

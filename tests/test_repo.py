@@ -7,7 +7,7 @@ from os.path import join
 
 
 def repo_check(base):  # noqa: F811
-    args = base["Menu"].arguments(argv=["repo", "--check"])
+    args = base["Menu"].args(argv=["repo", "--check"])
 
     @assign_cli(args, "repo")
     def wrapper():

@@ -6,8 +6,8 @@ from snakypy.dotctrl.actions.find import FindCommand
 
 # TODO: Find bug test
 def find_element(base):  # noqa: F811
-    args = base["Menu"].arguments(argv=["find", f"--name={base['elements'][0]}"])
-    args_not = base["Menu"].arguments(argv=["find", "--name=notexists.txt"])
+    args = base["Menu"].args(argv=["find", f"--name={base['elements'][0]}"])
+    args_not = base["Menu"].args(argv=["find", "--name=notexists.txt"])
 
     @assign_cli(args, "find")
     def wrapper():

@@ -7,7 +7,7 @@ from .utilities import base  # noqa: E261, F401
 
 
 def test_init(base):  # noqa: F811
-    args = base["Menu"].arguments(argv=["init"])
+    args = base["Menu"].args(argv=["init"])
 
     @assign_cli(args, "init")
     def wrapper():
@@ -25,7 +25,7 @@ def test_init(base):  # noqa: F811
 # WHITOUT DECORATOR
 # def test_init_command(base):  # noqa: F811
 
-#     args = base["Menu"].arguments(argv=["init"])
+#     args = base["Menu"].args(argv=["init"])
 #     InitCommand(base["root"], base["home"]).main(args)
 
 #     if not exists(base["Base"].config_path):

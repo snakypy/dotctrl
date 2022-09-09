@@ -8,7 +8,7 @@ from shutil import copyfile
 
 
 def pull_massive(base):  # noqa: F811
-    args = base["Menu"].arguments(argv=["pull"])
+    args = base["Menu"].args(argv=["pull"])
 
     @assign_cli(args, "pull")
     def wrapper():
@@ -26,7 +26,7 @@ def pull_massive(base):  # noqa: F811
 
 
 def pull_element(base):  # noqa: F811
-    args = base["Menu"].arguments(argv=["pull", f"--e={base['elements'][0]}"])
+    args = base["Menu"].args(argv=["pull", f"--e={base['elements'][0]}"])
 
     @assign_cli(args, "pull")
     def wrapper():
