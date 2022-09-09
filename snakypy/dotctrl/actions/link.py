@@ -64,7 +64,7 @@ class LinkCommand(Base, Options):
 
                 return {"status": False, "code": "11"}
 
-            if isfile(element_home) and not force:
+            if isfile(element_home) and not islink(element_home) and not force:
                 # TODO: [Adicionar o texto do print AQUI]
                 printer(self.text["msg:27"], foreground=self.WARNING)
 
