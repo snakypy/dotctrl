@@ -1,10 +1,10 @@
 from snakypy.helpers import printer
 from snakypy.dotctrl.config.lang import LANG
 from snakypy.helpers.files import read_json
-from subprocess import check_output
 from snakypy.dotctrl.utils import get_key
 from snakypy.dotctrl.utils.colors import Colors
 from contextlib import suppress
+from os.path import realpath
 
 
 class Messages(Colors):
@@ -31,10 +31,6 @@ class Messages(Colors):
         # TODO: [Adicionar o texto do print AQUI]
         printer(self.text["msg:39"], foreground=self.YELLOW, end="")
 
-        symlink: list = check_output(
-            ["ls", "-l", element_home], universal_newlines=True
-        ).split()
-
-        print(symlink[-3], symlink[-2], symlink[-1])
+        print(f"{self.cyan(element_home)} -> {realpath(element_home)}")
 
         return {"status": False, "code": "39"}
