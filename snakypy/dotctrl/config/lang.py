@@ -18,7 +18,7 @@ LANG: dict = {
         "word:09": "Não",
         "word:10": "Arquivo",
         "word:11": "Diretório",
-        "word:12": "",
+        "word:12": "",  # empty
         "word:13": "Total",
         "word:14": "Pasta",
         "word:15": "Resultado",
@@ -28,7 +28,7 @@ LANG: dict = {
             f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}. "
             f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
         ),
-        "msg:04": "[Code:04] Elemento não encontrado no repositório.",
+        "msg:04": f"{c.cyan('[Code:04]', c.YELLOW)} Elemento não encontrado no repositório.",
         "msg:05": "[Code:05] Elemento não linkado. Revise o mesmo no repositório:",
         "msg:06": "O repositório já está definido em",
         "msg:07": f"{__info__['name']} já está configurado no diretório: ",
@@ -40,7 +40,10 @@ LANG: dict = {
         ),
         "msg:09": "[ Digite a senha para sudo ]",
         "msg:10": f"Inicializado {__info__['name']} no repositório: ",
-        "msg:11": f"[Code:11] O elemento não existe no repositório do {__info__['name']} para ser linkado.",
+        "msg:11": (
+            f"{c.cyan('[Code:11]', c.YELLOW)} O elemento não existe no repositório do {__info__['name']} "
+            "para ser linkado."
+        ),
         "msg:12": "Elemento desvinculado com sucesso!",
         "msg:13": "Tipo: | Elemento ",
         "msg:14": "Nada a ligar, em massa.",
@@ -63,7 +66,7 @@ LANG: dict = {
         ),
         "msg:26": "Tipo:   Elemento  <-  Link simbólico\n",
         "msg:27": (
-            "[Code:27] Existe um arquivo no local de origem. "
+            f"{c.cyan('[Code:27]', c.YELLOW)} Existe um arquivo no local de origem. "
             "Caso queira prosseguir e substituir este elemento encontrado "
             f"pelo elemento do repositório {__info__['name']}, use a opção --force (--f).\n"
         ),
@@ -71,33 +74,35 @@ LANG: dict = {
             "O repositório não está criado. "
             f"Use \"{__info__['pkg_name']} init [--auto] [--git]\". Aborted"
         ),
-        "msg:29": "[Code:29] Elemento não encontrado.",
+        "msg:29": f"{c.cyan('[Code:29]', c.RED)} Elemento não encontrado.",
         "msg:30": "Nada para desvinculado, em massa.",
         "msg:31": "Links massivamente desvinculados com sucesso!",
-        "msg:32": "[Code:32] Arquivo de configuração não encontrado",  # not used
-        "msg:33": "[Code:33] Ocorreu um erro ao ler o arquivo de configuração.",  # not used
-        "msg:34": "Provavelmente o repositório não foi criado. Use: dotctrl init [--auto | --git ]",  # not used
+        "msg:32": "",  # empty
+        "msg:33": "",  # empty
+        "msg:34": "",  # empty
         "msg:35": "Limpeza concluida!",
         "msg:36": "Nada a limpar!",
         "msg:37": (
-            f"[Code:37] Arquivos com o mesmo nome foram encontrados no repositório {__info__['name']} e no local de origem."
+            f"{c.cyan('[Code:37]', c.YELLOW)} Arquivos com o mesmo nome foram encontrados no repositório "
+            "{__info__['name']} e no local de origem."
             f"Para substituir os do repositorio do {__info__['name']}, use a opção --force (--f)."
         ),
         "msg:38": (
-            "[Code:38] Elemento não encontrado no repositório para restaurar.\n"
+            f"{c.cyan('[Code:38]', c.YELLOW)} Elemento não encontrado no repositório para restaurar.\n"
             "Isso pode ser causado porque o arquivo de configuração está desatualizado.\n"
             "Antes de prosseguir com a restauração, use o comando: "
             "'dotctrl config --autoclean' para atualizar. "
         ),
         "msg:39": (
-            f"[Code:39] O {__info__['name']} encontrou um link simbólico de um elemento que não é "
+            f"{c.cyan('[Code:39]', c.YELLOW)} O {__info__['name']} encontrou um link simbólico de um elemento que não é "
             f"vinculado com o repositório do {__info__['name']}.\n"
-            "Caso queira prosseguir e substituir este link simbólico encontrado "
+            "Caso queira prosseguir e substituir este link simbólico (e demais) encontrado "
             f"pelo elemento do repositório {__info__['name']}, use a opção --force (--f).\n"
             f'{c.magenta("Nota", c.YELLOW)}: Se usar a opção {c.cyan("--force (--f)", c.YELLOW)}, este link simbólico '
-            "encontrado será removido (e demais). "
-            "Recomendamos que, averigue este link simbólico antes de prosseguir com a opção --force (--f).\n\n"
-            "Link simbólico encontrado: "
+            "encontrado será removido. "
+            "Recomendamos que, averigue este link simbólico antes de prosseguir com a opção "
+            f"{c.cyan('--force (--f)', c.YELLOW)}.\n\n"
+            f"{c.magenta('Link simbólico encontrado')}: "
         ),
         "msg:40": "Repositório vazio. Nada para restaurar.",
         "msg:41": (
@@ -105,10 +110,10 @@ LANG: dict = {
             "do repositório do Dotctrl para o local original.\n   Deseja continuar?\n"
         ),
         "msg:42": "Cancelado pelo usuário.",
-        "msg:43": "[Code:43] Opção inválida!",
+        "msg:43": f"{c.cyan('[Code:43]', c.RED)} Opção inválida!",
         "msg:44": (
-            f"[Code:44] O {__info__['name']} ENCONTROU um elemento no local de origem com mesmo nome do "
-            f"repositório do {__info__['name']}, e isso impediu de prosseguir com a restauração.\n"
+            f"{c.cyan('[Code:44]', c.YELLOW)} O {__info__['name']} ENCONTROU um elemento no local de origem com "
+            f"mesmo nome do repositório do {__info__['name']}, e isso impediu de prosseguir com a restauração.\n"
             f"Caso queira substituí-lo pelo elemento do repositório {__info__['name']}, "
             "execute este comando novamente com a opção --force (--f).\n"
             f"{c.magenta('Nota', c.YELLOW)}: Se usar a opção {c.cyan('--force (--f)', c.YELLOW)}, este elemento "
@@ -120,6 +125,6 @@ LANG: dict = {
         "msg:46": "Restauração completa!",
         "msg:47": f"Escolha um idioma para o {__info__['name']}:",
         "msg:48": "Idioma alterado com sucesso! Alterado para:",
-        "msg:49": "[Code:49] Erro na autenticação da senha.",
+        "msg:49": f"{c.cyan('[Code:49]', c.RED)} Erro na autenticação da senha.",
     },
 }
