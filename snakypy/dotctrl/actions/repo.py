@@ -20,11 +20,14 @@ class RepoCommand(Base):
 
     @staticmethod
     def count_elements(path: str) -> tuple:
+        d, f = [], []
         for _, directories, files in walk(path):
-            f = [f for f in files]
-            d = [d for d in directories]
+            for dir_ in directories:
+                d.append(dir_)
+            for file in files:
+                f.append(file)
 
-        total = f + d
+        total = d + f
 
         return len(f), len(d), len(total)
 
@@ -116,8 +119,8 @@ class RepoCommand(Base):
             out: str = f"""
             {SGR().BOLD}{self.cyan(self.text["msg:23"])}{NONE}\n
             {self.magenta(self.text["word:11"])}: {self.root}
-            {self.magenta(self.text["word:01"])}: {n_files} {self.text["word:03"]}
-            {self.magenta(self.text["word:04"])}: {n_dir} {self.text["word:03"]}
+            {self.magenta(self.text["word:01"])}: {n_files} {self.text["word:05"]}
+            {self.magenta(self.text["word:04"])}: {n_dir} {self.text["word:05"]}
             {self.magenta(self.text["word:13"])}: {n_total} {self.text["word:03"]}
             {dotctrl_path_title}: {dotctrl_path}
             """
