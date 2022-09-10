@@ -1,6 +1,5 @@
 from os.path import exists
 
-
 from snakypy.dotctrl.actions.init import InitCommand
 from snakypy.dotctrl.actions.repo import RepoCommand
 

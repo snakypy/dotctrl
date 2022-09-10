@@ -1,17 +1,16 @@
-from os import environ, listdir
+from os import environ, listdir, walk
 from os.path import exists, isdir, join
 from pydoc import pager
 from textwrap import dedent
 from typing import Any
-from os import walk
 
 from snakypy.helpers import FG, SGR, printer
 from snakypy.helpers.ansi import NONE
+from snakypy.helpers.checking import whoami
 
 from snakypy.dotctrl import __info__
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import listing_files, is_repo_symbolic_link
-from snakypy.helpers.checking import whoami
+from snakypy.dotctrl.utils import is_repo_symbolic_link, listing_files
 
 
 class RepoCommand(Base):

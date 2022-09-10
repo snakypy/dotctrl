@@ -1,7 +1,8 @@
-from .utilities import Basic, fixture  # noqa: E261,F401
+from snakypy.dotctrl.actions.find import FindCommand
+
 from .test_init import InitTester
 from .test_pull import PullTester
-from snakypy.dotctrl.actions.find import FindCommand
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
 class FindTester(Basic):

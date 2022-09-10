@@ -1,10 +1,12 @@
-from snakypy.helpers import printer
-from snakypy.dotctrl.config.lang import LANG
-from snakypy.helpers.files import read_json
-from snakypy.dotctrl.utils import get_key
-from snakypy.dotctrl.utils.colors import Colors
 from contextlib import suppress
 from os.path import realpath
+
+from snakypy.helpers import printer
+from snakypy.helpers.files import read_json
+
+from snakypy.dotctrl.config.lang import LANG
+from snakypy.dotctrl.utils import get_key
+from snakypy.dotctrl.utils.colors import Colors
 
 
 class Messages(Colors):

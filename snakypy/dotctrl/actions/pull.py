@@ -1,13 +1,10 @@
-from genericpath import isfile
 from os.path import exists, islink, join
+
+from genericpath import isfile
 from snakypy.helpers import printer
+
 from snakypy.dotctrl.config.base import Base, Options
-from snakypy.dotctrl.utils import (
-    add_element_config,
-    join_two,
-    path_creation,
-    to_move,
-)
+from snakypy.dotctrl.utils import add_element_config, join_two, path_creation, to_move
 
 
 def pulled_to_do(data: list, home_path: str) -> list:

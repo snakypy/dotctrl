@@ -1,13 +1,12 @@
 from os.path import join
 
 import pytest
-from snakypy.helpers.files import create_file, update_json, read_json
+from snakypy.helpers.files import create_file, read_json, update_json
 from snakypy.helpers.path import create as create_path
 
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import path_creation
-
 from snakypy.dotctrl.config.menu import Menu
+from snakypy.dotctrl.utils import path_creation
 
 
 def populate_home(path: str) -> dict:

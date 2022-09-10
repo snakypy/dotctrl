@@ -1,16 +1,15 @@
 """Module menu"""
 
+from os.path import exists
+from typing import Any
+
+from docopt import docopt
 from snakypy.helpers import FG
 from snakypy.helpers.ansi import NONE
 
 from snakypy.dotctrl import __info__
-
 from snakypy.dotctrl.config.base import Base
 from snakypy.dotctrl.utils import get_key
-from os.path import exists
-from docopt import docopt
-from typing import Any
-
 
 EN_US: str = f"""
 {__info__['name']} version: {FG().CYAN}{__info__['version']}{NONE}

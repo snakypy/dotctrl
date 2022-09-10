@@ -13,13 +13,13 @@ from snakypy.dotctrl.actions.pull import PullCommand
 from snakypy.dotctrl.actions.repo import RepoCommand
 from snakypy.dotctrl.actions.restore import RestoreCommand
 from snakypy.dotctrl.actions.unlink import UnlinkCommand
+from snakypy.dotctrl.config.menu import Menu
 
 # from snakypy.dotctrl.utils import arguments
 from snakypy.dotctrl.utils.decorators import assign_cli
 
 # from textwrap import dedent
 
-from snakypy.dotctrl.config.menu import Menu
 
 # Get arguments Docopt
 args: dict = Menu(ROOT, HOME).args()

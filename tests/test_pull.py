@@ -1,9 +1,11 @@
-from .utilities import Basic, fixture  # noqa: E261,F401
-from .test_init import InitTester
-from snakypy.dotctrl.actions.pull import PullCommand
+from os import remove
 from os.path import exists, join
 from shutil import copyfile
-from os import remove
+
+from snakypy.dotctrl.actions.pull import PullCommand
+
+from .test_init import InitTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
 class PullTester(Basic):

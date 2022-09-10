@@ -1,13 +1,11 @@
 from contextlib import suppress
 from os import remove
-from os.path import islink, join, exists
+from os.path import exists, islink, join
+
+from snakypy.helpers import printer
 
 from snakypy.dotctrl.config.base import Base, Options
-from snakypy.helpers import printer
-from snakypy.dotctrl.utils import (
-    join_two,
-    is_repo_symbolic_link,
-)
+from snakypy.dotctrl.utils import is_repo_symbolic_link, join_two
 
 
 def unlinks_to_do(data: list, repo_dir: str, home_dir: str):

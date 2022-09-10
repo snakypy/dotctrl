@@ -1,9 +1,11 @@
-from .utilities import Basic, fixture  # noqa: E261,F401
-from .test_init import InitTester
-from .test_pull import PullTester
-from .test_link import LinkTester
-from snakypy.dotctrl.actions.restore import RestoreCommand
 from os.path import exists, join
+
+from snakypy.dotctrl.actions.restore import RestoreCommand
+
+from .test_init import InitTester
+from .test_link import LinkTester
+from .test_pull import PullTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 # from unittest.mock import patch
 

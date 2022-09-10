@@ -1,8 +1,9 @@
-from .utilities import Basic, fixture  # noqa: E261,F401
-from .test_link import LinkTester
-from .test_init import InitTester
-from .test_pull import PullTester
 from snakypy.dotctrl.actions.unlink import UnlinkCommand
+
+from .test_init import InitTester
+from .test_link import LinkTester
+from .test_pull import PullTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
 class UnlinkTester(Basic):

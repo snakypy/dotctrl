@@ -1,10 +1,12 @@
-from os import symlink, remove
-from .utilities import Basic, fixture  # noqa: E261,F401
-from .test_pull import PullTester
+from os import remove, symlink
+from os.path import join
+
+from snakypy.dotctrl.actions.repo import RepoCommand
+
 from .test_init import InitTester
 from .test_link import LinkTester
-from snakypy.dotctrl.actions.repo import RepoCommand
-from os.path import join
+from .test_pull import PullTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
 class RepoTester(Basic):

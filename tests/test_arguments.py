@@ -1,5 +1,6 @@
-from .utilities import Basic, fixture  # noqa: E261,F401
 from snakypy.dotctrl.utils.decorators import assign_cli
+
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
 class ArgsTester:

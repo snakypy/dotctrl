@@ -1,11 +1,13 @@
-from .utilities import Basic, fixture  # noqa: E261,F401
-from .test_pull import PullTester
-from .test_init import InitTester
-from snakypy.dotctrl.actions.link import LinkCommand
-from os.path import join
-from snakypy.dotctrl.utils import is_repo_symbolic_link
-from shutil import copyfile
 from os import remove, symlink
+from os.path import join
+from shutil import copyfile
+
+from snakypy.dotctrl.actions.link import LinkCommand
+from snakypy.dotctrl.utils import is_repo_symbolic_link
+
+from .test_init import InitTester
+from .test_pull import PullTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
 class LinkTester(Basic):

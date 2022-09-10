@@ -1,5 +1,5 @@
 from os import walk
-from os.path import join, isdir
+from os.path import isdir, join
 from pydoc import pager
 
 from snakypy.helpers import printer

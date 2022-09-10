@@ -1,5 +1,5 @@
-from os.path import realpath
 from functools import reduce
+from os.path import realpath
 from typing import Union
 
 

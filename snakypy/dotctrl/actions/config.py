@@ -1,16 +1,16 @@
 import pydoc
 from os import environ
-from os.path import join, exists
+from os.path import exists, join
 from shutil import which
 from subprocess import call
 from sys import exit
-from typing import Union, Any
+from typing import Any, Union
 
 from snakypy.helpers import printer
-from snakypy.helpers.files import read_file, create_json, read_json
-from snakypy.dotctrl.utils import pick
+from snakypy.helpers.files import create_json, read_file, read_json
 
 from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.utils import pick
 
 
 def editor_run(editor, config):

@@ -1,15 +1,13 @@
 """Modulate to store records and data."""
 from contextlib import suppress
-from genericpath import exists
 from os.path import join
 
+from genericpath import exists
 from snakypy.helpers import printer
 from snakypy.helpers.files import read_json
 
 from snakypy.dotctrl import __info__
-
 from snakypy.dotctrl.utils import get_key
-
 from snakypy.dotctrl.utils.messages import Messages
 
 

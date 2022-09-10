@@ -1,19 +1,18 @@
-from genericpath import isdir, isfile
-from os.path import exists, join, islink
+from os.path import exists, islink, join
 from shutil import move
 
-
-from snakypy.helpers.os import rmdir_blank
+from genericpath import isdir, isfile
 from snakypy.helpers import printer
+from snakypy.helpers.os import rmdir_blank
 
 from snakypy.dotctrl.config.base import Base, Options
 from snakypy.dotctrl.utils import (
+    is_repo_symbolic_link,
     listing_files,
     path_creation,
+    pick,
     remove_objects,
-    is_repo_symbolic_link,
 )
-from snakypy.dotctrl.utils import pick
 
 
 class RestoreCommand(Base, Options):

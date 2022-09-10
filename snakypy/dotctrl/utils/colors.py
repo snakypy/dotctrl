@@ -1,4 +1,4 @@
-from snakypy.helpers import FG, SGR, NONE
+from snakypy.helpers import FG, NONE, SGR
 
 
 class Colors:

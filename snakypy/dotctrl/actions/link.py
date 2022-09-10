@@ -1,14 +1,10 @@
-from genericpath import isfile
-from os.path import join, exists, islink
+from os.path import exists, islink, join
 
+from genericpath import isfile
 from snakypy.helpers import printer
 
 from snakypy.dotctrl.config.base import Base, Options
-from snakypy.dotctrl.utils import (
-    create_symlink,
-    path_creation,
-    is_repo_symbolic_link,
-)
+from snakypy.dotctrl.utils import create_symlink, is_repo_symbolic_link, path_creation
 
 
 class LinkCommand(Base, Options):

@@ -1,5 +1,4 @@
-from snakypy.helpers import FG, NONE
-from snakypy.helpers import printer
+from snakypy.helpers import FG, NONE, printer
 
 
 def pick_options(
