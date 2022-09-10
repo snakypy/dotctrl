@@ -4,7 +4,13 @@ from genericpath import isfile
 from snakypy.helpers import printer
 
 from snakypy.dotctrl.config.base import Base, Options
-from snakypy.dotctrl.utils import add_element_config, join_two, path_creation, to_move
+from snakypy.dotctrl.utils import (
+    add_element_config,
+    is_repo_symbolic_link,
+    join_two,
+    path_creation,
+    to_move,
+)
 
 
 def pulled_to_do(data: list, home_path: str) -> list:
@@ -81,7 +87,12 @@ class PullCommand(Base, Options):
                 if not islink(file_home) and exists(file_home):
                     path_creation(self.repo_path, item)
 
-            if isfile(file_home) and isfile(file_repo) and not force:
+            if (
+                not is_repo_symbolic_link(file_home, file_repo)
+                and isfile(file_home)
+                and isfile(file_repo)
+                and not force
+            ):
 
                 # TODO: [Adicionar o texto do print AQUI]
                 printer(self.text["msg:37"], foreground=self.WARNING)
