@@ -102,8 +102,12 @@ class ConfigCommand(Base):
                 self.languages,
                 index=True,
                 cancel_msg=self.text["msg:42"],
-                opt_msg=self.text["msg:43"],
+                invalid_msg=self.text["msg:43"],
             )
+
+            if reply is None:
+                return {"status": False, "code": "42"}
+
             language: Any = self.choice_language[reply[0]]
             self.change_language(language)
 
