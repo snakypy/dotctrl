@@ -6,7 +6,6 @@ c: Colors = Colors()
 # Strucuture: "type:code": "text"
 
 LANG: dict = {
-    "pt_BR": {},
     "en_US": {
         "word:01": "Arquivo(s)",
         "word:03": "Elemento(s)",
@@ -29,14 +28,14 @@ LANG: dict = {
             f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
         ),
         "msg:04": f"{c.cyan('[Code:04]', c.YELLOW)} Elemento não encontrado no repositório.",
-        "msg:05": "[Code:05] Elemento não linkado. Revise o mesmo no repositório:",
+        "msg:05": f"{c.cyan('[Code:05]', c.YELLOW)} Elemento não linkado. Revise o mesmo no repositório:",
         "msg:06": "O repositório já está definido em",
         "msg:07": f"{__info__['name']} já está configurado no diretório: ",
         "msg:08": (
-            "Você deve ter permissão SUDO em sua máquina para prosseguir com esta etapa e criar "
-            f"um repositório automático com {__info__['name']}. Você pode abordar a operação por "
-            "pressionando Ctrl + C.\n"
-            f"NOTA: O diretório {__info__['name']} será criado em: "
+            "AVISO!\nVocê deve ter permissão SUDO em sua máquina para prosseguir com esta etapa e criar\n"
+            f"um repositório automático com {__info__['name']}.\n"
+            f"Você pode abordar a operação pressionando {c.cyan('Ctrl + C', c.YELLOW)}.\n\n"
+            f"{c.magenta('NOTA', c.YELLOW)}: O diretório {__info__['name']} será criado em:"
         ),
         "msg:09": "[ Digite a senha para sudo ]",
         "msg:10": f"Inicializado {__info__['name']} no repositório: ",
@@ -83,15 +82,17 @@ LANG: dict = {
         "msg:35": "Limpeza concluida!",
         "msg:36": "Nada a limpar!",
         "msg:37": (
-            f"{c.cyan('[Code:37]', c.YELLOW)} Arquivos com o mesmo nome foram encontrados no repositório "
-            "{__info__['name']} e no local de origem."
-            f"Para substituir os do repositorio do {__info__['name']}, use a opção --force (--f)."
+            f"{c.cyan('[Code:37]', c.YELLOW)} Elementos com o mesmo nome foram encontrados no repositório "
+            f"{__info__['name']} e no local de origem. Esses elementos não tem vinculo com o repositório do "
+            f"{__info__['name']}.\n"
+            f"Para substituir os do repositorio do {__info__['name']}, use a opção {c.cyan('--force (--f)', c.YELLOW)}."
         ),
         "msg:38": (
-            f"{c.cyan('[Code:38]', c.YELLOW)} Elemento não encontrado no repositório para restaurar.\n"
+            f"{c.cyan('[Code:38]', c.YELLOW)} Foi detectado no arquivo de configuração do {__info__['name']} que "
+            "algum elemento não existe no repositório para restaurar.\n"
             "Isso pode ser causado porque o arquivo de configuração está desatualizado.\n"
             "Antes de prosseguir com a restauração, use o comando: "
-            "'dotctrl config --autoclean' para atualizar. "
+            f'"{c.cyan("dotctrl config --autoclean", c.YELLOW)}" para atualizar. '
         ),
         "msg:39": (
             f"{c.cyan('[Code:39]', c.YELLOW)} O {__info__['name']} encontrou um link simbólico de um elemento que não é "
@@ -107,7 +108,7 @@ LANG: dict = {
         "msg:40": "Repositório vazio. Nada para restaurar.",
         "msg:41": (
             "Está opção ira fazer a restauração em massa de todos elementos "
-            "do repositório do Dotctrl para o local original.\n   Deseja continuar?\n"
+            f"do repositório do {__info__['name']} para o local original.\n   Deseja continuar?\n"
         ),
         "msg:42": "Cancelado pelo usuário.",
         "msg:43": f"{c.cyan('[Code:43]', c.RED)} Opção inválida!",
@@ -115,7 +116,7 @@ LANG: dict = {
             f"{c.cyan('[Code:44]', c.YELLOW)} O {__info__['name']} ENCONTROU um elemento no local de origem com "
             f"mesmo nome do repositório do {__info__['name']}, e isso impediu de prosseguir com a restauração.\n"
             f"Caso queira substituí-lo pelo elemento do repositório {__info__['name']}, "
-            "execute este comando novamente com a opção --force (--f).\n"
+            f"execute este comando novamente com a opção {c.cyan('--force (--f)', c.YELLOW)}.\n"
             f"{c.magenta('Nota', c.YELLOW)}: Se usar a opção {c.cyan('--force (--f)', c.YELLOW)}, este elemento "
             "encontrado (e demais) será(ão) removido(s). "
             "Recomendamos que, averigue este (e demais) elemento(s) antes de prosseguir com a opção --force (--f).\n\n"
