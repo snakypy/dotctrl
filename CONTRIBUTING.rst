@@ -88,17 +88,6 @@ Ready to contribute? Here's how to set up `dotctrl` for local development.
 
 7. Submit a pull request through the GitHub website.
 
-Pull Request Guidelines
------------------------
-
-Before you submit a pull request, check that it meets these guidelines:
-
-1. The pull request should include tests.
-2. The pull request should work for Python 3.8, and for PyPy. Check
-   https://travis-ci.com/snakypy/dotctrl/pull_requests
-   and make sure that the tests pass for all supported Python versions.
-
-
 Developing with Docker
 ----------------------
 
@@ -116,17 +105,7 @@ To do this, do:
 
 3 - Run the command to create the Dotctrl repository:
 
-    $ mkdir -p /tmp/Dotfiles; cd $_ && dotctrl init --git
-
-Appear in credits
-------------------
-
-If you contribute over 100 lines of code to the project, your name and some of your data will appear in the Dotctrl credits when run the command:
-
-    $ dotctrl --credits
-
-Not only that, but your name will also appear in AUTHORS.rst. How about, huh?
-
+    $ mkdir -p /tmp/Dotfiles; cd $_ && dotctrl init
 
 Versioning
 -----------
@@ -171,6 +150,15 @@ Python projects adopting semantic versioning should abide by clauses 1-8 of the 
 
 For more information see: `PyPI Publishing`_
 
+
+Appear in credits
+------------------
+
+If you contribute over 100 lines of code to the project, your name and some of your data will appear in the Dotctrl credits when run the command:
+
+    $ dotctrl --credits
+
+Not only that, but your name will also appear in AUTHORS.rst. How about, huh?
 
 
 .. _`Semantic Versioning 2.0.0`: https://semver.org/
