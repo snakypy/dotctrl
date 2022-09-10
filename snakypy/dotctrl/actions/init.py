@@ -41,7 +41,7 @@ class InitCommand(Base):
         # an automatic repository with Dotctrl. You can approach the operation by
         # pressing Ctrl + C.
         # NOTE: The Dotctrl directory will be created in:
-        printer(self.text["msg:08"], path, foreground=self.WARNING)
+        printer(self.text["msg:08"], f"{path}\n", foreground=self.WARNING)
 
         # [ Enter password for sudo ]
         printer(self.text["msg:09"], foreground=self.QUESTION)
@@ -68,6 +68,7 @@ class InitCommand(Base):
 
     def main(self, arguments: dict) -> dict:
         """Base repository method."""
+
         root: str = self.root
         out: dict = dict()
 
