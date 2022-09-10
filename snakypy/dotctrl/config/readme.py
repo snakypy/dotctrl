@@ -17,7 +17,7 @@ repository "dotctrl", are compatible with those belonging to the "$HOME".
 [ Inspection ]
 
 To view the dot files in the "dotctrl" repository, activate the option to view
-hidden files in the file manager of your Linux distribution.
+hidden files in the file manager of your Linux distribution or macOS.
 
 To check the files via the command line, do:
 
