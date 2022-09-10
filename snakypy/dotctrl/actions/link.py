@@ -45,6 +45,11 @@ class LinkCommand(Base, Options):
             if "/" in element:
                 path_creation(self.home, element)
 
+            if is_repo_symbolic_link(element_home, element_repo):
+                printer(self.text["msg:32"], foreground=self.FINISH)
+
+                return {"status": False, "code": "32"}
+
             if (
                 islink(element_home)
                 and is_repo_symbolic_link(element_home, element_repo) is False
