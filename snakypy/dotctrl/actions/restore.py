@@ -58,7 +58,7 @@ class RestoreCommand(Base, Options):
 
         return {"status": True, "str": "success"}
 
-    def mass_verification(self, objects: list, force: bool) -> bool:
+    def mass_verification(self, objects: list, force: bool) -> dict:
 
         for item in objects:
             element_origin: str = join(self.home, item)
@@ -66,10 +66,7 @@ class RestoreCommand(Base, Options):
 
             checking: dict = self.not_errors(element_origin, element_repo, force)
 
-            if not checking["status"]:
-                return False
-
-        return True
+        return checking
 
     def restore(self, element_origin: str, element_repo: str) -> None:
 
@@ -141,7 +138,9 @@ class RestoreCommand(Base, Options):
 
             elif reply is not None and reply[0] == 0:
 
-                if self.mass_verification(objects, force):
+                checking = self.mass_verification(objects, force)
+
+                if checking["status"]:
                     for item in objects:
                         element_origin = join(self.home, item)
                         element_repo = join(self.repo_path, item)
@@ -155,5 +154,7 @@ class RestoreCommand(Base, Options):
                     printer(self.text["msg:46"], foreground=self.FINISH)
 
                     return {"status": True, "code": "46"}
+
+                return checking
 
         return {"status": None}
