@@ -25,7 +25,7 @@ LANG: dict = {
         "msg:02": "Repositório está vazio. Sem elementos.",
         "msg:03": (
             f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}. "
-            f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}"""
+            f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}\n"""
         ),
         "msg:04": f"{c.cyan('[Code:04]', c.YELLOW)} Elemento não encontrado no repositório.",
         "msg:05": f"{c.cyan('[Code:05]', c.YELLOW)} Elemento não linkado. Revise o mesmo no repositório:",
