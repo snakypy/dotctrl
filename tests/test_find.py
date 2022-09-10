@@ -8,6 +8,7 @@ from snakypy.dotctrl.actions.find import FindCommand
 class FindTester(Basic):
     def __init__(self, fixt):
         Basic.__init__(self, fixt)
+        self.fixt = fixt
 
     def find(self, elem):
         return self.menu.args(argv=["find", f"--name={elem}"])
@@ -15,6 +16,21 @@ class FindTester(Basic):
     def run(self, elem):
         @assign_cli(self.find(elem), "find")
         def wrapper():
+
+            output = FindCommand(self.root, self.home).main(self.find(elem))
+
+            if output["code"] != "28":
+                assert False
+
+            InitTester(self.fixt).run()
+
+            output = FindCommand(self.root, self.home).main(self.find(elem))
+
+            if output["code"] != "02":
+                assert False
+
+            PullTester(self.fixt).massive()
+
             output = FindCommand(self.root, self.home).main(self.find(elem))
 
             if output["code"] != "03":
@@ -29,7 +45,5 @@ class FindTester(Basic):
 
 
 def test_find(fixture):  # noqa: F811
-    InitTester(fixture).run()
-    PullTester(fixture).massive()
     find = FindTester(fixture)
     find.run(find.elements[0])
