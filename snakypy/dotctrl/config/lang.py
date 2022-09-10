@@ -17,7 +17,7 @@ LANG: dict = {
         "word:09": "Não",
         "word:10": "Arquivo",
         "word:11": "Diretório",
-        "word:12": "",  # empty
+        "word:12": "Elemento",  # empty
         "word:13": "Total",
         "word:14": "Pasta",
         "word:15": "Resultado",
@@ -45,10 +45,10 @@ LANG: dict = {
         ),
         "msg:12": "Elemento desvinculado com sucesso!",
         "msg:13": "Tipo: | Elemento ",
-        "msg:14": "Nada a ligar, em massa.",
+        "msg:14": "Nada para vincular em massa.",
         "msg:15": "Elemento(s) vinculado(s) com sucesso!",
         "msg:16": "Nada foi puxado. Elemento inexistente.",
-        "msg:17": "Nada para puxar, em massa.",
+        "msg:17": "Nada para puxar em massa.",
         "msg:18": "Elemento(s) puxado(s) com sucesso!",
         "msg:19": "Repositório vazio. Nada a ligar.",
         "msg:20": "Não linkado!",
@@ -73,10 +73,10 @@ LANG: dict = {
             "O repositório não está criado. "
             f"Use \"{__info__['pkg_name']} init [--auto] [--git]\". Aborted"
         ),
-        "msg:29": f"{c.cyan('[Code:29]', c.RED)} Elemento não encontrado.",
+        "msg:29": f"{c.cyan('[Code:29]', c.RED)} Elemento não encontrado para desvincular",
         "msg:30": "Nada para desvinculado, em massa.",
         "msg:31": "Links massivamente desvinculados com sucesso!",
-        "msg:32": "",  # empty
+        "msg:32": "Elemento já vinculado. Nada a fazer.",
         "msg:33": "",  # empty
         "msg:34": "",  # empty
         "msg:35": "Limpeza concluida!",
