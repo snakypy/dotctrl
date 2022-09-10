@@ -1,34 +1,44 @@
 from os import symlink, remove
-from .utilities import base  # noqa: E261,F401
-from .test_link import link_massive
+from .utilities import Basic, fixture  # noqa: E261,F401
+from .test_pull import PullTester
+from .test_init import InitTester
+from .test_link import LinkTester
 from snakypy.dotctrl.utils.decorators import assign_cli
 from snakypy.dotctrl.actions.repo import RepoCommand
 from os.path import join
 
 
-def repo_check(base):  # noqa: F811
-    args = base["Menu"].args(argv=["repo", "--check"])
+class RepoTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
 
-    @assign_cli(args, "repo")
-    def wrapper():
-        link_massive(base)
+    def opt(self, option):
+        return self.menu.args(argv=["repo", option])
 
-        out = RepoCommand(base["root"], base["home"]).main(args)
+    def check(self):
+        @assign_cli(self.opt("--check"), "repo")
+        def wrapper():
 
-        if out["code"] != "21":
-            assert False
+            output = RepoCommand(self.root, self.home).main(self.opt("--check"))
 
-        remove(join(base["home"], base["elements"][0]))
-        intruder = join(base["home"], "intruder.txt")
-        symlink(intruder, join(base["home"], base["elements"][0]))
+            if output["code"] != "21":
+                assert False
 
-        out = RepoCommand(base["root"], base["home"]).main(args)
+            remove(join(self.home, self.elements[0]))
 
-        if out["code"] != "22":
-            assert False
+            symlink(join(self.home, "foo.txt"), join(self.home, self.elements[0]))
 
-    return wrapper()
+            out = RepoCommand(self.root, self.home).main(self.opt("--check"))
+
+            if out["code"] != "22":
+                assert False
+
+        return wrapper()
 
 
-def test_repo_check(base):  # noqa: F811
-    repo_check(base)
+def test_repo_check(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    PullTester(fixture).massive()
+    LinkTester(fixture).massive()
+    repo = RepoTester(fixture)
+    repo.check()

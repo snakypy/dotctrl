@@ -1,29 +1,35 @@
-from .utilities import base  # noqa: E261,F401
-from .test_pull import pull_massive
+from .utilities import Basic, fixture  # noqa: E261,F401
+from .test_init import InitTester
+from .test_pull import PullTester
 from snakypy.dotctrl.utils.decorators import assign_cli
 from snakypy.dotctrl.actions.find import FindCommand
 
 
-def find_element(base):  # noqa: F811
-    args = base["Menu"].args(argv=["find", f"--name={base['elements'][0]}"])
-    args_not = base["Menu"].args(argv=["find", "--name=notexists.txt"])
+class FindTester(Basic):
+    def __init__(self, fixt):
+        Basic.__init__(self, fixt)
 
-    @assign_cli(args, "find")
-    def wrapper():
-        pull_massive(base)
+    def find(self, elem):
+        return self.menu.args(argv=["find", f"--name={elem}"])
 
-        out = FindCommand(base["root"], base["home"]).main(args)
+    def run(self, elem):
+        @assign_cli(self.find(elem), "find")
+        def wrapper():
+            output = FindCommand(self.root, self.home).main(self.find(elem))
 
-        if out["code"] != "03":
-            assert False
+            if output["code"] != "03":
+                assert False
 
-        out = FindCommand(base["root"], base["home"]).main(args_not)
+            output = FindCommand(self.root, self.home).main(self.find("notexists.txt"))
 
-        if out["code"] != "04":
-            assert False
+            if output["code"] != "04":
+                assert False
 
-    return wrapper()
+        return wrapper()
 
 
-def test_find_element(base):  # noqa: F811
-    find_element(base)
+def test_find(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    PullTester(fixture).massive()
+    find = FindTester(fixture)
+    find.run(find.elements[0])

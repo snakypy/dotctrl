@@ -3,33 +3,35 @@ from os.path import exists
 from snakypy.dotctrl.utils.decorators import assign_cli
 from snakypy.dotctrl.actions.init import InitCommand
 
-from .utilities import base  # noqa: E261, F401
+from .utilities import Basic, fixture  # noqa: E261, F401
 
 
-def test_init(base):  # noqa: F811
-    args = base["Menu"].args(argv=["init"])
+class InitTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
 
-    @assign_cli(args, "init")
-    def wrapper():
-        InitCommand(base["root"], base["home"]).main(args)
+    @property
+    def args(self):
+        return self.menu.args(argv=["init"])
 
-        if not exists(base["Base"].config_path):
-            assert False
+    def run(self):
+        @assign_cli(self.args, "init")
+        def wrapper():
 
-        if not exists(base["Base"].repo_path):
-            assert False
+            output = InitCommand(self.root, self.home).main(self.args)
 
-    return wrapper()
+            if not exists(self.base.config_path):
+                assert False
+
+            if not exists(self.base.repo_path):
+                assert False
+
+            if output["code"] != "10":
+                assert False
+
+        return wrapper()
 
 
-# WHITOUT DECORATOR
-# def test_init_command(base):  # noqa: F811
-
-#     args = base["Menu"].args(argv=["init"])
-#     InitCommand(base["root"], base["home"]).main(args)
-
-#     if not exists(base["Base"].config_path):
-#         assert False
-
-#     if not exists(base["Base"].repo_path):
-#         assert False
+def test_init(fixture):  # noqa: F811
+    init = InitTester(fixture)
+    init.run()

@@ -1,56 +1,66 @@
-from .utilities import base  # noqa: E261,F401
-from .test_link import link_massive
+from .utilities import Basic, fixture  # noqa: E261,F401
+from .test_link import LinkTester
+from .test_init import InitTester
+from .test_pull import PullTester
 from snakypy.dotctrl.actions.unlink import UnlinkCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
 
 
-def unlink_massive(base):  # noqa: F811
-    args = base["Menu"].args(argv=["unlink"])
-    # args_f = base["Menu"].args(argv=["unlink", "--f"])
+class UnlinkTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
 
-    link_massive(base)
+    @property
+    def unlink(self):
+        return self.menu.args(argv=["unlink"])
 
-    @assign_cli(args, "unlink")
-    def wrapper():
+    def __element(self, elem):
+        return self.menu.args(argv=["unlink", f"--e={elem}"])
 
-        out = UnlinkCommand(base["root"], base["home"]).main(args)
+    def massive(self):
+        @assign_cli(self.unlink, "unlink")
+        def wrapper():
 
-        if out["code"] != "31":
-            assert False
+            output = UnlinkCommand(self.root, self.home).main(self.unlink)
 
-        out = UnlinkCommand(base["root"], base["home"]).main(args)
+            if output["code"] != "31":
+                assert False
 
-        if out["code"] != "30":
-            assert False
+            output = UnlinkCommand(self.root, self.home).main(self.unlink)
 
-    return wrapper()
+            if output["code"] != "30":
+                assert False
 
+        return wrapper()
 
-def unlink_element(base):  # noqa: F811
-    args = base["Menu"].args(argv=["unlink", f"--e={base['elements'][0]}"])
-    # args_f = base["Menu"].args(argv=["unlink", f"--e={base['elements'][0]}", "--f"])
+    def specific_element(self, elem):
+        @assign_cli(self.__element(elem), "unlink")
+        def wrapper():
 
-    link_massive(base)
+            output = UnlinkCommand(self.root, self.home).main(self.__element(elem))
 
-    @assign_cli(args, "unlink")
-    def wrapper():
+            if output["code"] != "12":
+                assert False
 
-        out = UnlinkCommand(base["root"], base["home"]).main(args)
+            output = UnlinkCommand(self.root, self.home).main(self.__element(elem))
 
-        if out["code"] != "12":
-            assert False
+            if output["code"] != "29":
+                assert False
 
-        out = UnlinkCommand(base["root"], base["home"]).main(args)
-
-        if out["code"] != "29":
-            assert False
-
-    return wrapper()
-
-
-def test_unlink_massive(base):  # noqa: F811
-    unlink_massive(base)
+        return wrapper()
 
 
-def test_unlink_element(base):  # noqa: F811
-    unlink_element(base)
+def test_unlink_massive(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    PullTester(fixture).massive()
+    LinkTester(fixture).massive()
+    unlink = UnlinkTester(fixture)
+    unlink.massive()
+
+
+def test_unlink_specific_element(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    PullTester(fixture).massive()
+    LinkTester(fixture).massive()
+    unlink = UnlinkTester(fixture)
+    unlink.specific_element(unlink.elements[0])

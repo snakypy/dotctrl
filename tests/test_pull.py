@@ -1,67 +1,75 @@
-from .utilities import base  # noqa: E261,F401
-from .utilities import add_elements
-from .test_init import test_init
+from .utilities import Basic, fixture  # noqa: E261,F401
+from .test_init import InitTester
 from snakypy.dotctrl.actions.pull import PullCommand
 from snakypy.dotctrl.utils.decorators import assign_cli
 from os.path import exists, join
 from shutil import copyfile
 
 
-def pull_massive(base):  # noqa: F811
-    args = base["Menu"].args(argv=["pull"])
+class PullTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
 
-    @assign_cli(args, "pull")
-    def wrapper():
-        test_init(base)
-        add_elements(base, *base["elements"])
+    @property
+    def pull(self):
+        return self.menu.args(argv=["pull"])
 
-        PullCommand(base["root"], base["home"]).main(args)
+    def __element(self, elem):
+        return self.menu.args(argv=["pull", f"--e={elem}"])
 
-        for e in base["elements"]:
-            repo_path = base["Base"].repo_path
-            if not exists(join(repo_path, e)):
+    def massive(self):
+        @assign_cli(self.pull, "pull")
+        def wrapper():
+
+            self.update_config_elements(*self.elements)
+
+            output = PullCommand(self.root, self.home).main(self.pull)
+
+            if output["code"] != "18":
                 assert False
 
-    return wrapper()
+            for e in self.elements:
+                if not exists(join(self.base.repo_path, e)):
+                    assert False
+
+            output = PullCommand(self.root, self.home).main(self.pull)
+
+            if output["code"] != "17":
+                assert False
+
+        return wrapper()
+
+    def specific_element(self, elem):
+        @assign_cli(self.__element(elem), "pull")
+        def wrapper():
+
+            output = PullCommand(self.root, self.home).main(self.__element(elem))
+
+            if output["code"] != "18":
+                assert False
+
+            output = PullCommand(self.root, self.home).main(self.__element(elem))
+
+            if output["code"] != "16":
+                assert False
+
+            copyfile(join(self.home, "foo.txt"), join(self.home, self.elements[0]))
+
+            output = PullCommand(self.root, self.home).main(self.__element(elem))
+
+            if output["code"] != "37":
+                assert False
+
+        return wrapper()
 
 
-def pull_element(base):  # noqa: F811
-    args = base["Menu"].args(argv=["pull", f"--e={base['elements'][0]}"])
-
-    @assign_cli(args, "pull")
-    def wrapper():
-        test_init(base)
-        add_elements(base, *base["elements"])
-
-        out = PullCommand(base["root"], base["home"]).main(args)
-
-        repo_path = base["Base"].repo_path
-        if not exists(join(repo_path, base["elements"][0])):
-            assert False
-
-        if out["code"] != "18":
-            assert False
-
-        out = PullCommand(base["root"], base["home"]).main(args)
-
-        if out["code"] != "16":
-            assert False
-
-        intruder = join(base["home"], "intruder.txt")
-
-        copyfile(intruder, join(base["home"], base["elements"][0]))
-
-        out = PullCommand(base["root"], base["home"]).main(args)
-
-        if out["code"] != "37":
-            assert False
-
-    return wrapper()
+def test_pull_massive(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    pull = PullTester(fixture)
+    pull.massive()
 
 
-def test_pull_massive(base):  # noqa: F811
-    pull_massive(base)
-
-
-def test_pull_element(base):  # noqa: F811
-    pull_element(base)
+def test_pull_specific_element(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    pull = PullTester(fixture)
+    pull.specific_element(pull.elements[0])
