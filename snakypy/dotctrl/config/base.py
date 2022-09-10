@@ -20,6 +20,8 @@ class Base(Messages):
         self.root: str = root
         self.home: str = home
         self.data: list = list()
+        self.elements: list = list()
+        self.parsed: dict = dict()
         self.config_path: str = join(self.root, __info__["config"])
         self.repo_path: str = join(self.root, "dotctrl")
         self.gitignore_path: str = join(self.root, ".gitignore")
