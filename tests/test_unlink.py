@@ -3,7 +3,6 @@ from .test_link import LinkTester
 from .test_init import InitTester
 from .test_pull import PullTester
 from snakypy.dotctrl.actions.unlink import UnlinkCommand
-from snakypy.dotctrl.utils.decorators import assign_cli
 
 
 class UnlinkTester(Basic):
@@ -18,36 +17,28 @@ class UnlinkTester(Basic):
         return self.menu.args(argv=["unlink", f"--e={elem}"])
 
     def massive(self):
-        @assign_cli(self.unlink, "unlink")
-        def wrapper():
 
-            output = UnlinkCommand(self.root, self.home).main(self.unlink)
+        output = UnlinkCommand(self.root, self.home).main(self.unlink)
 
-            if output["code"] != "31":
-                assert False
+        if output["code"] != "31":
+            assert False
 
-            output = UnlinkCommand(self.root, self.home).main(self.unlink)
+        output = UnlinkCommand(self.root, self.home).main(self.unlink)
 
-            if output["code"] != "30":
-                assert False
-
-        return wrapper()
+        if output["code"] != "30":
+            assert False
 
     def specific_element(self, elem):
-        @assign_cli(self.__element(elem), "unlink")
-        def wrapper():
 
-            output = UnlinkCommand(self.root, self.home).main(self.__element(elem))
+        output = UnlinkCommand(self.root, self.home).main(self.__element(elem))
 
-            if output["code"] != "12":
-                assert False
+        if output["code"] != "12":
+            assert False
 
-            output = UnlinkCommand(self.root, self.home).main(self.__element(elem))
+        output = UnlinkCommand(self.root, self.home).main(self.__element(elem))
 
-            if output["code"] != "29":
-                assert False
-
-        return wrapper()
+        if output["code"] != "29":
+            assert False
 
 
 def test_unlink_massive(fixture):  # noqa: F811
@@ -59,8 +50,8 @@ def test_unlink_massive(fixture):  # noqa: F811
 
 
 def test_unlink_specific_element(fixture):  # noqa: F811
-    InitTester(fixture).run()
-    PullTester(fixture).massive()
-    LinkTester(fixture).massive()
     unlink = UnlinkTester(fixture)
+    InitTester(fixture).run()
+    PullTester(fixture).specific_element(unlink.elements[0])
+    LinkTester(fixture).specific_element(unlink.elements[0])
     unlink.specific_element(unlink.elements[0])

@@ -13,12 +13,12 @@ from snakypy.dotctrl.config.menu import Menu
 def populate_home(path: str) -> dict:
     files: list = ["bar.txt", ".config/foo.txt"]
 
-    folders: list = [".config/folder1"]
+    folders: list = [".config/bar"]
 
     for f in files:
         if "/" in f:
             path_creation(path, f)
-        create_file("dotctrl tests", join(path, f), force=True)
+        create_file("Example", join(path, f), force=True)
 
     create_file("Foo", join(path, "foo.txt"), force=True)
 
