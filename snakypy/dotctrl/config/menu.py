@@ -133,6 +133,7 @@ class Menu(Base):
     def languages() -> dict:
         return {"pt_BR": PT_BR, "en_US": EN_US}
 
+    # TODO: Error tests
     @property
     def menu(self) -> str:
 
@@ -144,6 +145,8 @@ class Menu(Base):
             return self.languages()[lang_current]
         else:
             return self.languages()["en_US"]
+
+        # return self.languages()["en_US"]
 
     def args(self, argv: Any = None) -> dict:
         """Function to return the option menu arguments."""
