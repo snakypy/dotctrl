@@ -63,7 +63,9 @@ class UnlinkCommand(Base, Options):
 
             # Element not found.
             printer(
-                self.text["msg:29"], f"Object: {element_home_}", foreground=self.ERROR
+                self.text["msg:29"],
+                f"({self.text['word:12']}: {element_home_}).",
+                foreground=self.ERROR,
             )
 
             return {"status": False, "code": "29"}
