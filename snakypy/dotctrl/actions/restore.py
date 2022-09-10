@@ -1,14 +1,12 @@
 from os.path import exists, islink, join
 from shutil import move
 
-from genericpath import isdir, isfile
 from snakypy.helpers import printer
 from snakypy.helpers.os import rmdir_blank
 
 from snakypy.dotctrl.config.base import Base, Options
 from snakypy.dotctrl.utils import (
     is_repo_symbolic_link,
-    listing_files,
     path_creation,
     pick,
     remove_objects,
@@ -41,12 +39,8 @@ class RestoreCommand(Base, Options):
             out: dict = self.error_symlink(element_origin)
             return out
 
-        if (
-            exists(element_repo)
-            and not islink(element_origin)
-            and (isfile(element_origin) or isdir(element_origin))
-            and not force
-        ):
+        if exists(element_repo) and islink(element_origin) is False and not force:
+
             # Operation aborted!
             printer(self.text["msg:45"], foreground=self.ERROR)
 
@@ -65,6 +59,9 @@ class RestoreCommand(Base, Options):
 
             checking: dict = self.not_errors(element_origin, element_repo, force)
 
+            if not checking["status"]:
+                break
+
         return checking
 
     def restore(self, element_origin: str, element_repo: str) -> None:
@@ -72,11 +69,9 @@ class RestoreCommand(Base, Options):
         if exists(element_repo):
             remove_objects(element_origin)
             move(element_repo, element_origin)
-            rmdir_blank(self.repo_path)
 
         return None
 
-    # TODO: Acrescentar tipagem nos "mains" e demais locais
     def main(self, arguments: dict) -> dict:
         """Method to restore dotfiles from the repository to their
         original location."""
@@ -97,6 +92,7 @@ class RestoreCommand(Base, Options):
 
             if checking["status"]:
                 self.restore(element_origin, element_repo)
+                rmdir_blank(self.repo_path)
 
                 # Complete restoration!
                 printer(self.text["msg:46"], foreground=self.FINISH)
@@ -107,7 +103,8 @@ class RestoreCommand(Base, Options):
 
         # Not use option --element (--e) [bulk]
         else:
-            objects: list = [*listing_files(self.repo_path), *self.data]
+            # objects: list = [*listing_files(self.repo_path), *self.data]
+            objects: list = self.data
 
             # Empty repository. Nothing to restore.
             if len(objects) == 0:
@@ -148,6 +145,8 @@ class RestoreCommand(Base, Options):
                             path_creation(self.home, item)
 
                         self.restore(element_origin, element_repo)
+
+                    rmdir_blank(self.repo_path)
 
                     # Complete restoration!
                     printer(self.text["msg:46"], foreground=self.FINISH)
