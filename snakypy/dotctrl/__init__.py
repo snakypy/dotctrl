@@ -15,7 +15,6 @@ For more information, access: 'https://github.com/snakypy/dotctrl'
 import os
 from os.path import abspath, dirname, join
 from pathlib import Path
-from sys import platform
 
 from snakypy.helpers.files import eqversion
 
@@ -60,10 +59,13 @@ def choose_root(env: str):
 
 # Path current
 ROOT: str = choose_root(__info__["env"])
+
 # HOME user
 HOME: str = str(Path.home())
 
-AUTO_PATH = ("/home",) if platform == "linux" else ("/Users",)
+# It only takes the HOME, not the user's.
+# Linux: /home and macOS: /Users
+AUTO_PATH = join("/", list(filter(None, HOME.split("/")))[0])
 
 # Keep the versions the same on pyproject.toml and __init__.py
 pyproject: str = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
