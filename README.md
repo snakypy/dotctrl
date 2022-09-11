@@ -136,10 +136,10 @@ See a demo:
 
 To work properly, you will first need:
 
-- [`Python`](https://python.org) (v3.9 ou recente);
-- [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 ou recente) deve ser instalado;
-- [`Git`](https://git-scm.com/downloads) (v2.0 ou recente);
-- Um desse editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/), [emacs](https://www.gnu.org/software/emacs/) ou [micro](https://micro-editor.github.io/) devem ser instalado;
+- [`Python`](https://python.org) (v3.9 or recent);
+- [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 or recent) must be installed;
+- [`Git`](https://git-scm.com/downloads) (v2.0 or recent);
+- One of this editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/), [emacs](https://www.gnu.org/software/emacs/) or [micro](https://micro-editor.github.io/) must be installed;
 
 
 # Installing
