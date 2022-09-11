@@ -28,7 +28,7 @@ args: dict = Menu(ROOT, HOME).args()
 @assign_cli(args, "init")
 def run_init():
     if args["--auto"] is True:
-        root_auto = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
+        root_auto = join(AUTO_PATH[0], ".dotfiles")
         InitCommand(root_auto, HOME).main(args)
     else:
         InitCommand(ROOT, HOME).main(args)
