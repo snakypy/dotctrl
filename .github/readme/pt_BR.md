@@ -21,27 +21,88 @@
 ----------------
 
 <div align="center">
-  <h4>
-    <a href="#características">Características</a> |
-    <a href="#requisitos">Requisitos</a> |
-    <a href="#instalando">Instalando</a> |
-    <a href="#usando">Usando</a> |
-    <a href="#variável-de-ambiente">Variável de ambiente</a> |
-    <a href="#atualizando">Atualizando</a> |
-    <a href="#doação">Doação</a> |
-  </h4>
-  <h5>
-    | <a href="#mais-comandos">Mais Comandos</a> |
-  </h5>
-</div>
-
-<div align="center">
   <sub>Construído com ❤︎ por:
   <a href="https://williamcanin.github.io" target="_blank">William Canin</a> no tempo livre,
    ao som da playlist: <a href="https://open.spotify.com/playlist/48brJJZdVifY79QAFmEImq?si=GmsvfKqATpG4p72ZeVClIQ" target="_blank">Bursting Of The Tympanum</a></sub>
 </div>
 <br>
 <br>
+
+<div class="sumary">
+  <h1> Sumário </h1>
+  <ul>
+      <li>
+          <a href="#sobre">Sobre</a>
+      </li>
+      <li>
+          <a href="#características">Características</a>
+      </li>
+      <li>
+          <a href="#requisitos">Requisitos</a>
+      </li>
+      <li>
+          <a href="#instalando">Instalando</a>
+      </li>
+      <li>
+          <a href="#usando">Usando</a>
+          <ul>
+              <li>
+                  <a href="#init">init</a>
+              </li>
+              <li>
+                  <a href="#pull">pull</a>
+              </li>
+              <li>
+                  <a href="#link">link</a>
+              </li>
+              <li>
+                  <a href="#unlink">unlink</a>
+              </li>
+              <li>
+                  <a href="#restore">restore</a>
+              </li>
+              <li>
+                  <a href="#repo">repo</a>
+              </li>
+              <li>
+                  <a href="#find">find</a>
+              </li>
+              <li>
+                  <a href="#config">config</a>
+              </li>
+          </ul>
+      </li>
+      <li>
+          <a href="#flags-globais">Flags Globais</a>
+      </li>
+      <li>
+          <a href="#arquivo-de-configuração-dotctrljson">Arquivo de configuração (dotctrl.json)</a>
+      </li>
+      <li>
+          <a href="#variável-de-ambiente">Variável de ambiente</a>
+      </li>
+      <li>
+          <a href="#atualizando">Atualizando</a>
+      </li>
+      <li>
+          <a href="#mais-comandos">Mais Comandos</a>
+      </li>
+      <li>
+          <a href="#extras">Extras</a>
+          <ul>
+              <li>
+                  <a href="#deploy-e-clone-do-repositório-dotctrl">Deploy e Clone do repositório Dotctrl</a>
+              </li>
+          </ul>
+      </li>
+      <li>
+          <a href="#doação">Doação</a>
+      </li>
+      <li>
+          <a href="#licença">Licença</a>
+      </li>
+  </ul>
+</div>
 
 # Sobre
 
@@ -238,6 +299,16 @@ o caminho absoluto do repositório e se a variável de ambiente `DOTCTRL_PATH` e
 dotctrl repo --info
 ```
 
+## find
+
+Pesquisa qualquer elemento dentro do repositório do **Dotctrl**. Para isso, use o comando:
+
+```shell
+dotctrl find --name .zprofile
+```
+
+> Nota: Envolva o elemento a ser encontrar com aspas duplas caso o mesmo tenha espaços no nome.
+
 ## config
 
 Este comando irá manipular o arquivo de configuração do **Dotctrl**, veja abaixo alguns subcomandos do mesmo.
@@ -275,7 +346,7 @@ Use está flag para alterar o idioma do **Dotctrl**. No momento, o **Dotctrl** d
 dotctrl config --lang
 ```
 
-## Opções globais
+## Flags globais
 
 ### --e (--element)
 

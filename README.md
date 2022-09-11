@@ -23,27 +23,88 @@ Languages: [Português Brasileiro](https://github.com/snakypy/dotctrl/blob/main/
 ----------------
 
 <div align="center">
-  <h4>
-    <a href="#features">Features</a> |
-    <a href="#requirements">Requirements</a> |
-    <a href="#installing">Installing</a> |
-    <a href="#using">Using</a> |
-    <a href="#environment-variable">Environment variable</a> |
-    <a href="#updating">Updating</a> |
-    <a href="#donation">Donation</a> |
-  </h4>
-  <h5>
-    | <a href="#more-commands">More Commands</a> |
-  </h5>
-</div>
-
-<div align="center">
   <sub>Built with ❤︎ by:
   <a href="https://williamcanin.github.io" target="_blank">William Canin</a> in free time,
     to the sound of the playlist: <a href="https://open.spotify.com/playlist/48brJJZdVifY79QAFmEImq?si=GmsvfKqATpG4p72ZeVClIQ" target="_blank">Bursting Of The Tympanum</a></sub>
 </div>
 <br>
 <br>
+
+<div class="sumary">
+  <h1> Sumary </h1>
+  <ul>
+      <li>
+          <a href="#about">About</a>
+      </li>
+      <li>
+          <a href="#features">Features</a>
+      </li>
+      <li>
+          <a href="#requirements">Requirements</a>
+      </li>
+      <li>
+          <a href="#installing">Installing</a>
+      </li>
+      <li>
+          <a href="#using">Using</a>
+          <ul>
+              <li>
+                  <a href="#init">init</a>
+              </li>
+              <li>
+                  <a href="#pull">pull</a>
+              </li>
+              <li>
+                  <a href="#link">link</a>
+              </li>
+              <li>
+                  <a href="#unlink">unlink</a>
+              </li>
+              <li>
+                  <a href="#restore">restore</a>
+              </li>
+              <li>
+                  <a href="#repo">repo</a>
+              </li>
+              <li>
+                  <a href="#find">find</a>
+              </li>
+              <li>
+                  <a href="#config">config</a>
+              </li>
+          </ul>
+      </li>
+      <li>
+          <a href="#global-flags">Global flags</a>
+      </li>
+      <li>
+          <a href="#configuration-file-dotctrljson">Configuration file (dotctrl.json)</a>
+      </li>
+      <li>
+          <a href="#environment-variable">Environment Variable</a>
+      </li>
+      <li>
+          <a href="#updating">Updating</a>
+      </li>
+      <li>
+          <a href="#more-commands">More Commands</a>
+      </li>
+      <li>
+          <a href="#extras">Extras</a>
+          <ul>
+              <li>
+                  <a href="#deploy-and-clone-from-dotctrl-repository">Deploy and Clone from Dotctrl repository</a>
+              </li>
+          </ul>
+      </li>
+      <li>
+          <a href="#donation">Donation</a>
+      </li>
+      <li>
+          <a href="#license">License</a>
+      </li>
+  </ul>
+</div>
 
 # About
 
@@ -81,24 +142,24 @@ To work properly, you will first need:
 - Um desse editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/), [emacs](https://www.gnu.org/software/emacs/) ou [micro](https://micro-editor.github.io/) devem ser instalado;
 
 
-# Instalando
+# Installing
 
-É hora de instalar o **Dotctrl**. Para fazer isso, faça:
+It's time to install **Dotctrl**. To do this, do:
 
 ```shell
 python3 -m pip install dotctrl --user
 ```
 
-> NOTA: Se você estiver instalando no ambiente local do usuário, certifique-se de adicionar as variáveis de ambiente ao arquivo `zshrc`
-> ou arquivo `.bashrc`.
+> NOTE: If you are installing in the user's local environment, be sure to add the environment variables to the `zshrc` file
+> or `.bashrc` file.
 
-# Usando
+# Using
 
 ## init
 
-Após instalar o pacote, você precisa criar o repositório **Dotctrl** em uma pasta vazia no local do sua
-escolha. Recomendamos sempre criar no diretório raiz **/home** ou **/Users**, pois criando na pasta do usuário, pode ser
-perdido se o usuário for excluído. Com isso, veja o exemplo abaixo:
+After installing the package, you need to create the **Dotctrl** repository in an empty folder in your
+choice. We always recommend creating **/home** or **/Users** in the root directory, because creating in the user's folder can be
+lost if user is deleted. With that, see the example below:
 
 Linux:
 
@@ -120,57 +181,54 @@ dotctrl init
 
 ### --auto
 
-Você pode contornar todos esses comandos acima usando a flag `--auto`. O **Dotctrl** criará automaticamente uma base
-diretório para armazenar os dados, no entanto, você **DEVE** ter permissão sudo.
+You can bypass all of these commands above using the `--auto` flag. **Dotctrl** will automatically create a base
+directory to store the data, however you **MUST** have sudo permission.
 
-> Recomendamos usar fortemente está opção caso tenha permissão.
+> We strongly recommend using this option if you have permission.
 
 ```shell
 dotctrl init --auto
 ```
-
 ### --git
 
-Esta flag faz com que o **Dotctrl** crie um repositório [git](https://git-scm.com) dentro do repositório **Dotctrl**.
+This flag causes **Dotctrl** to create a [git](https://git-scm.com) repository within the **Dotctrl** repository.
 
 ```shell
 dotctrl init --git
 ```
 
-Você também pode combinar está flag com a flag [`--auto`](#--auto):
+You can also combine this flag with the [`--auto`](#--auto) flag:
 
 ```shell
 dotctrl init --auto --git
 ```
-
 ## pull
 
-Com a base já criada, é hora de você PUXAR os elementos para a base do **Dotctrl** com o comando `pull`.
+With the base already created, it's time for you to PULL the elements to the base of **Dotctrl** with the `pull` command.
 
-Puxe **UM** [elemento]() para o repositório **Dotctrl**:
+Pull **single** [element]() to the **Dotctrl** repository:
 
 ```shell
 dotctrl pull --e .zprofile
 ```
 
-Se você quiser fazer um **pull** massivo, faça:
+If you want to do a massive **pull**, do:
 
 ```shell
 dotctrl pull
 ```
 
-> Nota: Esta opção só é possível se você passar os [elements](#section-elements) manualmente no arquivo **dotctrl.json** ou não ter limpadado o [registro](#autoclean).
-
+> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [registry](#autoclean).
 
 ## link
 
-Depois de puxar o(s) elemento(s), crie links simbólicos para eles em seus locais originais:
+After pulling the element(s), create symlinks to them in their original locations:
 
 ```shell
 dotctrl link --e .zprofile
 ```
 
-Se você quiser realizar um **link** massivo, faça:
+If you want to perform a massive **link**, do:
 
 ```shell
 dotctrl link
@@ -240,6 +298,16 @@ o caminho absoluto do repositório e se a variável de ambiente `DOTCTRL_PATH` e
 dotctrl repo --info
 ```
 
+## find
+
+Pesquisa qualquer elemento dentro do repositório do **Dotctrl**. Para isso, use o comando:
+
+```shell
+dotctrl find --name .zprofile
+```
+
+> Nota: Envolva o elemento a ser encontrar com aspas duplas caso o mesmo tenha espaços no nome.
+
 ## config
 
 Este comando irá manipular o arquivo de configuração do **Dotctrl**, veja abaixo alguns subcomandos do mesmo.
@@ -277,7 +345,7 @@ Use está flag para alterar o idioma do **Dotctrl**. No momento, o **Dotctrl** d
 dotctrl config --lang
 ```
 
-## Opções globais
+## Global flags
 
 ### --e (--element)
 
