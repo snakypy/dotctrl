@@ -20,7 +20,7 @@ from snakypy.helpers.files import eqversion
 
 __info__: dict = {
     "name": "Dotctrl",
-    "version": "2.0.0b1",
+    "version": "2.0.0rc1",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
     "pkg_name": "dotctrl",
     "executable": "dotctrl",
