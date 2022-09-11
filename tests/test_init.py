@@ -1,20 +1,41 @@
 from os.path import exists
 
-from snakypy.dotctrl.utils.decorators import assign_cli
+from snakypy.dotctrl.actions.init import InitCommand
+from snakypy.dotctrl.actions.repo import RepoCommand
 
-from .utilities import base  # noqa: E261
-from .utilities import arguments, class_base, elements, run_init_command
+from .utilities import Basic, fixture  # noqa: E261, F401
 
 
-@assign_cli(arguments(argv=["init"]), "init")
-def test_init_command(base):  # noqa: F811
+class InitTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
 
-    elements(base, create=True)
+    @property
+    def args(self):
+        return self.menu.args(argv=["init"])
 
-    run_init_command(base)
+    def repo_check(self, value):
+        return self.menu.args(argv=["repo", "--check"])
 
-    if not exists(class_base(base).config_path):
-        assert False
+    def run(self):
 
-    if not exists(class_base(base).repo_path):
-        assert False
+        output = RepoCommand(self.root, self.home).main(self.repo_check)
+
+        if output["code"] != "28":
+            assert False
+
+        output = InitCommand(self.root, self.home).main(self.args)
+
+        if not exists(self.base.config_path):
+            assert False
+
+        if not exists(self.base.repo_path):
+            assert False
+
+        if output["code"] != "10":
+            assert False
+
+
+def test_init(fixture):  # noqa: F811
+    init = InitTester(fixture)
+    init.run()

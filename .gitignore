@@ -142,3 +142,6 @@ tmp/
 
 # Ignore Poetry lock
 poetry.lock
+binary/
+
+METAS.txt

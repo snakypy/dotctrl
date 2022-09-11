@@ -1,10 +1,12 @@
+Languages: [Português Brasileiro](https://github.com/snakypy/dotctrl/blob/main/.github/readme/pt_BR.md)
+
 <h1 align="center">
   <a href="https://github.com/snakypy/dotctrl">
     <img alt="Dotctrl" src="https://raw.githubusercontent.com/snakypy/assets/main/dotctrl/images/dotctrl-transparent.png" width="auto">
   </a>
 </h1>
 
-<h1 align="center"> The dotfiles control tool. </h1>
+<h1 align="center">The "dotfiles" control tool.</h1>
 
 [![Tests](https://github.com/snakypy/dotctrl/workflows/Tests/badge.svg)](https://github.com/snakypy/dotctrl/actions)
 [![Python Versions](https://img.shields.io/pypi/pyversions/dotctrl)](https://pyup.io/repos/github/snakypy/dotctrl/)
@@ -16,66 +18,131 @@
 [![Mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/dotctrl)](https://pypi.org/project/dotctrl/#files)
-[![GitHub license](https://img.shields.io/github/license/snakypy/dotctrl)](https://github.com/snakypy/dotctrl/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/snakypy/dotctrl)](https://github.com/snakypy/dotctrl/blob/main/LICENSE)
 
 ----------------
 
 <div align="center">
-  <h4>
-    <a href="#features">Features</a> |
-    <a href="#requirements">Requirements</a> |
-    <a href="#installing">Installing</a> |
-    <a href="#using">Using</a> |
-    <a href="#configuration">Configuration</a> |
-    <a href="#environment-variable">Environment variable</a> |
-    <a href="#upgrading">Upgrade</a> |
-    <a href="#donation">Donation</a> |
-  </h4>
-  <h5>
-    | <a href="#more-commands">More Commands</a> |
-  </h5>
-</div>
-
-<div align="center">
   <sub>Built with ❤︎ by:
   <a href="https://williamcanin.github.io" target="_blank">William Canin</a> in free time,
-  to the sound of the playlist: <a href="https://open.spotify.com/playlist/48brJJZdVifY79QAFmEImq?si=GmsvfKqATpG4p72ZeVClIQ" target="_blank">Bursting Of The Tympanum</a></sub>
+    to the sound of the playlist: <a href="https://open.spotify.com/playlist/48brJJZdVifY79QAFmEImq?si=GmsvfKqATpG4p72ZeVClIQ" target="_blank">Bursting Of The Tympanum</a></sub>
 </div>
 <br>
 <br>
 
-**Dotctrl** is a "dotfiles" manager for [Linux](https://www.kernel.org/) or [macOS](https://www.apple.com/macos/).
-**Dotctrl** manages the elements of the user's HOME directory; works on top of a configuration file which contains the
-relative paths of the source location of the dotfiles.
+<div class="sumary">
+  <h1> Sumary </h1>
+  <ul>
+      <li>
+          <a href="#about">About</a>
+      </li>
+      <li>
+          <a href="#features">Features</a>
+      </li>
+      <li>
+          <a href="#requirements">Requirements</a>
+      </li>
+      <li>
+          <a href="#installing">Installing</a>
+      </li>
+      <li>
+          <a href="#using">Using</a>
+          <ul>
+              <li>
+                  <a href="#init">init</a>
+              </li>
+              <li>
+                  <a href="#pull">pull</a>
+              </li>
+              <li>
+                  <a href="#link">link</a>
+              </li>
+              <li>
+                  <a href="#unlink">unlink</a>
+              </li>
+              <li>
+                  <a href="#restore">restore</a>
+              </li>
+              <li>
+                  <a href="#repo">repo</a>
+              </li>
+              <li>
+                  <a href="#find">find</a>
+              </li>
+              <li>
+                  <a href="#config">config</a>
+              </li>
+          </ul>
+      </li>
+      <li>
+          <a href="#global-flags">Global flags</a>
+      </li>
+      <li>
+          <a href="#configuration-file-dotctrljson">Configuration file (dotctrl.json)</a>
+      </li>
+      <li>
+          <a href="#environment-variable">Environment Variable</a>
+      </li>
+      <li>
+          <a href="#updating">Updating</a>
+      </li>
+      <li>
+          <a href="#more-commands">More Commands</a>
+      </li>
+      <li>
+          <a href="#extras">Extras</a>
+          <ul>
+              <li>
+                  <a href="#deploy-and-clone-from-dotctrl-repository">Deploy and Clone from Dotctrl repository</a>
+              </li>
+          </ul>
+      </li>
+      <li>
+          <a href="#donation">Donation</a>
+      </li>
+      <li>
+          <a href="#license">License</a>
+      </li>
+  </ul>
+</div>
+
+# About
+
+Initially, **Dotctrl** was created just to control "dotfiles files", however, in the course, it became more than that.
+**Dotctrl** is now a maintainer of any file and folder type within its own private repository.
+
+This is too much!
+
+**Dotctrl** will manage the elements of the user's HOME directory; running on top of a configuration file (`dotctrl.json`) that contains the paths to the origin location of the elements.
+
+**Dotctrl** is compatible with [Linux](https://www.kernel.org/) or [macOS](https://www.apple.com/macos/).
 
 
 See a demo:
 
 ![](https://raw.githubusercontent.com/snakypy/assets/main/dotctrl/gifs/demo.gif)
 
-## Features
+# Features
 
-* Create multiple repositories for your files;
-* Don't create huge manual symlinks;
-* Automatically manages dotfiles ending with rc in the user's `$HOME`;
-* Automatically manages the main configuration files of the editors: Atom, Sublime Text and Visual Studio Code;
-* The **Dotctrl** repository stores the same path structure as its original location;
+* Language support: American English and Brazilian Portuguese;
+* Create (or not) multiple repositories for your elements;
+* Abandon the creation of huge manual symlinks;
+* O armazenará a mesma estrutura de caminho que seu local (`$HOME`) original;
 * Manage single or bulk elements;
-* Restores repository elements to their original location with a single command;
+* Restore repository elements to their original location with a single command;
 * And much more :)
 
-## Requirements
+# Requirements
 
-To work correctly, you will first need:
+To work properly, you will first need:
 
 - [`Python`](https://python.org) (v3.9 or recent);
 - [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 or recent) must be installed;
 - [`Git`](https://git-scm.com/downloads) (v2.0 or recent);
-- One of that editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/) or
-- [emacs](https://www.gnu.org/software/emacs/) must be installed;
+- One of this editor [vim](https://www.vim.org/), [nano](https://www.nano-editor.org/), [emacs](https://www.gnu.org/software/emacs/) or [micro](https://micro-editor.github.io/) must be installed;
 
 
-## Installing
+# Installing
 
 It's time to install **Dotctrl**. To do this, do:
 
@@ -83,78 +150,83 @@ It's time to install **Dotctrl**. To do this, do:
 python3 -m pip install dotctrl --user
 ```
 
-> NOTE: If you are installing to the user's local environment, be sure to add the environment variables to the `zshrc`
+> NOTE: If you are installing in the user's local environment, be sure to add the environment variables to the `zshrc` file
 > or `.bashrc` file.
 
-## Using
+# Using
 
-> NOTE: All commands must be as common user.
+## init
 
-**Init**
-
-After installing the package, you need to create the **Dotctrl** repository in an empty folder in the location of your
-choice. We recommend always creating in the users' root directory, because creating in the user's folder, it can be
-lost if the user is deleted. With that, see the example below:
+After installing the package, you need to create the **Dotctrl** repository in an empty folder in your
+choice. We always recommend creating **/home** or **/Users** in the root directory, because creating in the user's folder can be
+lost if user is deleted. With that, see the example below:
 
 Linux:
 
 ```shell
-sudo mkdir -p /home/.dotfiles/linux
-sudo chown -R <YOU USER> /home/.dotfiles
+sudo mkdir -p /home/.dotfiles; cd $_
+sudo chown -R $(whoami) /home/.dotfiles
 sudo chmod -R 700 /home/.dotfiles
-mkdir /home/.dotfiles/linux; cd $_
 dotctrl init
 ```
 
 macOS:
 
 ```shell
-sudo mkdir -p /Users/.dotfiles/linux
-sudo chown -R <YOU USER> /Users/.dotfiles
+sudo mkdir -p /Users/.dotfiles; cd $_
+sudo chown -R $(id -un) /Users/.dotfiles
 sudo chmod -R 700 /Users/.dotfiles
-mkdir /Users/.dotfiles/linux; cd $_
 dotctrl init
 ```
-You can circumvent all of these commands above using the `--auto` option. **Dotctrl** will automatically create the base
-directory to store the data, however, you must have sudo permission.
+
+### --auto
+
+You can bypass all of these commands above using the `--auto` flag. **Dotctrl** will automatically create a base
+directory to store the data, however you **MUST** have sudo permission.
+
+> We strongly recommend using this option if you have permission.
 
 ```shell
 dotctrl init --auto
 ```
+### --git
 
-**Pull**
+This flag causes **Dotctrl** to create a [git](https://git-scm.com) repository within the **Dotctrl** repository.
 
-With the base already created, it's time for you to retrieve your files to the Dotctrl base with the `pull` command.
+```shell
+dotctrl init --git
+```
 
-Pull an element into the **Dotctrl** repository:
+You can also combine this flag with the [`--auto`](#--auto) flag:
+
+```shell
+dotctrl init --auto --git
+```
+## pull
+
+With the base already created, it's time for you to PULL the elements to the base of **Dotctrl** with the `pull` command.
+
+Pull **single** [element]() to the **Dotctrl** repository:
 
 ```shell
 dotctrl pull --e .zprofile
 ```
 
-> Note 1: You must enter an element without the absolute path.
-> Note 2: If the element has spaces, wrap it in double quotes, or use the backslash.
-
-If you want to perform a massive **pull**, do:
+If you want to do a massive **pull**, do:
 
 ```shell
 dotctrl pull
 ```
 
-> Note 1: This option is only possible if you pass the [elements](#section-elements) in the **dotctrl.json** file.
+> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [registry](#autoclean).
 
-> Note 2: If any property of the "**smart**" section is set to `true`, these files will be placed in the **Dotctrl** repo automatically.
+## link
 
-**Link**
-
-After pulling the element(s), create symbolic links to them in their original locations:
+After pulling the element(s), create symlinks to them in their original locations:
 
 ```shell
 dotctrl link --e .zprofile
 ```
-
-> Note 1: You must enter an element without the absolute path.
-> Note 2: If the element has spaces, wrap it in double quotes, or use the backslash.
 
 If you want to perform a massive **link**, do:
 
@@ -162,246 +234,210 @@ If you want to perform a massive **link**, do:
 dotctrl link
 ```
 
-> Note: If there is a link already created, **Dotctrl** will inform you to use the `--force` or `--f` option.
+> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [record](#autoclean).
 
-**Check**
+## unlink
 
-Make a check to see if there are elements to be linked:
-
-```shell
-dotctrl repo --check
-```
-
-> NOTE: If you don't have elements to link, nothing will be displayed.
-
-**Imported**
-
-Check the elements already imported in the registry (`dotctrl.json`) of the **Dotctrl**.
-
-```shell
-dotctrl repo --imported
-```
-
-**Information repository**
-
-With the command below you can see some information from the **Dotctrl** repository, such as folder and file quantities,
-the absolute path of the repository, and if the `DOTCTRL_PATH` environment variable is active.
-
-```shell
-dotctrl repo --info
-```
-
-**Unlink**
-
-Unlink element from the repository with the source location:
+Unlink the repository element with the source location:
 
 ```shell
 dotctrl unlink --e .zprofile
 ```
 
-> Note 1: You must enter an element without the absolute path.
-> Note 2: If the element has spaces, wrap it in double quotes, or use the backslash.
-
-If you want to perform a massive **unlink**, do:
+If you want to **unlink** elements massively, do:
 
 ```shell
 dotctrl unlink
 ```
 
-**Restore**
+> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [record](#autoclean).
 
-Restore an element from the repository to its original location:
+## restore
+
+This command will take an element from the **Dotctrl** repository and restore it to its original location:
 
 ```shell
 dotctrl restore --e .zprofile
 ```
-
-> Note 1: You must enter an element without the absolute path.
-> Note 2: If the element has spaces, wrap it in double quotes, or use the backslash.
 
 If you want to perform a massive **restore**, do:
 
 ```shell
 dotctrl restore
 ```
-> Note: If there is already an element created in the original location, **Dotctrl** will inform you to use
-> the `--force` or `--f` option.
 
-By default, when restoring elements to their source location, Dotctrl removes the element from the registry
-(`dotctrl.json`). To keep the element in the registry use the `--keep-record` option.
+> Note: By default, when restoring element(s) to their original location, **Dotctrl** does NOT remove the elements from the registry
+> (`dotctrl.json`). To clean, see [--autoclean](#autoclean).
 
-Example:
+## repo
+
+This command brings information from the repository, see below some of its subcommands:
+
+### --check
+
+Check to see if there are elements to link:
+
 ```shell
-dotctrl restore --e .zprofile --keep-record
+dotctrl repo --check
 ```
 
-**For more command, run: `dotctrl -h`**
+### --ls
 
-## Configuration
+Check the elements already imported into the **Dotctrl** repository.
 
-**Dotctrl** works on top of a configuration file created in the Dotctrl repository, which is the **dotctrl.json** file.
+```shell
+dotctrl repo --ls
+```
 
-You can open the **Dotctrl** configuration file in the terminal itself using the command:
+### --info
+
+With the command below you can see some information from the **Dotctrl** repository, such as the number of folders and files,
+the absolute path of the repository and if the environment variable `DOTCTRL_PATH` is active.
+
+```shell
+dotctrl repo --info
+```
+
+## find
+
+Searches for any element within the **Dotctrl** repository. To do this, use the command:
+
+```shell
+dotctrl find --name .zprofile
+```
+
+> Note: Enclose the element to be found with double quotes if it has spaces in the name.
+
+## config
+
+This command will manipulate the **Dotctrl** configuration file, see below some of its subcommands.
+
+### --autoclean
+
+Clean up the elements present in the **Dotctrl** configuration file.
+Any element that is present in the **Dotctrl** configuration file and does not EXIST in the repository will be eliminated from the configuration file.
+
+Usually `--autoclean` is used after using the command to [restore](#restore) elements.
+
+```shell
+dotctrl config --autoclean
+```
+
+### --view
+
+Take a peek at the **Dotctrl** configuration file from the terminal.
+
+### --open
+
+Allows you to edit the **Dotctrl** configuration file in the terminal itself using the command:
 
 ```shel
 dotctrl config --open
 ```
 
-### Understanding each section `dotctrl.json`:
+> Note: It defaults to the `vim` editor, if not, it will try to use `nano`, `emacs` or `micro`.
 
-#### Section `config`:
+### --lang
 
-* In the **editor** key, you can choose an editor of your choice. You must enter the publisher's binary, for example:
-**vim**, **nano**, etc. If you leave it blank, **Dotctrl** will select one of these terminal text editors: **vim**,
-**nano**, **emacs**, and **micro**.
+Use this flag to change the language of **Dotctrl**. **Dotctrl** currently supports 2 (two) languages, they are: **American English** and **Brazilian Portuguese**. When using the command below, it will show a list for you to choose which language you want to use. The change is instantaneous.
 
-```json
-{
-
-        "config": {
-            "editor": ""
-        }
-
-}
+```shel
+dotctrl config --lang
 ```
 
-#### Section `elements`:
+## Global flags
 
-* **elements**: As the name says, "*elements*" will store the absolute path of the elements you want to place inside
-the **Dotctrl** repository in a **list**. Examples:
+### --e (--element)
 
-```json
-{
+The **--e** or **--element** flag is responsible for handling a specific element of the **Dotctrl** repository.
 
-        "elements": [".foo/foo.conf",
-                     ".bar/bar.conf",
-                     ".foo.conf"]
+This flag must receive an element without the absolute path, only the relative one from `$HOME`.
 
-}
-```
+Examples:
 
-The `elements` option also accepts complete folders instead of just files:
+* `dotctrl pull --e .zprofile`
+* `dotctrl link --e .zprofile`
+* `dotctrl unlink --e .zprofile`
+* `dotctrl restore --e .zprofile`
 
-```json
-{
+If the element has spaces in the name, enclose it in double quotes. Example: `dotctrl pull --e "file legal.txt file"`
 
-        "elements": [".foo",
-                     ".bar"]
+### --f (--force)
 
-}
-```
-
-For madness but true, **Dotctrl** also manages files and folders without points:
-
-```json
-{
-
-        "elements": ["Documents/foo.txt",
-                     "Images/bar.jpg"]
-
-}
-```
-
-You must place files (or folders) that are inside the user's **$HOME**, as this is how **Dotctrl** works,
-only with elements in the user's `$HOME`.
+The **--f** or **--force** flag literally forces the use of the command, preventing something from preventing its completion. This option is present in all commands that manipulate elements, these commands are: `pull`, `link`, `unlink` and `restore`.
 
 
+## Configuration file (dotctrl.json)
 
-#### Section `smart`:
-
-This section is very cool. It is the smart section of **Dotctrl**, where you will find configuration files and dotfiles
-for certain applications. :)
-
-> This option only works with the `dotctrl pull` command.
-
-```json
-{
-
-        "smart": {
-            "rc": {
-                "enable": true
-            },
-            "text_editors": {
-                "enable": true
-            }
-        }
-
-}
-```
-
-* **rc.enable:** Option: `true`|`false`. If this option is `true`, **Dotctrl** will search for all dotfiles in the user's *$HOME* directory containing *rc* at the end. **Default:** `false`
-* **text_editors.enable:** Option: `true`|`false`. If this option is `true`, **Dotctrl** will search for the main dotfiles of the following text editors: [Atom](https://atom.io), [Sublime Text](https://www.sublimetext.com/), and [Visual Studio Code](https://code.visualstudio.com/). **Default:** `false`
-
-**Example configuration file:**
+This is an example of a complete **Dotctrl** configuration file (`dotctrl.json`) structure:
 
 ```json
 {
     "dotctrl": {
         "config": {
-            "editor": "vim"
+            "editor": "vim",
+            "language": "pt_BR"
         },
         "elements": [
-            ".zprofile",
-            ".gitconfig",
-            ".config/xfce4/terminal/terminalrc"
+            ".zshrc",
+            ".config/xfce4/terminal/terminalrc",
+            ".config/Code/User",
+            "Images/Wedding"
         ],
-        "smart": {
-            "rc": {
-                "enable": true
-            },
-            "text_editors": {
-                "enable": false
-            }
-        }
     }
 }
 ```
 
-## Environment variable
+## Environment Variable
 
-By default, **Dotctrl** works with multiple directories, which makes you have to use it in a certain directory you created for your dotfiles. If you want to use **Dotctrl** in any PATH, you need to create an environment variable that **Dotctrl** makes available. This environment variable is `DOTCTRL_PATH`. You must create it on your operating system containing the directory where your dotfiles will be. For example, in your `.bashrc` or `.zshrc` file:
+By default, **Dotctrl** works with multiple directories, which makes you need to use it in a certain directory you created for your elements.
 
+If you want to use **Dotctrl** in any PATH, you need to create an environment variable that **Dotctrl** makes available. This environment variable is `DOTCTRL_PATH`.
+
+You must enter the `DOTCTRL_PATH` variable in your operating system containing the directory where your dotfiles will be. For example, in your `.bashrc` or `.zshrc` file:
 
 Linux:
 
 ```shell
-export DOTCTRL_PATH="/home/.dotfiles/linux"
+export DOTCTRL_PATH="/home/.dotfiles"
 ```
 or
 
 macOS:
 
 ```shell
-export DOTCTRL_PATH="/Users/.dotfiles/macos"
+export DOTCTRL_PATH="/Users/.dotfiles"
 ```
 
-> Remember, by creating this environment variable, you will not be able to create other directories for **Dotctrl**.
+> NOTE: Remember, when creating this environment variable, you will not be able to create other repositories for **Dotctrl**.
 
 
-## Upgrading
+## Updating
 
-If **Dotctrl** has any new features, please update the command line below:
+If **Dotctrl** has new features, please update the command line below:
 
 ```shell
 python3 -m pip install dotctrl -U --user
 ```
 
-## More Commands
+## More commands
 
 For more command information, use:
 
 ```
-dotctrl --help
+dotctrl [--help | -h]
 ```
 
-## Saving and Clone your dotfiles through Github (bonus)
+## Extras
 
-Now that you have control of your dotfiles, it's time to save them. This example below will show you how to save to
-GitHub and performing clone.
+### Deploy and Clone from Dotctrl repository
 
-1 - **Save:**
+Now that you have control of your elements, it's time to deploy them to a git service.
+This example below will show you how to deploy and clone on [GitHub](https://github.com).
 
-A - Entering the master dotfiles folder:
+1 - Deploy:
+
+A - Entering the root folder created by **Dotctrl**:
 
 Linux:
 
@@ -425,18 +461,18 @@ git commit -m "Update"
 git push origin main
 ```
 
-2 - **Clone:**
+2 - Clone:
 
-You can clone any directory of your choice as well, but let's keep the example build directory above. Follow the steps:
+You can also clone any directory of your choice, but we'll keep the example build directory above. Follow the steps:
 
 Linux:
 
 ```shell
 sudo mkdir -p /home/.dotfiles
 sudo chmod -R 770 /home/.dotfiles
-git clone git@github.com:<YOUR USER>/dotfiles.git /home/.dotfiles
-cd /home/.dotfiles/linux
-dotctrl link --force
+cd /home/.dotfiles
+git clone git@github.com:<YOUR USER>/dotfiles.git .
+dotctrl link --f
 ```
 
 macOS:
@@ -444,25 +480,27 @@ macOS:
 ```shell
 sudo mkdir -p /Users/.dotfiles
 sudo chmod -R 770 /Users/.dotfiles
-git clone git@github.com:<YOUR USER>/dotfiles.git /Users/.dotfiles
-cd /home/.dotfiles/macos
-dotctrl link --force
+cd /Users/.dotfiles
+git clone git@github.com:<YOUR USER>/dotfiles.git .
+dotctrl link --f
 ```
 
 ## Donation
 
-Click on the image below to be redirected the donation forms:
+Click on the image below to be redirected to the donation forms:
 
 <div class="donate">
-  <a href="https://github.com/snakypy/donations/blob/master/README.md">
-    <img width="160" height="100" src="https://raw.githubusercontent.com/snakypy/donations/master/svg/donate/donate-hand.svg" alt="Donations"/>
+  <a href="https://github.com/snakypy/donations/blob/main/README.md">
+    <img width="160" height="100" src="https://raw.githubusercontent.com/snakypy/donations/main/svg/donate/donate-hand.svg" alt="Donations"/>
   </a>
 </div>
 
+It is very important that you make a donation to motivate further development of **Dotctrl**. :)
+
 ## License
 
-The project is available as open source under the terms of the [MIT License](https://github.com/snakypy/zshpower/blob/master/LICENSE) ©
+The project is available as open source under the terms of the [MIT License](https://github.com/snakypy/dotctrl/blob/main/LICENSE) ©
 
 ## Credits
 
-See, [AUTHORS](https://github.com/snakypy/zshpower/blob/master/AUTHORS.rst).
+See, [AUTHORS](https://github.com/snakypy/dotctrl/blob/main/AUTHORS.rst).

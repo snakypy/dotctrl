@@ -1,55 +1,63 @@
-from snakypy.dotctrl.actions.link import LinkCommand
-from snakypy.dotctrl.actions.pull import PullCommand
+from os import remove, symlink
+from os.path import join
+
 from snakypy.dotctrl.actions.repo import RepoCommand
-from snakypy.dotctrl.utils.decorators import assign_cli
 
-from .utilities import base  # noqa: E261,F401
-from .utilities import arguments, elements, run_init_command, update_config_elements
-
-
-@assign_cli(arguments(argv=["repo", "--check"]), "repo")
-def test_repo_check(base):  # noqa: F811
-    elements(base, create=True)
-
-    run_init_command(base)
-
-    update_config_elements(base, rc=True, editors=True)
-
-    PullCommand(base["root"], base["home"]).main(arguments(argv=["pull", "--f"]))
-
-    if not RepoCommand(base["root"], base["home"]).main(
-        arguments(argv=["repo", "--check"])
-    ):
-        assert True
-
-    LinkCommand(base["root"], base["home"]).main(arguments(argv=["link", "--force"]))
-
-    if not RepoCommand(base["root"], base["home"]).main(
-        arguments(argv=["repo", "--check"])
-    ):
-        assert False
+from .test_init import InitTester
+from .test_link import LinkTester
+from .test_pull import PullTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
-@assign_cli(arguments(argv=["repo", "--imported"]), "repo")
-def test_repo_imported(base):  # noqa: F811
-    elements(base, create=True)
+class RepoTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
+        self.fixt = fixt
 
-    run_init_command(base)
+    def opt(self, option):
+        return self.menu.args(argv=["repo", option])
 
-    if RepoCommand(base["root"], base["home"]).main(
-        arguments(argv=["repo", "--imported"])
-    ):
-        assert False
+    def check(self):
 
-    update_config_elements(
-        base, ".config/foo.txt", ".config/bar.txt", rc=True, editors=True
-    )
+        output = RepoCommand(self.root, self.home).main(self.opt("--check"))
 
-    PullCommand(base["root"], base["home"]).main(arguments(argv=["pull", "--f"]))
+        if output["code"] != "21":
+            assert False
 
-    LinkCommand(base["root"], base["home"]).main(arguments(argv=["link", "--f"]))
+        remove(join(self.home, self.elements[0]))
 
-    if not RepoCommand(base["root"], base["home"]).main(
-        arguments(argv=["repo", "--imported"])
-    ):
-        assert False
+        symlink(join(self.home, "foo.txt"), join(self.home, self.elements[0]))
+
+        out = RepoCommand(self.root, self.home).main(self.opt("--check"))
+
+        if out["code"] != "22":
+            assert False
+
+    def ls(self):
+
+        output = RepoCommand(self.root, self.home).main(self.opt("--ls"))
+
+        if output["code"] != "24":
+            assert False
+
+        PullTester(self.fixt).massive()
+        LinkTester(self.fixt).massive()
+
+        out = RepoCommand(self.root, self.home).main(self.opt("--ls"))
+
+        if out["str"] != "success":
+            assert False
+
+
+def test_repo_check(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    PullTester(fixture).massive()
+    LinkTester(fixture).massive()
+    repo = RepoTester(fixture)
+    repo.check()
+
+
+def test_repo_ls(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    repo = RepoTester(fixture)
+    repo.ls()

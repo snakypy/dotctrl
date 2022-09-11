@@ -1,118 +1,166 @@
-from concurrent.futures import ThreadPoolExecutor
-from os.path import exists, join
+from os.path import exists, islink, join
 from shutil import move
-from sys import exit
-from typing import Union
 
-from snakypy.helpers import FG, printer
-from snakypy.helpers.files import create_json, read_json
+from snakypy.helpers import printer
 from snakypy.helpers.os import rmdir_blank
 
-from snakypy.dotctrl.config.base import Base
+from snakypy.dotctrl.config.base import Base, Options
 from snakypy.dotctrl.utils import (
-    check_init,
-    listing_files,
+    is_repo_symbolic_link,
     path_creation,
+    pick,
     remove_objects,
-    shorten_path,
 )
 
-# --keep-record
 
-
-def restore_action(
-    repo_path: str, src: str, dst: str, force: Union[None, bool]
-) -> None:
-    """Function presents the possibilities of options for restored
-    # the elements."""
-    if not exists(src) and not force:
-        printer(
-            f'The element "{str(shorten_path(src, 1))}" not found in '
-            f"repository to be restored. Review the configuration file, "
-            f"or use other option.",
-            foreground=FG().WARNING,
-        )
-        exit(0)
-
-    if exists(src) and exists(dst) and not force:
-        printer(
-            "Elements correspond to the repository and the place of origin. "
-            "User --force or --f.",
-            foreground=FG().WARNING,
-        )
-        exit(0)
-
-    if exists(src) and exists(dst) and force:
-        remove_objects(dst)
-        move(src, dst)
-        rmdir_blank(repo_path)
-    elif exists(src) and not exists(dst):
-        move(src, dst)
-        rmdir_blank(repo_path)
-
-
-def keep_record(arguments: dict, config: str, obj: str) -> None:
-    if not arguments["--keep-record"]:
-        parsed = read_json(config)
-        elements = parsed["dotctrl"]["elements"]
-        if obj in elements:
-            elements.remove(obj)
-            parsed["dotctrl"]["elements"] = elements
-            create_json(parsed, config, force=True)
-
-
-class RestoreCommand(Base):
-    def __init__(self, root, home):
+class RestoreCommand(Base, Options):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
+        Options.__init__(self)
 
-    @staticmethod
-    def element(arguments: dict) -> str:
-        if arguments["--element"]:
-            return arguments["--element"]
-        return arguments["--e"]
+    def not_errors(self, element_origin: str, element_repo: str, force: bool) -> dict:
 
-    @staticmethod
-    def force(arguments: dict) -> Union[None, bool]:
-        if arguments["--force"]:
-            return arguments["--force"]
-        return arguments["--f"]
+        if not exists(element_repo):
 
-    def main(self, arguments: dict) -> None:
+            # Operation aborted!
+            printer(self.text["msg:45"], foreground=self.ERROR)
+
+            # Element not found in repository to restore.
+            printer(self.text["msg:38"], foreground=self.WARNING)
+
+            return {"status": False, "code": "38"}
+
+        if (
+            islink(element_origin)
+            and not is_repo_symbolic_link(element_origin, element_repo)
+            and not force
+        ):
+
+            out: dict = self.error_symlink(element_origin)
+            return out
+
+        if exists(element_repo) and islink(element_origin) is False and not force:
+
+            # Operation aborted!
+            printer(self.text["msg:45"], foreground=self.ERROR)
+
+            # Dotctrl FOUND an element at source location with
+            # same name as the repository as Dotctrl, and this prevented it from proceeding with the restore.
+            # If you want to replace it with the repository element Dotctrl,
+            # run this command again with the --force (--f) option.
+            # Note: If you use the --force (--f) option, this element
+            # found (and more) will be removed.
+            # We recommend that you verify this (and other) element(s) before proceeding with the --force (--f) option.
+            #
+            # Element found:
+            printer(self.text["msg:44"], element_origin, foreground=self.WARNING)
+
+            return {"status": False, "code": "44"}
+
+        return {"status": True, "str": "success"}
+
+    def mass_verification(self, objects: list, force: bool) -> dict:
+
+        for item in objects:
+            element_origin: str = join(self.home, item)
+            element_repo: str = join(self.repo_path, item)
+
+            checking: dict = self.not_errors(element_origin, element_repo, force)
+
+            if not checking["status"]:
+                break
+
+        return checking
+
+    def restore(self, element_origin: str, element_repo: str) -> None:
+
+        if exists(element_repo):
+            remove_objects(element_origin)
+            move(element_repo, element_origin)
+
+        return None
+
+    def main(self, arguments: dict) -> dict:
         """Method to restore dotfiles from the repository to their
         original location."""
 
-        check_init(self.ROOT)
-
-        # Uncomment to remove the element from the registry.
-        # rm_garbage_config(self.HOME, self.repo_path, self.config_path, only_repo=True)
+        if not self.checking_init():
+            return {"status": False, "code": "28"}
 
         element = self.element(arguments)
         force = self.force(arguments)
 
         if element:
-            file_home = join(self.HOME, element)
-            file_repo = join(self.repo_path, element)
+            element_origin = join(self.home, element)
+            element_repo = join(self.repo_path, element)
             if "/" in element:
-                path_creation(self.HOME, element)
-            with ThreadPoolExecutor() as e:
-                e.submit(restore_action, self.repo_path, file_repo, file_home, force)
-                e.submit(keep_record, arguments, self.config_path, element)
+                path_creation(self.home, element)
+
+            checking: dict = self.not_errors(element_origin, element_repo, force)
+
+            if checking["status"]:
+                self.restore(element_origin, element_repo)
+                rmdir_blank(self.repo_path)
+
+                # Complete restoration!
+                printer(self.text["msg:46"], foreground=self.FINISH)
+
+                return {"status": True, "code": "46"}
+
+            return checking
+
+        # Not use option --element (--e) [bulk]
         else:
-            objects = [
-                *listing_files(self.repo_path, only_rc_files=True),
-                *self.data,
-            ]
-            for item in objects:
-                file_home = join(self.HOME, item)
-                file_repo = join(self.repo_path, item)
-                if "/" in item:
-                    path_creation(self.HOME, item)
-                with ThreadPoolExecutor() as e:
-                    e.submit(
-                        restore_action, self.repo_path, file_repo, file_home, force
-                    )
-                    e.submit(keep_record, arguments, self.config_path, item)
+            # objects: list = [*listing_files(self.repo_path), *self.data]
+            objects: list = self.data
+
+            # Empty repository. Nothing to restore.
             if len(objects) == 0:
-                printer(
-                    "Empty repository. Nothing to restore.", foreground=FG().WARNING
-                )
+
+                # Empty repository. Nothing to restore.
+                printer(self.text["msg:40"], foreground=self.WARNING)
+
+                return {"status": False, "code": "40"}
+
+            title_: str = self.text["msg:41"]
+            options_: list[str] = [self.text["word:08"], self.text["word:09"]]
+
+            reply = pick(
+                title_,
+                options_,
+                index=True,
+                cancel_msg=self.text["msg:42"],
+                invalid_msg=self.text["msg:43"],
+            )
+
+            if reply is not None and reply[0] == 1:
+
+                # Canceled by user.
+                printer(self.text["msg:42"], foreground=self.WARNING)
+
+                return {"status": False, "code": "42"}
+
+            elif reply is not None and reply[0] == 0:
+
+                checking = self.mass_verification(objects, force)
+
+                if checking["status"]:
+                    for item in objects:
+                        element_origin = join(self.home, item)
+                        element_repo = join(self.repo_path, item)
+
+                        if "/" in item:
+                            path_creation(self.home, item)
+
+                        self.restore(element_origin, element_repo)
+
+                    rmdir_blank(self.repo_path)
+
+                    # Complete restoration!
+                    printer(self.text["msg:46"], foreground=self.FINISH)
+
+                    return {"status": True, "code": "46"}
+
+                return checking
+
+        return {"status": None}

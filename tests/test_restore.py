@@ -1,59 +1,80 @@
-from os.path import exists, isfile, islink, join
-
-from snakypy.helpers.files.json import read_json
+from os.path import exists, join
 
 from snakypy.dotctrl.actions.restore import RestoreCommand
-from snakypy.dotctrl.utils.decorators import assign_cli
 
-from .test_unlink import test_unlink_command
-from .utilities import base  # noqa: E261, F401
-from .utilities import arguments, class_base, elements
+from .test_init import InitTester
+from .test_link import LinkTester
+from .test_pull import PullTester
+from .utilities import Basic, fixture  # noqa: E261,F401
+
+# from unittest.mock import patch
 
 
-@assign_cli(arguments(argv=["restore"]), "restore")
-def test_restore_command(base):  # noqa: F811
+class RestoreTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
 
-    test_unlink_command(base)
+    @property
+    def restore(self):
+        return self.menu.args(argv=["restore"])
 
-    RestoreCommand(base["root"], base["home"]).main(
-        arguments(argv=["restore", f"--e={elements(base)[1]}", "--f"])
-    )
+    def __element(self, elem):
+        return self.menu.args(argv=["restore", f"--e={elem}"])
 
-    linked_file = join(class_base(base).HOME, elements(base)[1])
-    if not isfile(linked_file):
-        assert False
+    # @patch("builtins.input", lambda _: "1")
+    def massive(self, monkeypatch, replay):
 
-    RestoreCommand(base["root"], base["home"]).main(
-        arguments(argv=["restore", "--f"])
-    )
+        # Pytest has a new monkeypatch fixture for this. A monkeypatch object can alter
+        # an attribute in a class or a value in a dictionary, and then restore its
+        # original value at the end of the test.
+        monkeypatch.setattr("builtins.input", lambda _: replay)
 
-    for item in elements(base):
-        elem_repo = join(class_base(base).repo_path, item)
-        if exists(elem_repo):
+        output = RestoreCommand(self.root, self.home).main(self.restore)
+
+        if replay == "1":
+
+            for e in self.elements:
+                if exists(join(self.base.repo_path, e)):
+                    assert False
+
+            if output["code"] != "46":
+                assert False
+
+            output = RestoreCommand(self.root, self.home).main(self.restore)
+
+            if output["code"] != "38":
+                assert False
+
+        elif replay == "2":
+
+            if output["code"] != "42":
+                assert False
+
+    def specific_element(self, elem):
+
+        output = RestoreCommand(self.root, self.home).main(self.__element(elem))
+
+        if output["code"] != "46":
             assert False
 
-    for item in class_base(base).editors_config:
-        elem_repo = join(class_base(base).repo_path, item)
-        if exists(elem_repo):
+        output = RestoreCommand(self.root, self.home).main(self.__element(elem))
+
+        if output["code"] != "38":
             assert False
 
-    for item in class_base(base).editors_config:
-        elem_home = join(class_base(base).HOME, item)
-        if islink(elem_home):
-            assert False
 
-    # test: rm_registry
-    RestoreCommand(base["root"], base["home"]).main(
-        arguments(
-            argv=[
-                "restore",
-                f"--element={elements(base)[1]}",
-                "--force",
-                "--keep-record",
-            ]
-        )
-    )
+def test_restore_massive(fixture, monkeypatch):  # noqa: F811
+    InitTester(fixture).run()
+    PullTester(fixture).massive()
+    LinkTester(fixture).massive()
+    restore = RestoreTester(fixture)
+    restore.massive(monkeypatch, "1")
+    restore.massive(monkeypatch, "2")
 
-    parsed = read_json(class_base(base).config_path)
-    if elements(base)[1] in parsed["dotctrl"]["elements"]:
-        assert False
+
+def test_restore_specific_element(fixture):  # noqa: F811
+    restore = RestoreTester(fixture)
+    InitTester(fixture).run()
+    PullTester(fixture).specific_element(restore.elements[0])
+    LinkTester(fixture).specific_element(restore.elements[0])
+    restore.specific_element(restore.elements[0])

@@ -1,40 +1,72 @@
-from os.path import exists, islink, join
+from os import remove
+from os.path import exists, join
+from shutil import copyfile
 
 from snakypy.dotctrl.actions.pull import PullCommand
-from snakypy.dotctrl.utils.decorators import assign_cli
 
-from .utilities import base  # noqa: E261,F401
-from .utilities import (
-    arguments,
-    class_base,
-    elements,
-    run_init_command,
-    update_config_elements,
-)
+from .test_init import InitTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
-@assign_cli(arguments(argv=["pull"]), "pull")
-def test_pull_command(base):  # noqa: F811
-    elements(base, create=True)
+class PullTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
 
-    run_init_command(base)
+    @property
+    def pull(self):
+        return self.menu.args(argv=["pull"])
 
-    update_config_elements(base, ".config/foo.txt", ".config/bar.txt")
+    def __element(self, elem):
+        return self.menu.args(argv=["pull", f"--e={elem}"])
 
-    PullCommand(base["root"], base["home"]).main(
-        arguments(argv=["pull", f"--e={elements(base)[0]}", "--force"])
-    )
+    def massive(self):
 
-    file_linked = join(class_base(base).HOME, elements(base)[0])
-    if islink(file_linked):
-        assert False
+        self.update_config_elements(*self.elements)
 
-    PullCommand(base["root"], base["home"]).main(arguments(argv=["pull"]))
+        output = PullCommand(self.root, self.home).main(self.pull)
 
-    for item in elements(base):
-        if not exists(join(class_base(base).repo_path, item)):
+        if output["code"] != "18":
             assert False
 
-    for item in class_base(base).editors_config:
-        if not exists(join(class_base(base).repo_path, item)):
+        for e in self.elements:
+            if not exists(join(self.base.repo_path, e)):
+                assert False
+
+        output = PullCommand(self.root, self.home).main(self.pull)
+
+        if output["code"] != "17":
             assert False
+
+    def specific_element(self, elem):
+
+        output = PullCommand(self.root, self.home).main(self.__element(elem))
+
+        if output["code"] != "18":
+            assert False
+
+        output = PullCommand(self.root, self.home).main(self.__element(elem))
+
+        if output["code"] != "16":
+            assert False
+
+        copyfile(join(self.home, "foo.txt"), join(self.home, self.elements[0]))
+
+        output = PullCommand(self.root, self.home).main(self.__element(elem))
+
+        if output["code"] != "37":
+            assert False
+
+        # Reset
+        remove(join(self.home, self.elements[0]))
+
+
+def test_pull_massive(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    pull = PullTester(fixture)
+    pull.massive()
+
+
+def test_pull_specific_element(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    pull = PullTester(fixture)
+    pull.specific_element(pull.elements[0])

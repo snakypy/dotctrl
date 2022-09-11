@@ -1,37 +1,58 @@
-from os.path import islink, join
-
-import pytest
-
 from snakypy.dotctrl.actions.unlink import UnlinkCommand
-from snakypy.dotctrl.utils.decorators import assign_cli
 
-from .test_link import test_link_command
-from .utilities import base  # noqa: E261,F401
-from .utilities import arguments, class_base, elements
+from .test_init import InitTester
+from .test_link import LinkTester
+from .test_pull import PullTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
-@assign_cli(arguments(argv=["unlink"]), "unlink")
-def test_unlink_command(base):  # noqa: F811
+class UnlinkTester(Basic):
+    def __init__(self, fixt):  # noqa: F811
+        Basic.__init__(self, fixt)
 
-    test_link_command(base)
+    @property
+    def unlink(self):
+        return self.menu.args(argv=["unlink"])
 
-    UnlinkCommand(base["root"], base["home"]).main(
-        arguments(argv=["unlink", f"--e={elements(base)[0]}"])
-    )
+    def __element(self, elem):
+        return self.menu.args(argv=["unlink", f"--e={elem}"])
 
-    linked_file = join(class_base(base).HOME, elements(base)[0])
-    if islink(linked_file):
-        assert False
+    def massive(self):
 
-    with pytest.raises(SystemExit):
-        UnlinkCommand(base["root"], base["home"]).main(arguments(argv=["unlink"]))
+        output = UnlinkCommand(self.root, self.home).main(self.unlink)
 
-    UnlinkCommand(base["root"], base["home"]).main(arguments(argv=["unlink", "--f"]))
-
-    for item in elements(base):
-        if islink(join(class_base(base).HOME, item)):
+        if output["code"] != "31":
             assert False
 
-    for item in class_base(base).editors_config:
-        if islink(join(class_base(base).HOME, item)):
+        output = UnlinkCommand(self.root, self.home).main(self.unlink)
+
+        if output["code"] != "30":
             assert False
+
+    def specific_element(self, elem):
+
+        output = UnlinkCommand(self.root, self.home).main(self.__element(elem))
+
+        if output["code"] != "12":
+            assert False
+
+        output = UnlinkCommand(self.root, self.home).main(self.__element(elem))
+
+        if output["code"] != "29":
+            assert False
+
+
+def test_unlink_massive(fixture):  # noqa: F811
+    InitTester(fixture).run()
+    PullTester(fixture).massive()
+    LinkTester(fixture).massive()
+    unlink = UnlinkTester(fixture)
+    unlink.massive()
+
+
+def test_unlink_specific_element(fixture):  # noqa: F811
+    unlink = UnlinkTester(fixture)
+    InitTester(fixture).run()
+    PullTester(fixture).specific_element(unlink.elements[0])
+    LinkTester(fixture).specific_element(unlink.elements[0])
+    unlink.specific_element(unlink.elements[0])

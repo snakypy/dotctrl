@@ -1,91 +1,59 @@
 """Modulate to store records and data."""
-import sys
-from os.path import exists, join
-from sys import exit, platform
+from contextlib import suppress
+from os.path import join
 
-from snakypy.helpers import FG, printer
+from genericpath import exists
+from snakypy.helpers import printer
 from snakypy.helpers.files import read_json
 
-from snakypy.dotctrl import __info__, utils
+from snakypy.dotctrl import __info__
+from snakypy.dotctrl.utils import get_key
+from snakypy.dotctrl.utils.messages import Messages
 
 
-class Base:
+class Base(Messages):
     """Class to retrieve data"""
 
-    def __init__(self, root, home):
-        self.ROOT = root
-        self.HOME = home
-        self.repo_path = join(self.ROOT, "dotctrl")
-        self.config_path = join(self.ROOT, __info__["config"])
-        self.gitignore_path = join(self.ROOT, ".gitignore_path")
-        self.readme = join(self.ROOT, "README.txt")
-        self.atom = [".atom/config.cson", ".atom/github.cson", ".atom/snippets.cson"]
-        self.vscode_data = {
-            "linux": [
-                ".config/Code/User/settings.json",
-                ".config/Code/User/locale.json",
-            ],
-            "macos": [
-                "Library/Application Support/Code/User/settings.json",
-                "Library/Application Support/Code/User/locale.json",
-            ],
-        }
-        self.vscode = (
-            self.vscode_data["linux"]
-            if platform == "linux"
-            else self.vscode_data["macos"]
-        )
+    def __init__(self, root: str, home: str) -> None:
+        self.root: str = root
+        self.home: str = home
+        self.data: list = list()
+        self.elements: list = list()
+        self.parsed: dict = dict()
+        self.config_path: str = join(self.root, __info__["config"])
+        self.repo_path: str = join(self.root, "dotctrl")
+        self.gitignore_path: str = join(self.root, ".gitignore")
+        self.readme: str = join(self.root, "README.txt")
+        Messages.__init__(self, self.config_path)
 
-        self.sublime_data = {
-            "linux": [
-                ".config/sublime-text/Packages/User/Preferences.sublime-settings",
-                ".config/sublime-text/Packages/User/Package Control.sublime-settings",
-                ".config/sublime-text/Packages/User/Distraction Free.sublime-settings",
-            ],
-            "macos": [
-                "Library/Application Support/Sublime Text/Packages/User/"
-                "Preferences.sublime-settings",
-                "Library/Application Support/Sublime Text/Packages/User/"
-                "Package Control.sublime-settings",
-                "Library/Application Support/Sublime Text/Packages/User/"
-                "Distraction Free.sublime-settings",
-            ],
+        with suppress(FileNotFoundError):
+            self.parsed = read_json(self.config_path)
+            self.elements = list(get_key(self.parsed, "dotctrl", "elements"))
+            self.data = self.elements
+
+    def checking_init(self) -> bool:
+        if not exists(join(self.root, __info__["config"])):
+
+            printer(self.text["msg:28"], foreground=self.WARNING)
+
+            return False
+
+        return True
+
+
+class Options:
+    def __init__(self) -> None:
+        self.opts: dict = {
+            "element": ["--element", "--e"],
+            "force": ["--force", "--f"],
         }
 
-        self.sublime = (
-            self.sublime_data["linux"]
-            if platform == "linux"
-            else self.sublime_data["macos"]
-        )
+    def element(self, arguments: dict) -> dict:
+        if arguments[self.opts["element"][0]]:
+            return arguments[self.opts["element"][0]]
+        return arguments[self.opts["element"][1]]
 
-        self.editors_config = self.atom + self.vscode + self.sublime
-
-        if exists(self.config_path):
-            try:
-                self.parsed = read_json(self.config_path)
-                self.elements = list(self.parsed["dotctrl"]["elements"])
-                self.rc_files = utils.listing_files(self.HOME, only_rc_files=True)
-                self.rc_files_status = self.parsed["dotctrl"]["smart"]["rc"]["enable"]
-                self.text_editors_status = self.parsed["dotctrl"]["smart"][
-                    "text_editors"
-                ]["enable"]
-            except FileNotFoundError as err:
-                printer(
-                    "Configuration file not found.", str(err), foreground=FG().ERROR
-                )
-            except Exception as err:
-                printer(
-                    "An error occurred while reading the configuration file.",
-                    str(err),
-                    foreground=FG().ERROR,
-                )
-                exit(1)
-
-            if self.rc_files_status and self.text_editors_status:
-                self.data: list = self.rc_files + self.editors_config + self.elements
-            elif self.rc_files_status and not self.text_editors_status:
-                self.data = self.rc_files + self.elements
-            elif not self.rc_files_status and self.text_editors_status:
-                self.data = self.editors_config + self.elements
-            else:
-                self.data = self.elements
+    def force(self, arguments: dict) -> dict:
+        if arguments[self.opts["force"][0]]:
+            return arguments[self.opts["force"][0]]
+        return arguments[self.opts["force"][1]]

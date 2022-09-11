@@ -1,72 +1,91 @@
 from contextlib import suppress
 from os import remove
-from os.path import islink, join
-from sys import exit
+from os.path import exists, islink, join
 
-from snakypy.helpers import FG, printer
+from snakypy.helpers import printer
 
-from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import check_init, join_two, listing_files, rm_garbage_config
+from snakypy.dotctrl.config.base import Base, Options
+from snakypy.dotctrl.utils import is_repo_symbolic_link, join_two
 
 
-class UnlinkCommand(Base):
-    def __init__(self, root, home):
+def unlinks_to_do(data: list, repo_dir: str, home_dir: str):
+    objects: list = list()
+
+    for item in {*data}:
+        elem_repo: str = join(repo_dir, item)
+        elem_home: str = join(home_dir, item)
+
+        if islink(elem_home) and exists(elem_repo):
+            objects.append(elem_repo.replace(f"{repo_dir}/", ""))
+
+    return objects
+
+
+class UnlinkCommand(Base, Options):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
+        Options.__init__(self)
 
-    @staticmethod
-    def force(arguments: dict) -> dict:
-        if arguments["--force"]:
-            return arguments["--force"]
-        return arguments["--f"]
-
-    @staticmethod
-    def element(arguments: dict) -> dict:
-        if arguments["--element"]:
-            return arguments["--element"]
-        return arguments["--e"]
-
-    def main(self, arguments: dict) -> bool:
+    def main(self, arguments: dict) -> dict:
         """Method to unlink point files from the repository
         with their place of origin."""
-        check_init(self.ROOT)
 
-        rm_garbage_config(self.HOME, self.repo_path, self.config_path)
+        if not self.checking_init():
+            return {"status": False, "code": "28"}
 
         element = self.element(arguments)
         force = self.force(arguments)
 
+        # Use option --element (--e)
         if element:
-            file_home = join_two(self.HOME, element)
-            if islink(file_home):
+            element_repo: str = join(self.repo_path, element)
+            element_home: str = join(self.home, element)
+
+            if (
+                islink(element_home)
+                and is_repo_symbolic_link(element_home, element_repo) is False
+                and not force
+            ):
+                out: dict = self.error_symlink(element_home)
+                return out
+
+            element_home_: str = join_two(self.home, element)
+
+            if islink(element_home_):
                 with suppress(Exception):
-                    remove(file_home)
-                    return True
+                    remove(element_home_)
+
+                    # Element unlinked successfully!
+                    printer(self.text["msg:12"], foreground=self.FINISH)
+
+                    return {"status": True, "code": "12"}
+
+            # Element not found.
             printer(
-                f'Element "{file_home}" not unlinked. Element not found.',
-                foreground=FG().ERROR,
+                self.text["msg:29"],
+                f"({self.text['word:12']}: {element_home_}).",
+                foreground=self.ERROR,
             )
-            return False
+
+            return {"status": False, "code": "29"}
+
+        # Not use option --element (--e)
+        if len(unlinks_to_do(self.data, self.repo_path, self.home)) == 0:
+
+            # Nothing for bulk unlinked.
+            printer(self.text["msg:30"], foreground=self.WARNING)
+
+            return {"status": False, "code": "30"}
+
         else:
-            objects = [
-                *listing_files(self.repo_path, only_rc_files=True),
-                *self.data,
-            ]
-            for item in objects:
-                file_home = join(self.HOME, item)
-                if not islink(file_home) and not force:
-                    printer(
-                        "Unlinked elements were found. Use the --element or --e option "
-                        "to unlink unique links or use --force or --f.",
-                        foreground=FG().WARNING,
-                    )
-                    exit(0)
-                if islink(file_home):
+            for item in unlinks_to_do(self.data, self.repo_path, self.home):
+                element_home = join(self.home, item)
+
+                if islink(element_home):
                     with suppress(Exception):
-                        remove(file_home)
-            if len(objects) == 0:
-                printer(
-                    "Nothing to unlinked, en masse. Empty list of elements.",
-                    foreground=FG().WARNING,
-                )
-                return False
-            return True
+                        remove(element_home)
+
+            # Massively unlinked links successfully!
+            printer(self.text["msg:31"], foreground=self.FINISH)
+
+            return {"status": True, "code": "31"}

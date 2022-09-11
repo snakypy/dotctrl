@@ -1,53 +1,57 @@
-from os.path import exists, join
+from os.path import join
 
 import pytest
-from snakypy.helpers.files import create_file, update_json
+from snakypy.helpers.files import create_file, read_json, update_json
 from snakypy.helpers.path import create as create_path
 
-from snakypy.dotctrl.actions.init import InitCommand
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import arguments
+from snakypy.dotctrl.config.menu import Menu
+from snakypy.dotctrl.utils import path_creation
+
+
+def populate_home(path: str) -> dict:
+    files: list = ["bar.txt", ".config/foo.txt"]
+
+    folders: list = [".config/bar"]
+
+    for f in files:
+        if "/" in f:
+            path_creation(path, f)
+        create_file("Example", join(path, f), force=True)
+
+    create_file("Foo", join(path, "foo.txt"), force=True)
+
+    for folder in folders:
+        create_path(join(path, folder))
+
+    return files + folders
 
 
 @pytest.fixture
-def base(tmpdir):
+def fixture(tmpdir):
     home = tmpdir.mkdir("home")
-    root = tmpdir.mkdir("home/Dotfiles")
-    for item in Base(root, home).editors_config:
-        path_split = item.split("/")[:-1]
-        path_str = "/".join(path_split)
-        path = join(home, path_str)
-        create_path(path)
-    return {"root": root, "home": home}
+    root = tmpdir.mkdir(join("home", "dotfiles"))
+    base = Base(root, home)
+    menu = Menu(root, home)
+
+    return {
+        "root": root,
+        "home": home,
+        "base": base,
+        "menu": menu,
+        "elements": populate_home(home),
+    }
 
 
-def class_base(base):
-    return Base(base["root"], base["home"])
+class Basic:
+    def __init__(self, fixt):  # noqa: F811
+        self.home = fixt["home"]
+        self.root = fixt["root"]
+        self.base = fixt["base"]
+        self.menu = fixt["menu"]
+        self.elements = fixt["elements"]
 
-
-def run_init_command(base):
-    InitCommand(base["root"], base["home"]).main(arguments(argv=["init"]))
-
-
-def elements(base, create=False):
-    elements_lst = [".dotctrlrc", ".config/foo.txt"]
-    if create:
-        for elem in elements_lst:
-            create_file("dotctrl tests", join(base["home"], elem), force=True)
-            if not exists(join(base["home"], elem)):
-                assert False
-        for file in Base(base["root"], base["home"]).editors_config:
-            create_file("dotctrl tests", join(base["home"], file), force=True)
-    return elements_lst
-
-
-def update_config_elements(base, *files, rc=True, editors=True):
-    parsed = class_base(base).parsed
-    parsed["dotctrl"]["elements"] = [*files]
-    parsed["dotctrl"]["smart"]["rc"]["enable"] = rc
-    parsed["dotctrl"]["smart"]["text_editors"]["enable"] = editors
-    update_json(class_base(base).config_path, parsed)
-    new_parsed = class_base(base).parsed
-    assert new_parsed["dotctrl"]["elements"] == [*files]
-    assert new_parsed["dotctrl"]["smart"]["rc"]["enable"] is rc
-    assert new_parsed["dotctrl"]["smart"]["text_editors"]["enable"] is editors
+    def update_config_elements(self, *args):
+        parsed = read_json(self.base.config_path)
+        parsed["dotctrl"]["elements"] = [*args]
+        update_json(self.base.config_path, parsed)

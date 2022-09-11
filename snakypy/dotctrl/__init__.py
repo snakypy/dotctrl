@@ -9,19 +9,18 @@ dotfiles.
 
 For more information, access: 'https://github.com/snakypy/dotctrl'
 
-:copyright: Copyright 2020-2021 by Snakypy team, see AUTHORS.
+:copyright: Copyright 2020-present by Snakypy team, see AUTHORS.
 :license: MIT license, see LICENSE for details.
 """
 import os
 from os.path import abspath, dirname, join
 from pathlib import Path
-from sys import platform
 
 from snakypy.helpers.files import eqversion
 
-__info__ = {
+__info__: dict = {
     "name": "Dotctrl",
-    "version": "1.5.0",
+    "version": "2.0.0rc1",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
     "pkg_name": "dotctrl",
     "executable": "dotctrl",
@@ -46,7 +45,7 @@ __info__ = {
 }
 
 
-def choose_root(env):
+def choose_root(env: str):
     """
     Function to return the ROOT path. If the DOTFILES environment variable
     exists then this path will be returned, otherwise it will return
@@ -54,16 +53,21 @@ def choose_root(env):
     """
     if os.environ.get(env):
         return os.environ.get(env)
+
     return os.getcwd()
 
 
 # Path current
-ROOT = choose_root(__info__["env"])
-# HOME user
-HOME = str(Path.home())
+ROOT: str = choose_root(__info__["env"])
 
-AUTO_PATH = ("/home", "linux") if platform == "linux" else ("/Users", "macos")
+# HOME user
+HOME: str = str(Path.home())
+
+# It only takes the HOME, not the user's.
+# Linux: /home and macOS: /Users
+AUTO_PATH = join("/", list(filter(None, HOME.split("/")))[0])
 
 # Keep the versions the same on pyproject.toml and __init__.py
-pyproject = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
+pyproject: str = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
+
 eqversion(pyproject, __info__["version"])

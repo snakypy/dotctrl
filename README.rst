@@ -47,14 +47,25 @@ _________________
 
 _________________
 
-`Dotctrl` is a package for managing your "dotfiles" on Linux or macOS. `Dotctrl` works on top of a configuration file that contains the absolute paths of the place of origin of dotfiles.
+Initially, `Dotctrl` was created just to control "dotfiles files", however, in the course, it became more than that.
+`Dotctrl` is now a maintainer of any file and folder type within its own private repository.
+
+This is too much!
+
+`Dotctrl` will manage the elements of the user's HOME directory; running on top of a configuration file (`dotctrl.json`) that contains the paths to the origin location of the elements.
+
+`Dotctrl` is compatible with Linux or macOS.
 
 Features
 --------
 
-* Automatically manages dotfiles ending with rc in the user's HOME;
-* Automatically manages the main configuration files of the editors: Atom, Sublime Text, Visual Studio Code;
-* The `Dotctrl` repository stores the same path structure as the configuration files with the user's HOME files;
+* Language support: American English and Brazilian Portuguese;
+* Create (or not) multiple repositories for your elements;
+* Abandon the creation of huge manual symlinks;
+* O armazenará a mesma estrutura de caminho que seu local (`$HOME`) original;
+* Manage single or bulk elements;
+* Restore repository elements to their original location with a single command;
+* And much more :)
 
 Requirements
 ------------
@@ -68,17 +79,9 @@ To work correctly, you will first need:
 Installing
 ----------
 
-Globally:
-
 .. code-block:: shell
 
-    $ sudo pip install dotctrl
-
-For the user:
-
-.. code-block:: shell
-
-    $ pip install dotctrl --user
+    $ python3 -m pip install dotctrl --user
 
 
 Using
@@ -96,7 +99,7 @@ Links
 -----
 
 * Code: https://github.com/snakypy/dotctrl
-* Documentation: https://github.com/snakypy/dotctrl/blob/master/README.md
+* Documentation: https://github.com/snakypy/dotctrl/blob/main/README.md
 * Releases: https://pypi.org/project/dotctrl/#history
 * Issue tracker: https://github.com/snakypy/dotctrl/issues
 
@@ -105,10 +108,10 @@ Donation
 
 Click on the image below to be redirected the donation forms:
 
-.. image:: https://raw.githubusercontent.com/snakypy/donations/master/svg/donate/donate-hand.svg
+.. image:: https://raw.githubusercontent.com/snakypy/donations/main/svg/donate/donate-hand.svg
     :width: 160 px
     :height: 100px
-    :target: https://github.com/snakypy/donations/blob/master/README.md
+    :target: https://github.com/snakypy/donations/blob/main/README.md
 
 License
 -------
@@ -120,10 +123,10 @@ Credits
 
 See, `AUTHORS`_.
 
-.. _`AUTHORS`: https://github.com/snakypy/dotctrl/blob/master/AUTHORS.rst
+.. _`AUTHORS`: https://github.com/snakypy/dotctrl/blob/main/AUTHORS.rst
 .. _`home page`: https://github.com/snakypy/dotctrl
 .. _`python`: https://python.org
 .. _pip: https://pip.pypa.io/en/stable/quickstart/
 .. _git: https://git-scm.com/downloads
-.. _MIT License: https://github.com/snakypy/dotctrl/blob/master/LICENSE
+.. _MIT License: https://github.com/snakypy/dotctrl/blob/main/LICENSE
 .. _William Canin: http://williamcanin.github.io

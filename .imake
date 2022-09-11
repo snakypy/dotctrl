@@ -4,28 +4,6 @@ header = "Build project ..."
 commands = ["python -m snakypy.dotctrl", "poetry build"]
 footer = "Compilation command terminated!"
 
-[binary]
-description = "Generate binary"
-initial_message = "Generate binary..."
-commands = [
-"""
-pyinstaller binary.spec
-python -c '
-import platform
-import shutil
-from pathlib import Path
-from os.path import join
-if platform.system() == "Linux":
-    Path(join("binary", "linux")).mkdir(parents=True, exist_ok=True)
-    shutil.move(join("dist", "dotctrl"), join("binary", "linux", "dotctrl"))
-elif platform.system() == "Darwin":
-    Path(join("binary", "macos")).mkdir(parents=True, exist_ok=True)
-    shutil.move(join("dist", "dotctrl"), join("binary", "macos", "dotctrl"))
-'
-"""
-]
-final_message = "Generate binary terminated!"
-
 [install]
 description = "Performs the installation of project dependencies and installs the same."
 header = "Installing package and dependencies ..."
@@ -47,33 +25,40 @@ footer = "Test command terminated!"
 [linters]
 description = "Checks if the project structure is in accordance with certain linters."
 header = "Checking project structure with linters ..."
-commands = ["""
+commands = [
+    """
             poetry run flake8 snakypy/ tests/;
             poetry run mypy snakypy/ tests/;
             poetry run isort --profile black snakypy/ tests/ --check-only;
             poetry run black snakypy/ tests/ --check;
-"""]
-footer = "Linter command terminated!"
+"""
+]
+footer = "Linters command terminated!"
 
-[fixup]
-description = "Corrects the project structure with certain tools."
-header = "Correcting the project structure ..."
-commands = ["""
+[black]
+description = "Corrects the project structure with certain tools with Black and Isort."
+header = "Correcting the project structure with Black and Isort..."
+commands = [
+    """
             poetry run isort --profile black snakypy/ tests/;
             poetry run black snakypy/ tests/;
-"""]
+"""
+]
 footer = "Command to correct structure finished!"
 
 [clean]
 description = "Removes insignificant objects."
 header = "Starting object cleanup ..."
-commands = ["""
+commands = [
+    """
             rm -rf dist;
             rm -rf .pytest_cache;
             rm -rf .tox;
             rm -rf .mypy_cache;
             rm -rf docs/_build;
-"""]
+            rm -rf binary;
+"""
+]
 footer = "Cleaning command finished!"
 
 [pypi]
@@ -82,12 +67,14 @@ footer = "Cleaning command finished!"
 #
 description = "Publish this project to the Pypi repository."
 header = "Publishing package to the Pypi repository ..."
-commands = ["""
+commands = [
+    """
             rm -f dist/*;
             python -m snakypy.dotctrl;
             poetry build;
             poetry publish -r pypi -u williamcanin;
-"""]
+"""
+]
 footer = "Publishing command terminated!"
 
 [testpypi]
@@ -96,10 +83,25 @@ footer = "Publishing command terminated!"
 #
 description = "Publish this project to the TestPypi repository."
 header = "Publishing package to the TestPypi repository ..."
-commands = ["""
+commands = [
+    """
             rm -f dist/*;
             python -m snakypy.dotctrl;
             poetry build;
             poetry publish -r testpypi -u williamcanin;
-"""]
+"""
+]
 footer = "Publishing command terminated!"
+
+
+[deploy]
+description = "Deploy to: Github(williamcanin|snakypy), Gitlab (snakypy)."
+header = "Starting deploy to: Github(williamcanin|snakypy), Gitlab (snakypy) ..."
+commands = [
+    """
+            git push origin;
+            git push snakypy;
+            git push gitlab;
+"""
+]
+footer = "Deploy command terminated!"

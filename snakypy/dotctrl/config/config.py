@@ -1,7 +1,6 @@
-content = {
+content: dict = {
     "dotctrl": {
-        "config": {"editor": ""},
+        "config": {"editor": "", "language": "en_US"},
         "elements": [],
-        "smart": {"rc": {"enable": False}, "text_editors": {"enable": False}},
     }
 }

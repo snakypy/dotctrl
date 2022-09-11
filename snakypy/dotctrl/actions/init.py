@@ -1,7 +1,4 @@
-import os
 from os.path import exists, join
-from sys import exit, platform
-from textwrap import dedent
 
 from snakypy.helpers import FG, printer
 from snakypy.helpers.checking import whoami
@@ -16,69 +13,79 @@ from snakypy.dotctrl.utils.process import super_command
 
 
 class InitCommand(Base):
-    def __init__(self, root, home):
+    def __init__(self, root: str, home: str) -> None:
         Base.__init__(self, root, home)
 
-    def main(self, arguments: dict) -> None:
+    def creator(self, path: str) -> dict:
+        create_path(join(path, "dotctrl"))
+        create_json(config.content, join(path, __info__["config"]), force=True)
+        create_file(readme.content, self.readme, force=True)
+
+        return {"status": True, "code": "10"}
+
+    def git_repo(self, path: str) -> None:
+        git_init_command(path)
+        create_file(gitignore.content, join(path, ".gitignore"), force=True)
+
+    def automatic(self, path: str) -> dict:
+
+        if exists(join(path, __info__["config"])):
+            directory = f"{FG().BLUE}{path}{FG().YELLOW}"
+
+            # Dotctrl is already configured in this directory:
+            printer(self.text["msg:07"], directory, foreground=self.WARNING)
+
+            return {"status": False, "code": "07"}
+
+        # You must have SUDO permission on your machine to proceed with this step and create
+        # an automatic repository with Dotctrl. You can approach the operation by
+        # pressing Ctrl + C.
+        # NOTE: The Dotctrl directory will be created in:
+        printer(self.text["msg:08"], f"{path}\n", foreground=self.WARNING)
+
+        # [ Enter password for sudo ]
+        printer(self.text["msg:09"], foreground=self.QUESTION)
+
+        commands: list[str] = [
+            f"mkdir -p {join(AUTO_PATH, '.dotfiles')}",
+            f"chown -R {whoami()} {join(AUTO_PATH, '.dotfiles')}",
+            f"chmod -R 700 {join(AUTO_PATH, '.dotfiles')}",
+        ]
+
+        cmd: dict = super_command(commands)
+
+        if cmd["str"] == "err":
+            printer(self.text["msg:49"], foreground=self.ERROR)
+            return {"status": False, "code": "49"}
+
+        if cmd["str"] == "interrupt":
+            printer(self.text["msg:42"], foreground=self.WARNING)
+            return {"status": False, "code": "42"}
+
+        self.creator(path)
+
+        return {"status": True, "code": "10"}
+
+    def main(self, arguments: dict) -> dict:
         """Base repository method."""
-        init_auto = False
 
-        if exists(self.config_path):
-            printer("Repository is already defined.", foreground=FG().FINISH)
-            exit(0)
+        root: str = self.root
+        out: dict = dict()
 
-        if not arguments["--auto"]:
-            create_path(self.repo_path)
-            create_json(config.content, self.config_path, force=True)
-            create_file(readme.content, self.readme, force=True)
+        if arguments["--auto"] and arguments["--git"]:
+            root = join(AUTO_PATH, ".dotfiles")
+            out = self.automatic(root)
+            if out["status"]:
+                self.git_repo(root)
+        elif arguments["--auto"] and not arguments["--git"]:
+            root = join(AUTO_PATH, ".dotfiles")
+            out = self.automatic(root)
+        elif not arguments["--auto"] and arguments["--git"]:
+            out = self.creator(root)
+            self.git_repo(root)
+        elif not arguments["--auto"] and not arguments["--git"]:
+            out = self.creator(root)
 
-        if arguments["--git"]:
-            git_init_command()
-            create_file(gitignore.content, self.gitignore_path, force=True)
-        elif arguments["--auto"]:
-            path_current = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
-            if exists(join(path_current, __info__["config"])):
-                dir_ = f"{FG().BLUE}{path_current}{FG().YELLOW}"
-                printer(
-                    f'{__info__["name"]} is already configured in this directory "{dir_}"',
-                    foreground=FG().WARNING,
-                )
-                exit(0)
-            message_initial = dedent(
-                f"""
-            [ATTENTION!]
-            You must have SUDO permission on your machine to proceed with this step and create
-            an automatic repository with {__info__["name"]}. You can approach the operation by
-            pressing Ctrl + C.
-
-            NOTE: The {__info__['name']} directory will be created in: "{FG().BLUE}{path_current}{FG().YELLOW}".
-            """
-            )
-            printer(message_initial, foreground=FG().YELLOW)
-            printer("[ Enter password for sudo ]", foreground=FG().QUESTION)
-            user_current = whoami()
-            commands = [
-                f"mkdir -p {join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])}",
-                f"chown -R {user_current} {join(AUTO_PATH[0], '.dotfiles')}",
-                f"chmod -R 700 {join(AUTO_PATH[0], '.dotfiles')}",
-            ]
-
-            sp = super_command(commands)
-            if not sp:
-                exit(1)
-
-            create_path(self.repo_path)
-            create_json(config.content, self.config_path, force=True)
-            create_file(readme.content, self.readme, force=True)
-
-            printer(
-                f"Initialized {__info__['name']} repository in {join(AUTO_PATH[0], '.dotfiles', AUTO_PATH[1])}",
-                foreground=FG().FINISH,
-            )
-            init_auto = True
-
-        if not init_auto:
-            printer(
-                f"Initialized {__info__['name']} repository in {self.repo_path}",
-                foreground=FG().FINISH,
-            )
+        # Initialized Dotctrl repository in: path/to/root
+        printer(self.text["msg:10"], root, foreground=self.FINISH)
+        return out

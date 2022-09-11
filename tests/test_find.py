@@ -1,25 +1,45 @@
 from snakypy.dotctrl.actions.find import FindCommand
-from snakypy.dotctrl.actions.link import LinkCommand
-from snakypy.dotctrl.actions.pull import PullCommand
-from snakypy.dotctrl.utils.decorators import assign_cli
 
-from .utilities import base  # noqa: E261
-from .utilities import arguments, elements, run_init_command, update_config_elements
+from .test_init import InitTester
+from .test_pull import PullTester
+from .utilities import Basic, fixture  # noqa: E261,F401
 
 
-@assign_cli(arguments(argv=["find", '--name=""']), "find")
-def test_find(base):  # noqa: F811
-    elements(base, create=True)
+class FindTester(Basic):
+    def __init__(self, fixt):
+        Basic.__init__(self, fixt)
+        self.fixt = fixt
 
-    run_init_command(base)
+    def find(self, elem):
+        return self.menu.args(argv=["find", f"--name={elem}"])
 
-    update_config_elements(base, rc=True, editors=True)
+    def run(self, elem):
 
-    PullCommand(base["root"], base["home"]).main(arguments(argv=["pull", "--force"]))
+        output = FindCommand(self.root, self.home).main(self.find(elem))
 
-    LinkCommand(base["root"], base["home"]).main(arguments(argv=["link", "--force"]))
+        if output["code"] != "28":
+            assert False
 
-    if not FindCommand(base["root"], base["home"]).main(
-        arguments(argv=["find", f'--name="{elements(base)[0]}"'])
-    ):
-        assert False
+        InitTester(self.fixt).run()
+
+        output = FindCommand(self.root, self.home).main(self.find(elem))
+
+        if output["code"] != "02":
+            assert False
+
+        PullTester(self.fixt).massive()
+
+        output = FindCommand(self.root, self.home).main(self.find(elem))
+
+        if output["code"] != "03":
+            assert False
+
+        output = FindCommand(self.root, self.home).main(self.find("notexists.txt"))
+
+        if output["code"] != "04":
+            assert False
+
+
+def test_find(fixture):  # noqa: F811
+    find = FindTester(fixture)
+    find.run(find.elements[0])

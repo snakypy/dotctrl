@@ -13,18 +13,23 @@ from snakypy.dotctrl.actions.pull import PullCommand
 from snakypy.dotctrl.actions.repo import RepoCommand
 from snakypy.dotctrl.actions.restore import RestoreCommand
 from snakypy.dotctrl.actions.unlink import UnlinkCommand
-from snakypy.dotctrl.utils import arguments
+from snakypy.dotctrl.config.menu import Menu
+
+# from snakypy.dotctrl.utils import arguments
 from snakypy.dotctrl.utils.decorators import assign_cli
 
+# from textwrap import dedent
+
+
 # Get arguments Docopt
-args = arguments()
+args: dict = Menu(ROOT, HOME).args()
 
 
 @assign_cli(args, "init")
 def run_init():
     if args["--auto"] is True:
-        root_auto = join(AUTO_PATH[0], ".dotfiles", AUTO_PATH[1])
-        InitCommand(root_auto, HOME).main(args)
+        ROOT_ = join(AUTO_PATH, ".dotfiles")
+        InitCommand(ROOT_, HOME).main(args)
     else:
         InitCommand(ROOT, HOME).main(args)
 
@@ -66,7 +71,7 @@ def run_restore():
 
 @assign_cli(args, "--credits")
 def run_credits():
-    CreditsCommand().main()
+    CreditsCommand(ROOT, HOME).main()
 
 
 @denying_os("Windows")
