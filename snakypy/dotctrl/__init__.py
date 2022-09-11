@@ -63,7 +63,7 @@ ROOT: str = choose_root(__info__["env"])
 # HOME user
 HOME: str = str(Path.home())
 
-AUTO_PATH = ("/home", "linux") if platform == "linux" else ("/Users", "macos")
+AUTO_PATH = ("/home",) if platform == "linux" else ("/Users",)
 
 # Keep the versions the same on pyproject.toml and __init__.py
 pyproject: str = join(dirname(abspath(__file__)), "../..", "pyproject.toml")
