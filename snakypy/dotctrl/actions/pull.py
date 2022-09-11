@@ -59,7 +59,10 @@ class PullCommand(Base, Options):
 
             if isfile(file_home) and isfile(file_repo) and not force:
 
-                # TODO: [Adicionar o texto do print AQUI]
+                # Elements with the same name were found in the repository
+                # Dotctrl and in the source location. These elements are not linked to the repository of the
+                # Dotctrl.
+                # To replace those in the Dotctrl repository, use the --force (--f) option.
                 printer(self.text["msg:37"], foreground=self.WARNING)
 
                 return {"status": False, "code": "37"}
@@ -94,7 +97,10 @@ class PullCommand(Base, Options):
                 and not force
             ):
 
-                # TODO: [Adicionar o texto do print AQUI]
+                # Elements with the same name were found in the repository
+                # Dotctrl and in the source location. These elements are not linked to the repository of the
+                # Dotctrl.
+                # To replace those in the Dotctrl repository, use the --force (--f) option.
                 printer(self.text["msg:37"], foreground=self.WARNING)
 
                 return {"status": False, "code": "37"}

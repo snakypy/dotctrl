@@ -56,11 +56,11 @@ class ConfigCommand(Base):
         create_json(parsed, self.config_path, force=True)
 
         if applied_cleaning:
-            # TODO: [Adicionar o texto do print AQUI]
+            # Cleaning completed!
             printer(self.text["msg:35"], foreground=self.FINISH)
             return {"status": True, "code": "35"}
 
-        # TODO: [Adicionar o texto do print AQUI]
+        # Nothing to clean!
         printer(self.text["msg:36"], foreground=self.WARNING)
         return {"status": False, "code": "36"}
 

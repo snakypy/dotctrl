@@ -30,7 +30,15 @@ class Messages(Colors):
         # Operation aborted!
         printer(self.text["msg:45"], foreground=self.WARNING, end="\n" * 2)
 
-        # TODO: [Adicionar o texto do print AQUI]
+        # Dotctrl encountered a symbolic link to an element that is not
+        # linked with the Dotctrl repository.
+        # If you want to proceed and replace this symbolic link (and others) found
+        # by the Dotctrl repository element, use the --force (--f) option.
+        # Note: If you use the --force (--f) option, this symlink
+        # found will be removed.
+        # We recommend that you verify this symbolic link before proceeding with the option --force (--f)
+        #
+        # Symbolic link found:
         printer(self.text["msg:39"], foreground=self.YELLOW, end="")
 
         print(f"{self.cyan(element_home)} -> {realpath(element_home)}")

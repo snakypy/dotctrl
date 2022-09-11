@@ -46,7 +46,6 @@ class UnlinkCommand(Base, Options):
                 and is_repo_symbolic_link(element_home, element_repo) is False
                 and not force
             ):
-                # TODO: [Adicionar o texto do print AQUI]
                 out: dict = self.error_symlink(element_home)
                 return out
 
@@ -56,7 +55,7 @@ class UnlinkCommand(Base, Options):
                 with suppress(Exception):
                     remove(element_home_)
 
-                    # TODO: [Adicionar o texto do print AQUI]
+                    # Element unlinked successfully!
                     printer(self.text["msg:12"], foreground=self.FINISH)
 
                     return {"status": True, "code": "12"}
@@ -72,7 +71,8 @@ class UnlinkCommand(Base, Options):
 
         # Not use option --element (--e)
         if len(unlinks_to_do(self.data, self.repo_path, self.home)) == 0:
-            # TODO: [Adicionar o texto do print AQUI]
+
+            # Nothing for bulk unlinked.
             printer(self.text["msg:30"], foreground=self.WARNING)
 
             return {"status": False, "code": "30"}
@@ -85,7 +85,7 @@ class UnlinkCommand(Base, Options):
                     with suppress(Exception):
                         remove(element_home)
 
-            # TODO: [Adicionar o texto do print AQUI]
+            # Massively unlinked links successfully!
             printer(self.text["msg:31"], foreground=self.FINISH)
 
             return {"status": True, "code": "31"}

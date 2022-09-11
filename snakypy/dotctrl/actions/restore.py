@@ -44,7 +44,15 @@ class RestoreCommand(Base, Options):
             # Operation aborted!
             printer(self.text["msg:45"], foreground=self.ERROR)
 
-            # TODO: [Adicionar o texto do print AQUI]
+            # Dotctrl FOUND an element at source location with
+            # same name as the repository as Dotctrl, and this prevented it from proceeding with the restore.
+            # If you want to replace it with the repository element Dotctrl,
+            # run this command again with the --force (--f) option.
+            # Note: If you use the --force (--f) option, this element
+            # found (and more) will be removed.
+            # We recommend that you verify this (and other) element(s) before proceeding with the --force (--f) option.
+            #
+            # Element found:
             printer(self.text["msg:44"], element_origin, foreground=self.WARNING)
 
             return {"status": False, "code": "44"}

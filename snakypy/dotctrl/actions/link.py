@@ -66,7 +66,9 @@ class LinkCommand(Base, Options):
                 return {"status": False, "code": "11"}
 
             if isfile(element_home) and not islink(element_home) and not force:
-                # TODO: [Adicionar o texto do print AQUI]
+                # There is a file in the source location.
+                # If you want to proceed and replace this element found
+                # by the Dotctrl repository element, use the --force (--f) option.
                 printer(self.text["msg:27"], foreground=self.WARNING)
 
                 return {"status": False, "code": "27"}
@@ -75,12 +77,12 @@ class LinkCommand(Base, Options):
 
             if not status:
 
-                # TODO: [Adicionar o texto do print AQUI]
+                # Unlinked element. Review the same in the repository:
                 printer(self.text["msg:05"], element_repo, foreground=self.WARNING)
 
                 return {"status": False, "code": "05"}
 
-            # TODO: [Adicionar o texto do print AQUI]
+            # Element(s) linked successfully!
             printer(self.text["msg:15"], foreground=self.FINISH)
 
             return {"status": True, "code": "15"}
@@ -88,7 +90,7 @@ class LinkCommand(Base, Options):
         # If you don't use the --element flag (--e)
         if len(self.links_to_do(self.data, self.repo_path, self.home)) == 0:
 
-            # TODO: [Adicionar o texto do print AQUI]
+            # Nothing to bulk link.
             printer(self.text["msg:14"], foreground=self.FINISH)
 
             return {"status": False, "code": "14"}
@@ -111,14 +113,16 @@ class LinkCommand(Base, Options):
                     return {"status": False, "code": ret["code"]}
 
                 if isfile(element_home) and not force:
-                    # TODO: [Adicionar o texto do print AQUI]
+                    # There is a file in the source location.
+                    # If you want to proceed and replace this element found
+                    # by the Dotctrl repository element, use the --force (--f) option.
                     printer(self.text["msg:27"], foreground=self.WARNING)
 
                     return {"status": False, "code": "27"}
 
                 create_symlink(element_repo, element_home)
 
-            # TODO: [Adicionar o texto do print AQUI]
+            # Element(s) linked successfully!
             printer(self.text["msg:15"], foreground=self.FINISH)
 
             return {"status": True, "code": "15"}

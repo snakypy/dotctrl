@@ -42,7 +42,8 @@ class RepoCommand(Base):
     def simlink_path(self, linkpath: str, repopath: str) -> str:
         if is_repo_symbolic_link(linkpath, repopath):
             return self.none(linkpath)
-        # TODO: [Adicionar o texto do print AQUI]
+
+        # Not linked!
         return self.red(self.text["msg:20"])
 
     def listing_data(self, arguments: dict) -> Any:
@@ -87,7 +88,7 @@ class RepoCommand(Base):
 
                 return {"status": True, "code": "21"}
 
-            # TODO: [Adicionar o texto do print AQUI]
+            # The elements below are NOT linked! Use "dotctrl link" to link them.
             printer(self.text["msg:22"], foreground=self.WARNING, end="\n" * 2)
 
             # Element(s)
@@ -95,10 +96,13 @@ class RepoCommand(Base):
 
             for item in self.listing_data(arguments):
                 if isdir(join(self.repo_path, item)):
-                    # TODO: [Adicionar o texto do print AQUI]
+
+                    # Directory
                     print(f"{self.magenta(self.text['word:11'])}: {item}")
+
                 else:
-                    # TODO: [Adicionar o texto do print AQUI]
+
+                    # File
                     print(f"{self.magenta(self.text['word:10'])}: {item}")
 
             return {"status": False, "code": "22"}
@@ -133,7 +137,7 @@ class RepoCommand(Base):
         elif arguments[self.opts[0]]:
             if len(list(self.listing_data(arguments))) == 0:
 
-                # TODO: [Adicionar o texto do print AQUI]
+                # The repository is empty of registration. No elements.
                 printer(self.text["msg:24"], foreground=self.WARNING)
 
                 return {"status": False, "code": "24"}
