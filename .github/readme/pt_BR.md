@@ -174,7 +174,7 @@ Se você quiser realizar um **link** massivo, faça:
 dotctrl link
 ```
 
-> Nota: Esta opção só é possível se você passar os [elements](#section-elements) manualmente no arquivo **dotctrl.json** ou não ter limpadado o [registro](#autoclean).
+> Nota: Esta opção só é possível se você passar os [elements](#section-elements) manualmente no arquivo **dotctrl.json** ou não ter limpado o [registro](#autoclean).
 
 ## unlink
 
