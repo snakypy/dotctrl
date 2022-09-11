@@ -1,4 +1,4 @@
-Languages: [Português Brasileiro](https://github.com/snakypy/dotctrl/.github/readme/pt_BR.md)
+Languages: [Português Brasileiro](https://github.com/snakypy/dotctrl/blob/main/.github/readme/pt_BR.md)
 
 <h1 align="center">
   <a href="https://github.com/snakypy/dotctrl">
@@ -73,7 +73,7 @@ See a demo:
 
 # Requirements
 
-Para funcionar corretamente, você precisará primeiro:
+To work properly, you will first need:
 
 - [`Python`](https://python.org) (v3.9 ou recente);
 - [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 ou recente) deve ser instalado;
