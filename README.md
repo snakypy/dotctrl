@@ -164,8 +164,8 @@ lost if user is deleted. With that, see the example below:
 Linux:
 
 ```shell
-sudo mkdir -p /home/.dotfiles/linux; cd $_
-sudo chown -R <YOU USER> /home/.dotfiles
+sudo mkdir -p /home/.dotfiles; cd $_
+sudo chown -R $(whoami) /home/.dotfiles
 sudo chmod -R 700 /home/.dotfiles
 dotctrl init
 ```
@@ -173,8 +173,8 @@ dotctrl init
 macOS:
 
 ```shell
-sudo mkdir -p /Users/.dotfiles/linux; cd $_
-sudo chown -R <YOU USER> /Users/.dotfiles
+sudo mkdir -p /Users/.dotfiles; cd $_
+sudo chown -R $(id -un) /Users/.dotfiles
 sudo chmod -R 700 /Users/.dotfiles
 dotctrl init
 ```
@@ -234,48 +234,48 @@ If you want to perform a massive **link**, do:
 dotctrl link
 ```
 
-> Nota: Esta opção só é possível se você passar os [elements](#section-elements) manualmente no arquivo **dotctrl.json** ou não ter limpadado o [registro](#autoclean).
+> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [record](#autoclean).
 
 ## unlink
 
-Desvincule o elemento do repositório com o local de origem:
+Unlink the repository element with the source location:
 
 ```shell
 dotctrl unlink --e .zprofile
 ```
 
-Se você quiser **desvincular** elementos de forma massiva, faça:
+If you want to **unlink** elements massively, do:
 
 ```shell
 dotctrl unlink
 ```
 
-> Nota: Esta opção só é possível se você passar os [elements](#section-elements) manualmente no arquivo **dotctrl.json** ou não ter limpadado o [registro](#autoclean).
+> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [record](#autoclean).
 
 ## restore
 
-Este comando irá tirar um elemento do repositório **Dotctrl** e restaurar para seu local original:
+This command will take an element from the **Dotctrl** repository and restore it to its original location:
 
 ```shell
 dotctrl restore --e .zprofile
 ```
 
-Se você quiser realizar uma **restauração** massiva, faça:
+If you want to perform a massive **restore**, do:
 
 ```shell
 dotctrl restore
 ```
 
-> Nota: Por padrão, ao restaurar elemento(s) para o local de origem, o **Dotctrl** NÃO remove os elemento do registro
-> (`dotctrl.json`). Para limpar, veja [--autoclean](#autoclean).
+> Note: By default, when restoring element(s) to their original location, **Dotctrl** does NOT remove the elements from the registry
+> (`dotctrl.json`). To clean, see [--autoclean](#autoclean).
 
 ## repo
 
-Este comando trás informações do repositório, veja abaixo alguns de seu subcomandos:
+This command brings information from the repository, see below some of its subcommands:
 
 ### --check
 
-Faça uma verificação para ver se há elementos a serem vinculados:
+Check to see if there are elements to link:
 
 ```shell
 dotctrl repo --check
@@ -283,7 +283,7 @@ dotctrl repo --check
 
 ### --ls
 
-Verifique os elementos já importados no repositório do **Dotctrl**.
+Check the elements already imported into the **Dotctrl** repository.
 
 ```shell
 dotctrl repo --ls
@@ -291,8 +291,8 @@ dotctrl repo --ls
 
 ### --info
 
-Com o comando abaixo você pode ver algumas informações do repositório **Dotctrl**, como quantidade de pastas e arquivos,
-o caminho absoluto do repositório e se a variável de ambiente `DOTCTRL_PATH` estiver ativa.
+With the command below you can see some information from the **Dotctrl** repository, such as the number of folders and files,
+the absolute path of the repository and if the environment variable `DOTCTRL_PATH` is active.
 
 ```shell
 dotctrl repo --info
@@ -300,24 +300,24 @@ dotctrl repo --info
 
 ## find
 
-Pesquisa qualquer elemento dentro do repositório do **Dotctrl**. Para isso, use o comando:
+Searches for any element within the **Dotctrl** repository. To do this, use the command:
 
 ```shell
 dotctrl find --name .zprofile
 ```
 
-> Nota: Envolva o elemento a ser encontrar com aspas duplas caso o mesmo tenha espaços no nome.
+> Note: Enclose the element to be found with double quotes if it has spaces in the name.
 
 ## config
 
-Este comando irá manipular o arquivo de configuração do **Dotctrl**, veja abaixo alguns subcomandos do mesmo.
+This command will manipulate the **Dotctrl** configuration file, see below some of its subcommands.
 
 ### --autoclean
 
-Faz uma limpeza nos elementos presentes no arquivo de configuração do **Dotctrl**.
-Qualquer elemento que estiver presente no arquivo de configuração do **Dotctrl** e não EXISTIR no repositório, serão eliminados do arquivo de configuração.
+Clean up the elements present in the **Dotctrl** configuration file.
+Any element that is present in the **Dotctrl** configuration file and does not EXIST in the repository will be eliminated from the configuration file.
 
-Geralmente o `--autoclean` é usado após usar o comando de [restauração](#restore) de elementos.
+Usually `--autoclean` is used after using the command to [restore](#restore) elements.
 
 ```shell
 dotctrl config --autoclean
@@ -325,21 +325,21 @@ dotctrl config --autoclean
 
 ### --view
 
-Dê uma espiada no arquivo de configuração do **Dotctrl** pelo terminal.
+Take a peek at the **Dotctrl** configuration file from the terminal.
 
 ### --open
 
-Permite editar o arquivo de configuração do **Dotctrl** no próprio terminal usando o comando:
+Allows you to edit the **Dotctrl** configuration file in the terminal itself using the command:
 
 ```shel
 dotctrl config --open
 ```
 
-> Nota: Usa por padrão o editor `vim`, caso não tenha, irá tentar usar o `nano`, `emacs` ou `micro`.
+> Note: It defaults to the `vim` editor, if not, it will try to use `nano`, `emacs` or `micro`.
 
 ### --lang
 
-Use está flag para alterar o idioma do **Dotctrl**. No momento, o **Dotctrl** dá suporte para 2 (dois) idiomas, eles são: **Inglês Americano** e **Português Brasileiro**. Ao usar o comando abaixo, irá mostrar uma lista para você escolher qual idioma quer usar. A alteração é instantânea.
+Use this flag to change the language of **Dotctrl**. **Dotctrl** currently supports 2 (two) languages, they are: **American English** and **Brazilian Portuguese**. When using the command below, it will show a list for you to choose which language you want to use. The change is instantaneous.
 
 ```shel
 dotctrl config --lang
@@ -349,27 +349,27 @@ dotctrl config --lang
 
 ### --e (--element)
 
-A flag **--e** ou **--element**, é responsável por manipular um elemento especifico do repositório **Dotctrl**.
+The **--e** or **--element** flag is responsible for handling a specific element of the **Dotctrl** repository.
 
-Esta flag deve receber um elemento sem o caminho absoluto, apenas o relativo a partir da `$HOME`.
+This flag must receive an element without the absolute path, only the relative one from `$HOME`.
 
-Exemplos:
+Examples:
 
 * `dotctrl pull --e .zprofile`
 * `dotctrl link --e .zprofile`
 * `dotctrl unlink --e .zprofile`
 * `dotctrl restore --e .zprofile`
 
-Se o elemento tiver espaços no nome, envolva-o entre aspas duplas. Exemplo: `dotctrl pull --e "arquivo legal.txt"`
+If the element has spaces in the name, enclose it in double quotes. Example: `dotctrl pull --e "file legal.txt file"`
 
 ### --f (--force)
 
-A flag **--f** ou **--force**, força literalmente o uso do comando, impedindo que algo impeça sua conclusão. Esta opção está presente em todos os comandos que manipula os elementos, esses comandos são o: `pull`, `link`, `unlink` e `restore`.
+The **--f** or **--force** flag literally forces the use of the command, preventing something from preventing its completion. This option is present in all commands that manipulate elements, these commands are: `pull`, `link`, `unlink` and `restore`.
 
 
-## Arquivo de configuração (dotctrl.json)
+## Configuration file (dotctrl.json)
 
-Este é um exemplo de uma estrutura completa do arquivo de configuração (`dotctrl.json`) do **Dotctrl**:
+This is an example of a complete **Dotctrl** configuration file (`dotctrl.json`) structure:
 
 ```json
 {
@@ -388,41 +388,41 @@ Este é um exemplo de uma estrutura completa do arquivo de configuração (`dotc
 }
 ```
 
-## Variável de ambiente
+## Environment Variable
 
-Por padrão, **Dotctrl** funciona com vários diretórios, o que faz com que você precise usá-lo em um determinado diretório que você criou para seus elementos.
+By default, **Dotctrl** works with multiple directories, which makes you need to use it in a certain directory you created for your elements.
 
-Se você quiser usar **Dotctrl** em qualquer PATH, você precisa criar uma variável de ambiente que **Dotctrl** disponibiliza. Esta variável de ambiente é `DOTCTRL_PATH`.
+If you want to use **Dotctrl** in any PATH, you need to create an environment variable that **Dotctrl** makes available. This environment variable is `DOTCTRL_PATH`.
 
-Você deve inserir a variável `DOTCTRL_PATH` em seu sistema operacional contendo o diretório onde estarão seus dotfiles. Por exemplo, em seu arquivo `.bashrc` ou `.zshrc`:
+You must enter the `DOTCTRL_PATH` variable in your operating system containing the directory where your dotfiles will be. For example, in your `.bashrc` or `.zshrc` file:
 
 Linux:
 
 ```shell
-export DOTCTRL_PATH="/home/.dotfiles/linux"
+export DOTCTRL_PATH="/home/.dotfiles"
 ```
-ou
+or
 
 macOS:
 
 ```shell
-export DOTCTRL_PATH="/Users/.dotfiles/macos"
+export DOTCTRL_PATH="/Users/.dotfiles"
 ```
 
-> NOTA: Lembre-se, ao criar esta variável de ambiente, você não poderá criar outros repositórios para **Dotctrl**.
+> NOTE: Remember, when creating this environment variable, you will not be able to create other repositories for **Dotctrl**.
 
 
 ## Updating
 
-Se **Dotctrl** tiver novos recursos, atualize a linha de comando abaixo:
+If **Dotctrl** has new features, please update the command line below:
 
 ```shell
 python3 -m pip install dotctrl -U --user
 ```
 
-## Mais comandos
+## More commands
 
-Para obter mais informações de comando, use:
+For more command information, use:
 
 ```
 dotctrl [--help | -h]
@@ -430,14 +430,14 @@ dotctrl [--help | -h]
 
 ## Extras
 
-### Deploy e Clone do repositório Dotctrl
+### Deploy and Clone from Dotctrl repository
 
-Agora que você tem o controle de seus elementos, é hora de fazer o deploy dos mesmo em um serviço de git.
-Este exemplo abaixo mostrará como realizar o deploy e clone no [GitHub](https://github.com).
+Now that you have control of your elements, it's time to deploy them to a git service.
+This example below will show you how to deploy and clone on [GitHub](https://github.com).
 
 1 - Deploy:
 
-A - Entrando na pasta raiz criada do **Dotctrl**:
+A - Entering the root folder created by **Dotctrl**:
 
 Linux:
 
@@ -451,7 +451,7 @@ macOS:
 cd /Users/.dotfiles
 ```
 
-B - Criando repositório git, commit e salvando (push)
+B - Creating git repository, commit and saving (push)
 
 ```shell
 git remote add origin git@github.com:<YOUR USER>/dotfiles.git
@@ -463,7 +463,7 @@ git push origin main
 
 2 - Clone:
 
-Você também pode clonar qualquer diretório de sua escolha, mas vamos manter o diretório de compilação de exemplo acima. Siga os passos:
+You can also clone any directory of your choice, but we'll keep the example build directory above. Follow the steps:
 
 Linux:
 
@@ -471,8 +471,7 @@ Linux:
 sudo mkdir -p /home/.dotfiles
 sudo chmod -R 770 /home/.dotfiles
 cd /home/.dotfiles
-git clone git@github.com:<YOUR USER>/dotfiles.git
-cd /home/.dotfiles/linux
+git clone git@github.com:<YOUR USER>/dotfiles.git .
 dotctrl link --f
 ```
 
@@ -482,14 +481,13 @@ macOS:
 sudo mkdir -p /Users/.dotfiles
 sudo chmod -R 770 /Users/.dotfiles
 cd /Users/.dotfiles
-git clone git@github.com:<YOUR USER>/dotfiles.git
-cd /home/.dotfiles/macos
+git clone git@github.com:<YOUR USER>/dotfiles.git .
 dotctrl link --f
 ```
 
-## Doação
+## Donation
 
-Clique na imagem abaixo para ser redirecionado aos formulários de doação:
+Click on the image below to be redirected to the donation forms:
 
 <div class="donate">
   <a href="https://github.com/snakypy/donations/blob/main/README.md">
@@ -497,12 +495,12 @@ Clique na imagem abaixo para ser redirecionado aos formulários de doação:
   </a>
 </div>
 
-É muito importante você fazer uma doação para motivar a continuação de desenvolvimento do **Dotctrl**. :)
+It is very important that you make a donation to motivate further development of **Dotctrl**. :)
 
-## Licença
+## License
 
-O projeto está disponível como código aberto sob os termos da [Licença MIT](https://github.com/snakypy/dotctrl/blob/main/LICENSE) ©
+The project is available as open source under the terms of the [MIT License](https://github.com/snakypy/dotctrl/blob/main/LICENSE) ©
 
-## Creditos
+## Credits
 
-Veja, [AUTHORS](https://github.com/snakypy/dotctrl/blob/main/AUTHORS.rst).
+See, [AUTHORS](https://github.com/snakypy/dotctrl/blob/main/AUTHORS.rst).

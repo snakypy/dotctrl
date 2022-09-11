@@ -162,8 +162,8 @@ perdido se o usuário for excluído. Com isso, veja o exemplo abaixo:
 Linux:
 
 ```shell
-sudo mkdir -p /home/.dotfiles/linux; cd $_
-sudo chown -R <YOU USER> /home/.dotfiles
+sudo mkdir -p /home/.dotfiles; cd $_
+sudo chown -R $(whoami) /home/.dotfiles
 sudo chmod -R 700 /home/.dotfiles
 dotctrl init
 ```
@@ -171,8 +171,8 @@ dotctrl init
 macOS:
 
 ```shell
-sudo mkdir -p /Users/.dotfiles/linux; cd $_
-sudo chown -R <YOU USER> /Users/.dotfiles
+sudo mkdir -p /Users/.dotfiles; cd $_
+sudo chown -R $(id -un) /Users/.dotfiles
 sudo chmod -R 700 /Users/.dotfiles
 dotctrl init
 ```
@@ -400,14 +400,14 @@ Você deve inserir a variável `DOTCTRL_PATH` em seu sistema operacional contend
 Linux:
 
 ```shell
-export DOTCTRL_PATH="/home/.dotfiles/linux"
+export DOTCTRL_PATH="/home/.dotfiles"
 ```
 ou
 
 macOS:
 
 ```shell
-export DOTCTRL_PATH="/Users/.dotfiles/macos"
+export DOTCTRL_PATH="/Users/.dotfiles"
 ```
 
 > NOTA: Lembre-se, ao criar esta variável de ambiente, você não poderá criar outros repositórios para **Dotctrl**.
@@ -472,8 +472,7 @@ Linux:
 sudo mkdir -p /home/.dotfiles
 sudo chmod -R 770 /home/.dotfiles
 cd /home/.dotfiles
-git clone git@github.com:<YOUR USER>/dotfiles.git
-cd /home/.dotfiles/linux
+git clone git@github.com:<YOUR USER>/dotfiles.git .
 dotctrl link --f
 ```
 
@@ -483,8 +482,7 @@ macOS:
 sudo mkdir -p /Users/.dotfiles
 sudo chmod -R 770 /Users/.dotfiles
 cd /Users/.dotfiles
-git clone git@github.com:<YOUR USER>/dotfiles.git
-cd /home/.dotfiles/macos
+git clone git@github.com:<YOUR USER>/dotfiles.git .
 dotctrl link --f
 ```
 
