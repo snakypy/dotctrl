@@ -47,9 +47,9 @@ class InitCommand(Base):
         printer(self.text["msg:09"], foreground=self.QUESTION)
 
         commands: list[str] = [
-            f"mkdir -p {join(AUTO_PATH[0], '.dotfiles')}",
-            f"chown -R {whoami()} {join(AUTO_PATH[0], '.dotfiles')}",
-            f"chmod -R 700 {join(AUTO_PATH[0], '.dotfiles')}",
+            f"mkdir -p {join(AUTO_PATH, '.dotfiles')}",
+            f"chown -R {whoami()} {join(AUTO_PATH, '.dotfiles')}",
+            f"chmod -R 700 {join(AUTO_PATH, '.dotfiles')}",
         ]
 
         cmd: dict = super_command(commands)
@@ -73,12 +73,12 @@ class InitCommand(Base):
         out: dict = dict()
 
         if arguments["--auto"] and arguments["--git"]:
-            root = join(AUTO_PATH[0], ".dotfiles")
+            root = join(AUTO_PATH, ".dotfiles")
             out = self.automatic(root)
             if out["status"]:
                 self.git_repo(root)
         elif arguments["--auto"] and not arguments["--git"]:
-            root = join(AUTO_PATH[0], ".dotfiles")
+            root = join(AUTO_PATH, ".dotfiles")
             out = self.automatic(root)
         elif not arguments["--auto"] and arguments["--git"]:
             out = self.creator(root)
