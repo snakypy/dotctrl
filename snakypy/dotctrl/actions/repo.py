@@ -46,7 +46,6 @@ class RepoCommand(Base):
         # Not linked!
         return self.red(self.text["msg:20"])
 
-    # TODO: Pegar apenas os elementos linkados.
     def listing_data(self, arguments: dict) -> Any:
 
         # --ls choice

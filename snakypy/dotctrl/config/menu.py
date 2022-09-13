@@ -124,7 +124,6 @@ class Menu(Base):
     def languages() -> dict:
         return {"pt_BR": PT_BR, "en_US": EN_US}
 
-    # TODO: Error tests
     @property
     def menu(self) -> str:
 
