@@ -13,6 +13,7 @@ from .utilities import Basic, fixture  # noqa: E261,F401
 class RestoreTester(Basic):
     def __init__(self, fixt):  # noqa: F811
         Basic.__init__(self, fixt)
+        self.fixt = fixt
 
     @property
     def restore(self):
@@ -23,50 +24,54 @@ class RestoreTester(Basic):
 
     # @patch("builtins.input", lambda _: "1")
     def massive(self, monkeypatch, replay):
+        """Using dialog"""
 
         # Pytest has a new monkeypatch fixture for this. A monkeypatch object can alter
         # an attribute in a class or a value in a dictionary, and then restore its
         # original value at the end of the test.
         monkeypatch.setattr("builtins.input", lambda _: replay)
 
-        output = RestoreCommand(self.root, self.home).main(self.restore)
-
         if replay == "1":
+            output = RestoreCommand(self.root, self.home).main(self.restore)
 
-            for e in self.elements:
-                if exists(join(self.base.repo_path, e)):
-                    assert False
+            assert output["code"] == "40"
 
-            if output["code"] != "46":
-                assert False
+            PullTester(self.fixt).massive()
+            LinkTester(self.fixt).massive()
 
             output = RestoreCommand(self.root, self.home).main(self.restore)
 
-            if output["code"] != "38":
-                assert False
+            for e in self.elements:
+                assert exists(join(self.base.repo_path, e)) is False
+
+            assert output["code"] == "46"
+
+            output = RestoreCommand(self.root, self.home).main(self.restore)
+
+            assert output["code"] == "38"
 
         elif replay == "2":
 
-            if output["code"] != "42":
-                assert False
+            PullTester(self.fixt).massive()
+            LinkTester(self.fixt).massive()
+
+            output = RestoreCommand(self.root, self.home).main(self.restore)
+
+            assert output["code"] == "42"
 
     def specific_element(self, elem):
 
         output = RestoreCommand(self.root, self.home).main(self.__element(elem))
 
-        if output["code"] != "46":
-            assert False
+        assert output["code"] == "46"
 
         output = RestoreCommand(self.root, self.home).main(self.__element(elem))
 
-        if output["code"] != "38":
-            assert False
+        assert output["code"] == "38"
 
 
 def test_restore_massive(fixture, monkeypatch):  # noqa: F811
     InitTester(fixture).run()
-    PullTester(fixture).massive()
-    LinkTester(fixture).massive()
     restore = RestoreTester(fixture)
     restore.massive(monkeypatch, "1")
     restore.massive(monkeypatch, "2")

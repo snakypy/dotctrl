@@ -28,7 +28,7 @@ def populate_home(path: str) -> list:
 
 
 @pytest.fixture
-def fixture(tmpdir):
+def fixture(tmpdir) -> dict:
     home = tmpdir.mkdir("home")
     root = tmpdir.mkdir(join("home", "dotfiles"))
     base = Base(root, home)
@@ -44,14 +44,14 @@ def fixture(tmpdir):
 
 
 class Basic:
-    def __init__(self, fixt):  # noqa: F811
+    def __init__(self, fixt) -> None:  # noqa: F811
         self.home = fixt["home"]
         self.root = fixt["root"]
         self.base = fixt["base"]
         self.menu = fixt["menu"]
         self.elements = fixt["elements"]
 
-    def update_config_elements(self, *args):
-        parsed = read_json(self.base.config_path)
+    def update_config_elements(self, *args) -> None:
+        parsed: dict = read_json(self.base.config_path)
         parsed["dotctrl"]["elements"] = [*args]
         update_json(self.base.config_path, parsed)
