@@ -39,7 +39,12 @@ class RestoreCommand(Base, Options):
             out: dict = self.error_symlink(element_origin)
             return out
 
-        if exists(element_repo) and islink(element_origin) is False and not force:
+        if (
+            exists(element_repo)
+            and exists(element_origin)
+            and islink(element_origin) is False
+            and not force
+        ):
 
             # Operation aborted!
             printer(self.text["msg:45"], foreground=self.ERROR)
