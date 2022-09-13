@@ -12,7 +12,7 @@ class CreditsCommand(Base):
     def main(self) -> bool:
 
         # Offered by:
-        printer(self.text["msg:01"], foreground=self.GREEN)
+        printer("\n", " " * 15, self.text["msg:01"], foreground=self.GREEN)
 
         billboard(
             __info__["organization_name"], justify="center", foreground=FG().YELLOW
