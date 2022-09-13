@@ -20,7 +20,7 @@ from snakypy.helpers.files import eqversion
 
 __info__: dict = {
     "name": "Dotctrl",
-    "version": "2.0.0rc1",
+    "version": "2.0.0rc2",
     "description": "Dotctrl is a package for managing your dotfiles on Linux.",
     "pkg_name": "dotctrl",
     "executable": "dotctrl",
@@ -36,7 +36,7 @@ __info__: dict = {
     },
     "credence": [
         {
-            "my_name": "William C. Canin",
+            "name": "William C. Canin",
             "email": "william.costa.canin@gmail.com",
             "website": "https://williamcanin.github.io",
             "locale": "Brazil - SP",
