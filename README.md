@@ -115,8 +115,7 @@ This is too much!
 
 **Dotctrl** will manage the elements of the user's HOME directory; running on top of a configuration file (`dotctrl.json`) that contains the paths to the origin location of the elements.
 
-**Dotctrl** is compatible with [Linux](https://www.kernel.org/) or [macOS](https://www.apple.com/macos/).
-
+All elements managed by **Dotctrl** are kept in the repository/folder "**dotctrl**".
 
 See a demo:
 
@@ -136,6 +135,7 @@ See a demo:
 
 To work properly, you will first need:
 
+- [`Linux`](https://www.kernel.org) or [`macOS`](https://www.apple.com/macos)
 - [`Python`](https://python.org) (v3.9 or recent);
 - [`Pip`](https://pip.pypa.io/en/stable/) (v19.3 or recent) must be installed;
 - [`Git`](https://git-scm.com/downloads) (v2.0 or recent);
