@@ -150,7 +150,7 @@ LANG: dict = {
         "msg:01": "Oferecido por:",
         "msg:02": "Repositório está vazio. Sem elementos.",
         "msg:03": (
-            f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}. "
+            f"Os elementos abaixo são encontrados no diretório do {__info__['name']}. "
             f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}\n"""
         ),
         "msg:04": f"{c.cyan('[Code:04]', c.YELLOW)} Elemento não encontrado no repositório.",
