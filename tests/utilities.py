@@ -9,7 +9,7 @@ from snakypy.dotctrl.config.menu import Menu
 from snakypy.dotctrl.utils import path_creation
 
 
-def populate_home(path: str) -> dict:
+def populate_home(path: str) -> list:
     files: list = ["bar.txt", ".config/foo.txt"]
 
     folders: list = [".config/bar"]
