@@ -28,31 +28,26 @@ class LinkTester(Basic):
 
         output = LinkCommand(self.root, self.home).main(self.link)
 
-        if not output["status"]:
-            assert False
+        assert output["status"] is True
 
         for e in self.elements:
             elem_home = join(self.home, e)
             elem_repo = join(self.base.repo_path, e)
 
-            if not is_repo_symbolic_link(elem_home, elem_repo):
-                assert False
+            assert is_repo_symbolic_link(elem_home, elem_repo) is True
 
-        if output["code"] != "15":
-            assert False
+        assert output["code"] == "15"
 
     def specific_element(self, elem):
 
         output = LinkCommand(self.root, self.home).main(self.__element(elem))
 
-        if not output["status"]:
-            assert False
+        assert output["status"] is True
 
         elem_home = join(self.home, elem)
         elem_repo = join(self.base.repo_path, elem)
 
-        if not is_repo_symbolic_link(elem_home, elem_repo):
-            assert False
+        assert is_repo_symbolic_link(elem_home, elem_repo) is True
 
         # # Checking for error if there are two elements with the same name in
         # # the source and destination location.
@@ -63,8 +58,7 @@ class LinkTester(Basic):
 
         output = LinkCommand(self.root, self.home).main(self.__element(elem))
 
-        if not output["code"] == "27":
-            assert False
+        assert output["code"] == "27"
 
         # # Creating intrusive symbolic link to force an error.
         remove(elem_home)
@@ -73,14 +67,12 @@ class LinkTester(Basic):
 
         output = LinkCommand(self.root, self.home).main(self.__element(elem))
 
-        if not output["code"] == "39":
-            assert False
+        assert output["code"] == "39"
 
         # # # Using option --force (--f)
         output = LinkCommand(self.root, self.home).main(self.__element_force(elem))
 
-        if not is_repo_symbolic_link(elem_home, elem_repo):
-            assert False
+        assert is_repo_symbolic_link(elem_home, elem_repo) is True
 
 
 def test_link_massive(fixture):  # noqa: F811

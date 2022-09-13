@@ -10,7 +10,7 @@ from snakypy.helpers.checking import whoami
 
 from snakypy.dotctrl import __info__
 from snakypy.dotctrl.config.base import Base
-from snakypy.dotctrl.utils import is_repo_symbolic_link, listing_files
+from snakypy.dotctrl.utils import is_repo_symbolic_link
 
 
 class RepoCommand(Base):
@@ -52,7 +52,8 @@ class RepoCommand(Base):
         if arguments[self.opts[0]]:
 
             # Lists all folders and files contained in the Dotctrl repository
-            for item in {*listing_files(self.repo_path), *self.data}:
+            # for item in {*listing_files(self.repo_path), *self.data}:
+            for item in {*self.data}:
                 if exists(join(self.repo_path, item)):
                     yield item
 

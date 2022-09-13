@@ -4,10 +4,15 @@ from shutil import which
 from subprocess import PIPE, Popen, call, run
 
 
-def git_init_command(directory: str) -> None:
+def git_init_command(directory: str) -> dict:
     """Function to start a Git repository in the Dotctrl repository."""
+
     if which("git") and not isdir(join(directory, ".git")):
+
         call(["git", "init", directory], stdout=PIPE)
+        return {"status": True, "str": "success"}
+
+    return {"status": False, "code": "50"}
 
 
 def super_command(commands: list) -> dict:

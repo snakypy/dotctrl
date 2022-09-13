@@ -6,7 +6,7 @@ from snakypy.helpers.files import create_file, create_json
 from snakypy.helpers.path import create as create_path
 
 from snakypy.dotctrl import AUTO_PATH, __info__
-from snakypy.dotctrl.config import config, gitignore, readme
+from snakypy.dotctrl.config import config, readme
 from snakypy.dotctrl.config.base import Base
 from snakypy.dotctrl.utils import git_init_command
 from snakypy.dotctrl.utils.process import super_command
@@ -24,8 +24,12 @@ class InitCommand(Base):
         return {"status": True, "code": "10"}
 
     def git_repo(self, path: str) -> None:
-        git_init_command(path)
-        create_file(gitignore.content, join(path, ".gitignore"), force=True)
+        git_init = git_init_command(path)
+
+        if not git_init["status"]:
+            # Dotctrl created the repository but did not find Git installed
+            # to create a Git repository.
+            printer(self.text["msg:50"], foreground=self.WARNING)
 
     def automatic(self, path: str) -> dict:
 
@@ -75,14 +79,18 @@ class InitCommand(Base):
         if arguments["--auto"] and arguments["--git"]:
             root = join(AUTO_PATH, ".dotfiles")
             out = self.automatic(root)
+
             if out["status"]:
                 self.git_repo(root)
+
         elif arguments["--auto"] and not arguments["--git"]:
             root = join(AUTO_PATH, ".dotfiles")
             out = self.automatic(root)
+
         elif not arguments["--auto"] and arguments["--git"]:
             out = self.creator(root)
             self.git_repo(root)
+
         elif not arguments["--auto"] and not arguments["--git"]:
             out = self.creator(root)
 

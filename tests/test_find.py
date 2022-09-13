@@ -17,27 +17,23 @@ class FindTester(Basic):
 
         output = FindCommand(self.root, self.home).main(self.find(elem))
 
-        if output["code"] != "28":
-            assert False
+        assert output["code"] == "28"
 
         InitTester(self.fixt).run()
 
         output = FindCommand(self.root, self.home).main(self.find(elem))
 
-        if output["code"] != "02":
-            assert False
+        assert output["code"] == "02"
 
         PullTester(self.fixt).massive()
 
         output = FindCommand(self.root, self.home).main(self.find(elem))
 
-        if output["code"] != "03":
-            assert False
+        assert output["code"] == "03"
 
         output = FindCommand(self.root, self.home).main(self.find("notexists.txt"))
 
-        if output["code"] != "04":
-            assert False
+        assert output["code"] == "04"
 
 
 def test_find(fixture):  # noqa: F811

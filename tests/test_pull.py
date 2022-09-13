@@ -25,8 +25,7 @@ class PullTester(Basic):
 
         output = PullCommand(self.root, self.home).main(self.pull)
 
-        if output["code"] != "18":
-            assert False
+        assert output["code"] == "18"
 
         for e in self.elements:
             if not exists(join(self.base.repo_path, e)):
@@ -34,27 +33,23 @@ class PullTester(Basic):
 
         output = PullCommand(self.root, self.home).main(self.pull)
 
-        if output["code"] != "17":
-            assert False
+        assert output["code"] == "17"
 
     def specific_element(self, elem):
 
         output = PullCommand(self.root, self.home).main(self.__element(elem))
 
-        if output["code"] != "18":
-            assert False
+        assert output["code"] == "18"
 
         output = PullCommand(self.root, self.home).main(self.__element(elem))
 
-        if output["code"] != "16":
-            assert False
+        assert output["code"] == "16"
 
         copyfile(join(self.home, "foo.txt"), join(self.home, self.elements[0]))
 
         output = PullCommand(self.root, self.home).main(self.__element(elem))
 
-        if output["code"] != "37":
-            assert False
+        assert output["code"] == "37"
 
         # Reset
         remove(join(self.home, self.elements[0]))

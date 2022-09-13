@@ -12,8 +12,6 @@ from snakypy.dotctrl.config.base import Base
 from snakypy.dotctrl.utils import get_key
 
 EN_US: str = f"""
-{__info__['name']} version: {FG().CYAN}{__info__['version']}{NONE}
-
 {__info__['name']} - Managing your dotfiles in $HOME on Linux or macOS.
 
 USAGE:
@@ -63,13 +61,9 @@ OPTIONS:
     {FG().BLUE}--version{NONE} ------------------- Show version.
     {FG().BLUE}--credits{NONE} ------------------- Show credits.
     {FG().BLUE}--help{NONE} ---------------------- Show this screen.
-
-{FG().CYAN}Documentation:{NONE} {__info__["home_page"]}
 """
 
 PT_BR = f"""
-{__info__['name']} versão: {FG().CYAN}{__info__['version']}{NONE}
-
 {__info__['name']} - Gerenciando seus dotfiles do HOME no Linux ou macOS.
 
 USAGE:
@@ -119,8 +113,6 @@ OPÇÕES:
     {FG().BLUE}--version{NONE} ------------------- Mostra a versão.
     {FG().BLUE}--credits{NONE} ------------------- Mostra os créditos.
     {FG().BLUE}--help{NONE} ---------------------- Mostre esta tela.
-
-{FG().CYAN}Documentação:{NONE} {__info__["home_page"]}
 """
 
 
@@ -132,7 +124,6 @@ class Menu(Base):
     def languages() -> dict:
         return {"pt_BR": PT_BR, "en_US": EN_US}
 
-    # TODO: Error tests
     @property
     def menu(self) -> str:
 

@@ -127,6 +127,10 @@ LANG: dict = {
         "msg:47": f"Choose a language for the {__info__['name']}:",
         "msg:48": "Language successfully changed! Changed to:",
         "msg:49": f"{c.cyan('[Code:49]', c.RED)} Password authentication error.",
+        "msg:50": (
+            f"{__info__['name']} created the repository but did not find Git installed "
+            "to create a Git repository."
+        ),
     },
     "pt_BR": {
         "word:01": "Arquivo(s)",
@@ -146,7 +150,7 @@ LANG: dict = {
         "msg:01": "Oferecido por:",
         "msg:02": "Repositório está vazio. Sem elementos.",
         "msg:03": (
-            f"Os elementos abaixo são encontrados no diretorio do {__info__['name']}. "
+            f"Os elementos abaixo são encontrados no diretório do {__info__['name']}. "
             f"""{c.blue('(Digite "q" para sair)', c.YELLOW)}\n"""
         ),
         "msg:04": f"{c.cyan('[Code:04]', c.YELLOW)} Elemento não encontrado no repositório.",
@@ -249,5 +253,9 @@ LANG: dict = {
         "msg:47": f"Escolha um idioma para o {__info__['name']}:",
         "msg:48": "Idioma alterado com sucesso! Alterado para:",
         "msg:49": f"{c.cyan('[Code:49]', c.RED)} Erro na autenticação da senha.",
+        "msg:50": (
+            f"O {__info__['name']} criou o repositório mas não encontrou o Git instalado "
+            "para criar um repositório Git."
+        ),
     },
 }

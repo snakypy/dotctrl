@@ -21,8 +21,14 @@ class RepoTester(Basic):
 
         output = RepoCommand(self.root, self.home).main(self.opt("--check"))
 
-        if output["code"] != "21":
-            assert False
+        assert output["code"] == "19"
+
+        PullTester(self.fixt).massive()
+        LinkTester(self.fixt).massive()
+
+        output = RepoCommand(self.root, self.home).main(self.opt("--check"))
+
+        assert output["code"] == "21"
 
         remove(join(self.home, self.elements[0]))
 
@@ -30,29 +36,24 @@ class RepoTester(Basic):
 
         out = RepoCommand(self.root, self.home).main(self.opt("--check"))
 
-        if out["code"] != "22":
-            assert False
+        assert out["code"] == "22"
 
     def ls(self):
 
         output = RepoCommand(self.root, self.home).main(self.opt("--ls"))
 
-        if output["code"] != "24":
-            assert False
+        assert output["code"] == "24"
 
         PullTester(self.fixt).massive()
         LinkTester(self.fixt).massive()
 
         out = RepoCommand(self.root, self.home).main(self.opt("--ls"))
 
-        if out["str"] != "success":
-            assert False
+        assert out["str"] == "success"
 
 
 def test_repo_check(fixture):  # noqa: F811
     InitTester(fixture).run()
-    PullTester(fixture).massive()
-    LinkTester(fixture).massive()
     repo = RepoTester(fixture)
     repo.check()
 

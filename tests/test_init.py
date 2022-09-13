@@ -14,26 +14,23 @@ class InitTester(Basic):
     def args(self):
         return self.menu.args(argv=["init"])
 
-    def repo_check(self, value):
+    @property
+    def repo_check(self):
         return self.menu.args(argv=["repo", "--check"])
 
     def run(self):
 
         output = RepoCommand(self.root, self.home).main(self.repo_check)
 
-        if output["code"] != "28":
-            assert False
+        assert output["code"] == "28"
 
         output = InitCommand(self.root, self.home).main(self.args)
 
-        if not exists(self.base.config_path):
-            assert False
+        assert exists(self.base.config_path) is True
 
-        if not exists(self.base.repo_path):
-            assert False
+        assert exists(self.base.repo_path) is True
 
-        if output["code"] != "10":
-            assert False
+        assert output["code"] == "10"
 
 
 def test_init(fixture):  # noqa: F811
