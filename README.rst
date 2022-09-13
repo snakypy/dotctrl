@@ -54,7 +54,7 @@ This is too much!
 
 `Dotctrl` will manage the elements of the user's HOME directory; running on top of a configuration file (`dotctrl.json`) that contains the paths to the origin location of the elements.
 
-`Dotctrl` is compatible with Linux or macOS.
+All elements managed by `Dotctrl` are kept in the repository/folder "`dotctrl`".
 
 Features
 --------
@@ -72,6 +72,7 @@ Requirements
 
 To work correctly, you will first need:
 
+* Linux or macOS.
 * `python`_ (v3.9 or recent) must be installed.
 * `pip`_ (v19.3 or recent) must be installed.
 * `git`_ (v2.0 or recent) must be installed.
