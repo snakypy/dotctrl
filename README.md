@@ -123,13 +123,13 @@ See a demo:
 
 # Features
 
-* Language support: American English and Brazilian Portuguese;
-* Create (or not) multiple repositories for your elements;
-* Abandon the creation of huge manual symlinks;
-* O armazenará a mesma estrutura de caminho que seu local (`$HOME`) original;
-* Manage single or bulk elements;
-* Restore repository elements to their original location with a single command;
-* And much more :)
+* language support: American English and Brazilian Portuguese;
+* create (or not) multiple repositories for your elements;
+* abandon the creation of huge manual symlinks;
+* will store the same path structure as your original location (`$HOME`);
+* manage single or bulk elements;
+* restore repository elements to their original location with a single command;
+* and much more :)
 
 # Requirements
 
