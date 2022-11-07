@@ -30,8 +30,8 @@ wanted" is open to whoever wants to implement it.
 Implement Features
 ~~~~~~~~~~~~~~~~~~
 
-Look through the GitHub issues for features. Anything tagged with "enhancement"
-and "help wanted" is open to whoever wants to implement it.
+Look through the GitHub issues for features. Anything tagged with
+"enhancement" and "help wanted" is open to whoever wants to implement it.
 
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
@@ -43,7 +43,8 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/dotctrl/dotctrl/issues.
+The best way to send feedback is to file an issue at
+https://github.com/dotctrl/dotctrl/issues.
 
 If you are proposing a feature:
 
@@ -62,7 +63,8 @@ Ready to contribute? Here's how to set up `dotctrl` for local development.
 
     $ git clone git@github.com:your_name_here/dotctrl.git
 
-3. Install your local copy on a virtualenv. Assuming you have poetry installed, this is how you set up your fork for local development:
+3. Install your local copy on a virtualenv. Assuming you have poetry
+installed, this is how you set up your fork for local development:
 
     $ cd dotctrl/
     $ poetry shell
@@ -74,8 +76,8 @@ Ready to contribute? Here's how to set up `dotctrl` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8, black and the
-   tests:
+5. When you're done making changes, check that your changes pass flake8,
+black and the tests:
 
     $ poetry run tox
 
@@ -91,7 +93,8 @@ Ready to contribute? Here's how to set up `dotctrl` for local development.
 Developing with Docker
 ----------------------
 
-The Dotctrl project contains Dockerfile, so you can see how the development is going using a Python image.
+The Dotctrl project contains Dockerfile, so you can see how the development
+is going using a Python image.
 
 To do this, do:
 
@@ -113,8 +116,10 @@ Versioning
 PyPI Publishing:
 
 
-Different Python projects may use different versioning schemes based on the needs of that particular project, but all of them are required
-to comply with the flexible public version scheme specified in PEP 440 in order to be supported in tools and libraries like pip and setuptools.
+Different Python projects may use different versioning schemes based on the
+needs of that particular project, but all of them are required
+to comply with the flexible public version scheme specified in PEP 440 in
+order to be supported in tools and libraries like pip and setuptools.
 
 Here are some examples of compliant version numbers:
 
@@ -131,22 +136,25 @@ Here are some examples of compliant version numbers:
     23          # Serial release
 
 
-Dotctrl uses semantic versioning, it is a 3-part MAJOR.MINOR.MAINTENANCE numbering scheme,
-where the project author increments:
+Dotctrl uses semantic versioning, it is a 3-part MAJOR.MINOR.MAINTENANCE
+numbering scheme, where the project author increments:
 
-The essence of semantic versioning is a 3-part MAJOR.MINOR.MAINTENANCE numbering scheme,
-where the project author increments:
+The essence of semantic versioning is a 3-part MAJOR.MINOR.MAINTENANCE
+numbering scheme, where the project author increments:
 
 1. MAJOR version when they make incompatible API changes,
 
-2. MINOR version when they add functionality in a backwards-compatible manner, and
+2. MINOR version when they add functionality in a backwards-compatible manner,
+and
 
 3. MAINTENANCE version when they make backwards-compatible bug fixes.
 
-Adopting this approach as a project author allows users to make use of "`compatible release`_" specifiers,
-where name ~= X.Y requires at least release X.Y, but also allows any later release with a matching MAJOR version.
+Adopting this approach as a project author allows users to make use of
+"`compatible release`_" specifiers, where name ~= X.Y requires at least
+release X.Y, but also allows any later release with a matching MAJOR version.
 
-Python projects adopting semantic versioning should abide by clauses 1-8 of the `Semantic Versioning 2.0.0`_ specification.
+Python projects adopting semantic versioning should abide by clauses 1-8 of
+the `Semantic Versioning 2.0.0`_ specification.
 
 For more information see: `PyPI Publishing`_
 
@@ -154,7 +162,8 @@ For more information see: `PyPI Publishing`_
 Appear in credits
 ------------------
 
-If you contribute over 100 lines of code to the project, your name and some of your data will appear in the Dotctrl credits when run the command:
+If you contribute over 100 lines of code to the project, your name and some
+of your data will appear in the Dotctrl credits when run the command:
 
     $ dotctrl --credits
 

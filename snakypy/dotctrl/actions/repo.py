@@ -89,7 +89,8 @@ class RepoCommand(Base):
 
                 return {"status": True, "code": "21"}
 
-            # The elements below are NOT linked! Use "dotctrl link" to link them.
+            # The elements below are NOT linked! Use "dotctrl link" to link
+            # them.
             printer(self.text["msg:22"], foreground=self.WARNING, end="\n" * 2)
 
             # Element(s)
@@ -110,7 +111,9 @@ class RepoCommand(Base):
 
         # --info
         elif arguments[self.opts[2]]:
-            counts: tuple = self.count_elements(join(self.root, __info__["pkg_name"]))
+            counts: tuple = self.count_elements(
+                join(self.root, __info__["pkg_name"])
+            )
             n_files: str = self.cyan(counts[0])
             n_dir: str = self.cyan(counts[1])
             n_total: str = self.cyan(counts[2])
@@ -121,12 +124,14 @@ class RepoCommand(Base):
                 else self.green(self.text["word:07"])
             )
 
+            word_05 = self.text["word:05"]
+            word_03 = self.text["word:03"]
             out: str = f"""
             {SGR().BOLD}{self.cyan(self.text["msg:23"])}{NONE}\n
             {self.magenta(self.text["word:11"])}: {self.root}
-            {self.magenta(self.text["word:01"])}: {n_files} {self.text["word:05"]}
-            {self.magenta(self.text["word:04"])}: {n_dir} {self.text["word:05"]}
-            {self.magenta(self.text["word:13"])}: {n_total} {self.text["word:03"]}
+            {self.magenta(self.text["word:01"])}: {n_files} {word_05}
+            {self.magenta(self.text["word:04"])}: {n_dir} {word_05}
+            {self.magenta(self.text["word:13"])}: {n_total} {word_03}
             {dotctrl_path_title}: {dotctrl_path}
             """
 
@@ -153,7 +158,9 @@ class RepoCommand(Base):
             ]
 
             for item in self.listing_data(arguments):
-                elem_repo: str = f"{self.none('$REPO')}{self.green(f'/{item}')}"
+                elem_repo: str = (
+                    f"{self.none('$REPO')}{self.green(f'/{item}')}"
+                )
                 is_link: str = self.simlink_path(
                     join(self.home, item), join(self.repo_path, item)
                 )
@@ -161,9 +168,13 @@ class RepoCommand(Base):
                 ll: str = self.green(f"{elem_repo}{arrow_invert}{is_link}")
 
                 if isdir(join(self.repo_path, item)):
-                    elements.append(f"{self.magenta(self.text['word:11'])}: {ll}")
+                    elements.append(
+                        f"{self.magenta(self.text['word:11'])}: {ll}"
+                    )
                 else:
-                    elements.append(f"{self.magenta(self.text['word:10'])}: {ll}")
+                    elements.append(
+                        f"{self.magenta(self.text['word:10'])}: {ll}"
+                    )
             pager("\n".join(elements))
 
             return {"status": True, "str": "success"}

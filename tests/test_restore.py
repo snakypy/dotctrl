@@ -26,9 +26,9 @@ class RestoreTester(Basic):
     def massive(self, monkeypatch, replay):
         """Using dialog"""
 
-        # Pytest has a new monkeypatch fixture for this. A monkeypatch object can alter
-        # an attribute in a class or a value in a dictionary, and then restore its
-        # original value at the end of the test.
+        # Pytest has a new monkeypatch fixture for this. A monkeypatch object
+        # can alter an attribute in a class or a value in a dictionary, and
+        # then restore its original value at the end of the test.
         monkeypatch.setattr("builtins.input", lambda _: replay)
 
         if replay == "1":
@@ -61,11 +61,15 @@ class RestoreTester(Basic):
 
     def specific_element(self, elem):
 
-        output = RestoreCommand(self.root, self.home).main(self.__element(elem))
+        output = RestoreCommand(self.root, self.home).main(
+            self.__element(elem)
+        )
 
         assert output["code"] == "46"
 
-        output = RestoreCommand(self.root, self.home).main(self.__element(elem))
+        output = RestoreCommand(self.root, self.home).main(
+            self.__element(elem)
+        )
 
         assert output["code"] == "38"
 

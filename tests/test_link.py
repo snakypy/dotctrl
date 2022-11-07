@@ -70,7 +70,9 @@ class LinkTester(Basic):
         assert output["code"] == "39"
 
         # # # Using option --force (--f)
-        output = LinkCommand(self.root, self.home).main(self.__element_force(elem))
+        output = LinkCommand(self.root, self.home).main(
+            self.__element_force(elem)
+        )
 
         assert is_repo_symbolic_link(elem_home, elem_repo) is True
 

@@ -4,7 +4,11 @@ from genericpath import isfile
 from snakypy.helpers import printer
 
 from snakypy.dotctrl.config.base import Base, Options
-from snakypy.dotctrl.utils import create_symlink, is_repo_symbolic_link, path_creation
+from snakypy.dotctrl.utils import (
+    create_symlink,
+    is_repo_symbolic_link,
+    path_creation,
+)
 
 
 class LinkCommand(Base, Options):
@@ -68,7 +72,8 @@ class LinkCommand(Base, Options):
             if isfile(element_home) and not islink(element_home) and not force:
                 # There is a file in the source location.
                 # If you want to proceed and replace this element found
-                # by the Dotctrl repository element, use the --force (--f) option.
+                # by the Dotctrl repository element, use the --force (--f)
+                # option.
                 printer(self.text["msg:27"], foreground=self.WARNING)
 
                 return {"status": False, "code": "27"}
@@ -78,7 +83,9 @@ class LinkCommand(Base, Options):
             if not status:
 
                 # Unlinked element. Review the same in the repository:
-                printer(self.text["msg:05"], element_repo, foreground=self.WARNING)
+                printer(
+                    self.text["msg:05"], element_repo, foreground=self.WARNING
+                )
 
                 return {"status": False, "code": "05"}
 
@@ -105,7 +112,8 @@ class LinkCommand(Base, Options):
 
                 if (
                     islink(element_home)
-                    and is_repo_symbolic_link(element_home, element_repo) is False
+                    and is_repo_symbolic_link(element_home, element_repo)
+                    is False
                     and not force
                 ):
                     ret = self.error_symlink(element_home)
@@ -115,7 +123,8 @@ class LinkCommand(Base, Options):
                 if isfile(element_home) and not force:
                     # There is a file in the source location.
                     # If you want to proceed and replace this element found
-                    # by the Dotctrl repository element, use the --force (--f) option.
+                    # by the Dotctrl repository element, use the --force (--f)
+                    # option.
                     printer(self.text["msg:27"], foreground=self.WARNING)
 
                     return {"status": False, "code": "27"}

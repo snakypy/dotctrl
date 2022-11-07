@@ -31,7 +31,9 @@ class FindTester(Basic):
 
         assert output["code"] == "03"
 
-        output = FindCommand(self.root, self.home).main(self.find("notexists.txt"))
+        output = FindCommand(self.root, self.home).main(
+            self.find("notexists.txt")
+        )
 
         assert output["code"] == "04"
 

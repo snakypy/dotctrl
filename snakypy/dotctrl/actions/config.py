@@ -112,7 +112,9 @@ class ConfigCommand(Base):
             self.change_language(language)
 
             printer(
-                self.text["msg:48"], f"{self.cyan(reply[1])}", foreground=self.FINISH
+                self.text["msg:48"],
+                f"{self.cyan(reply[1])}",
+                foreground=self.FINISH,
             )
 
             return {"status": True, "code": "48"}

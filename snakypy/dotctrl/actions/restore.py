@@ -18,7 +18,9 @@ class RestoreCommand(Base, Options):
         Base.__init__(self, root, home)
         Options.__init__(self)
 
-    def not_errors(self, element_origin: str, element_repo: str, force: bool) -> dict:
+    def not_errors(
+        self, element_origin: str, element_repo: str, force: bool
+    ) -> dict:
 
         if not exists(element_repo):
 
@@ -50,15 +52,19 @@ class RestoreCommand(Base, Options):
             printer(self.text["msg:45"], foreground=self.ERROR)
 
             # Dotctrl FOUND an element at source location with
-            # same name as the repository as Dotctrl, and this prevented it from proceeding with the restore.
+            # same name as the repository as Dotctrl, and this prevented it
+            # from proceeding with the restore.
             # If you want to replace it with the repository element Dotctrl,
             # run this command again with the --force (--f) option.
             # Note: If you use the --force (--f) option, this element
             # found (and more) will be removed.
-            # We recommend that you verify this (and other) element(s) before proceeding with the --force (--f) option.
+            # We recommend that you verify this (and other) element(s) before
+            # proceeding with the --force (--f) option.
             #
             # Element found:
-            printer(self.text["msg:44"], element_origin, foreground=self.WARNING)
+            printer(
+                self.text["msg:44"], element_origin, foreground=self.WARNING
+            )
 
             return {"status": False, "code": "44"}
 
@@ -70,7 +76,9 @@ class RestoreCommand(Base, Options):
             element_origin: str = join(self.home, item)
             element_repo: str = join(self.repo_path, item)
 
-            checking: dict = self.not_errors(element_origin, element_repo, force)
+            checking: dict = self.not_errors(
+                element_origin, element_repo, force
+            )
 
             if not checking["status"]:
                 break
@@ -101,7 +109,9 @@ class RestoreCommand(Base, Options):
             if "/" in element:
                 path_creation(self.home, element)
 
-            checking: dict = self.not_errors(element_origin, element_repo, force)
+            checking: dict = self.not_errors(
+                element_origin, element_repo, force
+            )
 
             if checking["status"]:
                 self.restore(element_origin, element_repo)

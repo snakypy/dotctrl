@@ -32,11 +32,13 @@ class Messages(Colors):
 
         # Dotctrl encountered a symbolic link to an element that is not
         # linked with the Dotctrl repository.
-        # If you want to proceed and replace this symbolic link (and others) found
+        # If you want to proceed and replace this symbolic link (and others)
+        # found
         # by the Dotctrl repository element, use the --force (--f) option.
         # Note: If you use the --force (--f) option, this symlink
         # found will be removed.
-        # We recommend that you verify this symbolic link before proceeding with the option --force (--f)
+        # We recommend that you verify this symbolic link before proceeding
+        # with the option --force (--f)
         #
         # Symbolic link found:
         printer(self.text["msg:39"], foreground=self.YELLOW, end="")

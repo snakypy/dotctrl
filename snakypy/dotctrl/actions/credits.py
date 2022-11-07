@@ -15,10 +15,14 @@ class CreditsCommand(Base):
         printer("\n", " " * 15, self.text["msg:01"], foreground=self.GREEN)
 
         billboard(
-            __info__["organization_name"], justify="center", foreground=FG().YELLOW
+            __info__["organization_name"],
+            justify="center",
+            foreground=FG().YELLOW,
         )
 
-        printer("Copyright (c) since 2020\n".center(100), foreground=FG().GREEN)
+        printer(
+            "Copyright (c) since 2020\n".center(100), foreground=FG().GREEN
+        )
 
         credence(
             __info__["name"],

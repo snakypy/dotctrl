@@ -38,7 +38,7 @@ class FindCommand(Base):
 
             return {"status": False, "code": "02"}
 
-        # The elements below are found in the Dotctrl directory. (Type "q" to exit)
+        # The elements below are found in the Dotctrl directory.
         # [ Result: ]
         header: list = [
             self.yellow(self.text["msg:03"]),
@@ -52,10 +52,14 @@ class FindCommand(Base):
 
                 # Directory: element
                 if isdir(join(self.repo_path, item)):
-                    found.append(f"> {self.magenta(self.text['word:14'])}: {item}")
+                    found.append(
+                        f"> {self.magenta(self.text['word:14'])}: {item}"
+                    )
                 else:
                     # File: element
-                    found.append(f"> {self.magenta(self.text['word:10'])}: {item}")
+                    found.append(
+                        f"> {self.magenta(self.text['word:10'])}: {item}"
+                    )
 
         if len(found) == 0:
             printer(self.text["msg:04"], foreground=self.WARNING)
