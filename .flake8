@@ -1,6 +1,6 @@
 [flake8]
 exclude = .git,__pycache__,*migrations*,.tox,.pytest_cache,.mypy_cache,tests
-max-line-length = 125
+max-line-length = 79
 ; F401: imported but unused
 ; F403: used; unable to detect undefined names
 ; W503: line break before binary operator
