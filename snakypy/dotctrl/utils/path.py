@@ -20,10 +20,11 @@ def path_creation(root: str, item: str) -> str:
 
 
 def join_two(elem1: str, elem2: str) -> Union[bytes, str]:
-    """Formats the element entry with the pull --element command. By default,
-    when you type a forward slash (/) in the second parameter of the join command,
-    the union is not made. This function has the responsibility of making the join
-    even if it finds a slash (/)"""
+    """Formats the element entry with the pull --element command.
+    By default, when you type a forward slash (/) in the second
+    parameter of the join command, the union is not made. This function
+    has the responsibility of making the join even if it finds a slash (/)
+    """
     if elem2[0] == "/":
         elem2 = elem2[1:]
 

@@ -17,9 +17,10 @@ Languages: [Português Brasileiro](https://github.com/snakypy/dotctrl/blob/main/
 [![Isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![Mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![MaxLength](https://img.shields.io/badge/MaxLength-79-green.svg)](https://shields.io/)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/dotctrl)](https://pypi.org/project/dotctrl/#files)
 [![GitHub license](https://img.shields.io/github/license/snakypy/dotctrl)](https://github.com/snakypy/dotctrl/blob/main/LICENSE)
-
+[![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
 ----------------
 
 <div align="center">
@@ -108,14 +109,19 @@ Languages: [Português Brasileiro](https://github.com/snakypy/dotctrl/blob/main/
 
 # About
 
-Initially, **Dotctrl** was created just to control "dotfiles files", however, in the course, it became more than that.
-**Dotctrl** is now a maintainer of any file and folder type within its own private repository.
+Initially, **Dotctrl** was created just to control "dotfiles files", however,
+in the course, it became more than that.
+**Dotctrl** is now a maintainer of any file and folder type within its own
+private repository.
 
 This is too much!
 
-**Dotctrl** will manage the elements of the user's HOME directory; running on top of a configuration file (`dotctrl.json`) that contains the paths to the origin location of the elements.
+**Dotctrl** will manage the elements of the user's HOME directory; running on
+top of a configuration file (`dotctrl.json`) that contains the paths to the
+origin location of the elements.
 
-All elements managed by **Dotctrl** are kept in the repository/folder "**dotctrl**".
+All elements managed by **Dotctrl** are kept in the repository/folder
+"**dotctrl**".
 
 See a demo:
 
@@ -150,15 +156,18 @@ It's time to install **Dotctrl**. To do this, do:
 python3 -m pip install dotctrl --user
 ```
 
-> NOTE: If you are installing in the user's local environment, be sure to add the environment variables to the `zshrc` file
+> NOTE: If you are installing in the user's local environment, be sure to add
+> the environment variables to the `zshrc` file
 > or `.bashrc` file.
 
 # Using
 
 ## init
 
-After installing the package, you need to create the **Dotctrl** repository in an empty folder in your
-choice. We always recommend creating **/home** or **/Users** in the root directory, because creating in the user's folder can be
+After installing the package, you need to create the **Dotctrl** repository in
+an empty folder in your
+choice. We always recommend creating **/home** or **/Users** in the root
+directory, because creating in the user's folder can be
 lost if user is deleted. With that, see the example below:
 
 Linux:
@@ -181,7 +190,8 @@ dotctrl init
 
 ### --auto
 
-You can bypass all of these commands above using the `--auto` flag. **Dotctrl** will automatically create a base
+You can bypass all of these commands above using the `--auto` flag. **Dotctrl**
+will automatically create a base
 directory to store the data, however you **MUST** have sudo permission.
 
 > We strongly recommend using this option if you have permission.
@@ -191,7 +201,8 @@ dotctrl init --auto
 ```
 ### --git
 
-This flag causes **Dotctrl** to create a [git](https://git-scm.com) repository within the **Dotctrl** repository.
+This flag causes **Dotctrl** to create a [git](https://git-scm.com) repository
+within the **Dotctrl** repository.
 
 ```shell
 dotctrl init --git
@@ -204,7 +215,8 @@ dotctrl init --auto --git
 ```
 ## pull
 
-With the base already created, it's time for you to PULL the elements to the base of **Dotctrl** with the `pull` command.
+With the base already created, it's time for you to PULL the elements to the
+base of **Dotctrl** with the `pull` command.
 
 Pull **single** [element]() to the **Dotctrl** repository:
 
@@ -218,11 +230,14 @@ If you want to do a massive **pull**, do:
 dotctrl pull
 ```
 
-> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [registry](#autoclean).
+> Note: This option is only possible if you pass the
+> [elements](#section-elements) manually in the **dotctrl.json** file or have
+> not cleaned the [registry](#autoclean).
 
 ## link
 
-After pulling the element(s), create symlinks to them in their original locations:
+After pulling the element(s), create symlinks to them in their original
+locations:
 
 ```shell
 dotctrl link --e .zprofile
@@ -234,7 +249,9 @@ If you want to perform a massive **link**, do:
 dotctrl link
 ```
 
-> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [record](#autoclean).
+> Note: This option is only possible if you pass the
+> [elements](#section-elements) manually in the **dotctrl.json** file or have
+> not cleaned the [record](#autoclean).
 
 ## unlink
 
@@ -250,11 +267,14 @@ If you want to **unlink** elements massively, do:
 dotctrl unlink
 ```
 
-> Note: This option is only possible if you pass the [elements](#section-elements) manually in the **dotctrl.json** file or have not cleaned the [record](#autoclean).
+> Note: This option is only possible if you pass the
+> [elements](#section-elements) manually in the **dotctrl.json** file or
+> have not cleaned the [record](#autoclean).
 
 ## restore
 
-This command will take an element from the **Dotctrl** repository and restore it to its original location:
+This command will take an element from the **Dotctrl** repository and restore
+it to its original location:
 
 ```shell
 dotctrl restore --e .zprofile
@@ -266,12 +286,14 @@ If you want to perform a massive **restore**, do:
 dotctrl restore
 ```
 
-> Note: By default, when restoring element(s) to their original location, **Dotctrl** does NOT remove the elements from the registry
+> Note: By default, when restoring element(s) to their original location,
+> **Dotctrl** does NOT remove the elements from the registry
 > (`dotctrl.json`). To clean, see [--autoclean](#autoclean).
 
 ## repo
 
-This command brings information from the repository, see below some of its subcommands:
+This command brings information from the repository, see below some of its
+subcommands:
 
 ### --check
 
@@ -291,8 +313,10 @@ dotctrl repo --ls
 
 ### --info
 
-With the command below you can see some information from the **Dotctrl** repository, such as the number of folders and files,
-the absolute path of the repository and if the environment variable `DOTCTRL_PATH` is active.
+With the command below you can see some information from the **Dotctrl**
+repository, such as the number of folders and files,
+the absolute path of the repository and if the environment variable
+`DOTCTRL_PATH` is active.
 
 ```shell
 dotctrl repo --info
@@ -300,24 +324,29 @@ dotctrl repo --info
 
 ## find
 
-Searches for any element within the **Dotctrl** repository. To do this, use the command:
+Searches for any element within the **Dotctrl** repository. To do this, use
+the command:
 
 ```shell
 dotctrl find --name .zprofile
 ```
 
-> Note: Enclose the element to be found with double quotes if it has spaces in the name.
+> Note: Enclose the element to be found with double quotes if it has spaces
+> in the name.
 
 ## config
 
-This command will manipulate the **Dotctrl** configuration file, see below some of its subcommands.
+This command will manipulate the **Dotctrl** configuration file, see below
+some of its subcommands.
 
 ### --autoclean
 
 Clean up the elements present in the **Dotctrl** configuration file.
-Any element that is present in the **Dotctrl** configuration file and does not EXIST in the repository will be eliminated from the configuration file.
+Any element that is present in the **Dotctrl** configuration file and does not
+EXIST in the repository will be eliminated from the configuration file.
 
-Usually `--autoclean` is used after using the command to [restore](#restore) elements.
+Usually `--autoclean` is used after using the command to [restore](#restore)
+elements.
 
 ```shell
 dotctrl config --autoclean
@@ -329,17 +358,22 @@ Take a peek at the **Dotctrl** configuration file from the terminal.
 
 ### --open
 
-Allows you to edit the **Dotctrl** configuration file in the terminal itself using the command:
+Allows you to edit the **Dotctrl** configuration file in the terminal itself
+using the command:
 
 ```shel
 dotctrl config --open
 ```
 
-> Note: It defaults to the `vim` editor, if not, it will try to use `nano`, `emacs` or `micro`.
+> Note: It defaults to the `vim` editor, if not, it will try to use `nano`,
+> `emacs` or `micro`.
 
 ### --lang
 
-Use this flag to change the language of **Dotctrl**. **Dotctrl** currently supports 2 (two) languages, they are: **American English** and **Brazilian Portuguese**. When using the command below, it will show a list for you to choose which language you want to use. The change is instantaneous.
+Use this flag to change the language of **Dotctrl**. **Dotctrl** currently
+supports 2 (two) languages, they are: **American English** and
+**Brazilian Portuguese**. When using the command below, it will show a list
+for you to choose which language you want to use. The change is instantaneous.
 
 ```shel
 dotctrl config --lang
@@ -349,9 +383,11 @@ dotctrl config --lang
 
 ### --e (--element)
 
-The **--e** or **--element** flag is responsible for handling a specific element of the **Dotctrl** repository.
+The **--e** or **--element** flag is responsible for handling a specific
+element of the **Dotctrl** repository.
 
-This flag must receive an element without the absolute path, only the relative one from `$HOME`.
+This flag must receive an element without the absolute path, only the relative
+one from `$HOME`.
 
 Examples:
 
@@ -360,16 +396,21 @@ Examples:
 * `dotctrl unlink --e .zprofile`
 * `dotctrl restore --e .zprofile`
 
-If the element has spaces in the name, enclose it in double quotes. Example: `dotctrl pull --e "file legal.txt file"`
+If the element has spaces in the name, enclose it in double quotes. Example:
+`dotctrl pull --e "file legal.txt file"`
 
 ### --f (--force)
 
-The **--f** or **--force** flag literally forces the use of the command, preventing something from preventing its completion. This option is present in all commands that manipulate elements, these commands are: `pull`, `link`, `unlink` and `restore`.
+The **--f** or **--force** flag literally forces the use of the command,
+preventing something from preventing its completion. This option is present in
+all commands that manipulate elements, these commands are: `pull`, `link`,
+`unlink` and `restore`.
 
 
 ## Configuration file (dotctrl.json)
 
-This is an example of a complete **Dotctrl** configuration file (`dotctrl.json`) structure:
+This is an example of a complete **Dotctrl** configuration file
+(`dotctrl.json`) structure:
 
 ```json
 {
@@ -383,18 +424,23 @@ This is an example of a complete **Dotctrl** configuration file (`dotctrl.json`)
             ".config/xfce4/terminal/terminalrc",
             ".config/Code/User",
             "Images/Wedding"
-        ],
+        ]
     }
 }
 ```
 
 ## Environment Variable
 
-By default, **Dotctrl** works with multiple directories, which makes you need to use it in a certain directory you created for your elements.
+By default, **Dotctrl** works with multiple directories, which makes you need
+to use it in a certain directory you created for your elements.
 
-If you want to use **Dotctrl** in any PATH, you need to create an environment variable that **Dotctrl** makes available. This environment variable is `DOTCTRL_PATH`.
+If you want to use **Dotctrl** in any PATH, you need to create an environment
+variable that **Dotctrl** makes available. This environment variable is
+`DOTCTRL_PATH`.
 
-You must enter the `DOTCTRL_PATH` variable in your operating system containing the directory where your dotfiles will be. For example, in your `.bashrc` or `.zshrc` file:
+You must enter the `DOTCTRL_PATH` variable in your operating system containing
+the directory where your dotfiles will be. For example, in your `.bashrc` or
+`.zshrc` file:
 
 Linux:
 
@@ -409,7 +455,8 @@ macOS:
 export DOTCTRL_PATH="/Users/.dotfiles"
 ```
 
-> NOTE: Remember, when creating this environment variable, you will not be able to create other repositories for **Dotctrl**.
+> NOTE: Remember, when creating this environment variable, you will not be
+> able to create other repositories for **Dotctrl**.
 
 
 ## Updating
@@ -432,8 +479,10 @@ dotctrl [--help | -h]
 
 ### Deploy and Clone from Dotctrl repository
 
-Now that you have control of your elements, it's time to deploy them to a git service.
-This example below will show you how to deploy and clone on [GitHub](https://github.com).
+Now that you have control of your elements, it's time to deploy them to a git
+service.
+This example below will show you how to deploy and clone on
+[GitHub](https://github.com).
 
 1 - Deploy:
 
@@ -463,7 +512,8 @@ git push origin main
 
 2 - Clone:
 
-You can also clone any directory of your choice, but we'll keep the example build directory above. Follow the steps:
+You can also clone any directory of your choice, but we'll keep the example
+build directory above. Follow the steps:
 
 Linux:
 
@@ -495,11 +545,13 @@ Click on the image below to be redirected to the donation forms:
   </a>
 </div>
 
-It is very important that you make a donation to motivate further development of **Dotctrl**. :)
+It is very important that you make a donation to motivate further development
+of **Dotctrl**. :)
 
 ## License
 
-The project is available as open source under the terms of the [MIT License](https://github.com/snakypy/dotctrl/blob/main/LICENSE) ©
+The project is available as open source under the terms of the
+[MIT License](https://github.com/snakypy/dotctrl/blob/main/LICENSE) ©
 
 ## Credits
 

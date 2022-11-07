@@ -68,11 +68,15 @@ def pick(
         raise TypeError("You must enter a list in the argument: options")
 
     if len(title) == 0:
-        raise TypeError("The title cannot contain an empty element. Approached.")
+        raise TypeError(
+            "The title cannot contain an empty element. Approached."
+        )
 
     for option in options:
         if len(option) == 0:
-            raise TypeError("The list cannot contain an empty element. Approached.")
+            raise TypeError(
+                "The list cannot contain an empty element. Approached."
+            )
 
     try:
 

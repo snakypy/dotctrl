@@ -52,7 +52,8 @@ Initially, `Dotctrl` was created just to control "dotfiles files", however, in t
 
 This is too much!
 
-`Dotctrl` will manage the elements of the user's HOME directory; running on top of a configuration file (`dotctrl.json`) that contains the paths to the origin location of the elements.
+`Dotctrl` will manage the elements of the user's HOME directory; running on top of a configuration file (`dotctrl.json`)
+that contains the paths to the origin location of the elements.
 
 All elements managed by `Dotctrl` are kept in the repository/folder "`dotctrl`".
 

@@ -1,6 +1,7 @@
 """Modulate to store records and data."""
 from contextlib import suppress
 from os.path import join
+from typing import Any
 
 from genericpath import exists
 from snakypy.helpers import printer
@@ -48,7 +49,7 @@ class Options:
             "force": ["--force", "--f"],
         }
 
-    def element(self, arguments: dict) -> dict:
+    def element(self, arguments: dict) -> Any:
         if arguments[self.opts["element"][0]]:
             return arguments[self.opts["element"][0]]
         return arguments[self.opts["element"][1]]

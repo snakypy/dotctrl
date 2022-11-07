@@ -41,9 +41,9 @@ class InitCommand(Base):
 
             return {"status": False, "code": "07"}
 
-        # You must have SUDO permission on your machine to proceed with this step and create
-        # an automatic repository with Dotctrl. You can approach the operation by
-        # pressing Ctrl + C.
+        # You must have SUDO permission on your machine to proceed with this
+        # step and create an automatic repository with Dotctrl. You can
+        # approach the operation by pressing Ctrl + C.
         # NOTE: The Dotctrl directory will be created in:
         printer(self.text["msg:08"], f"{path}\n", foreground=self.WARNING)
 

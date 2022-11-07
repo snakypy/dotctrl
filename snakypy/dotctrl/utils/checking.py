@@ -17,7 +17,8 @@ def get_key(dictionary: dict, *args) -> Union[str, bool, dict]:
     Args:
         dictionary ([dict]): Receive a dictionary
     Returns:
-        [str, bool]: Returning a str or a boolean if the object is True or False.
+        [str, bool]: Returning a str or a boolean if the object is True or
+                     False.
     """
     data: dict = reduce(lambda c, k: c.get(k, {}), args, dictionary)
     if data == {}:
