@@ -144,4 +144,5 @@ tmp/
 poetry.lock
 binary/
 
+# Ignore temporary files.
 METAS.txt
