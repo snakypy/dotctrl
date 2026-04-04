@@ -541,7 +541,7 @@ Click on the image below to be redirected to the donation forms:
 
 <div class="donate">
   <a href="https://williamcanin.github.io/donate/">
-    <img width="160" height="100" src="https://raw.githubusercontent.com/snakypy/assets/main/images/donate.svg" alt="Donations"/>
+    <img width="160" height="100" src="https://raw.githubusercontent.com/snakypy/assets/refs/heads/main/snakypy/images/donate.svg" alt="Donations"/>
   </a>
 </div>
 

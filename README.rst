@@ -110,7 +110,7 @@ Donation
 
 Click on the image below to be redirected the donation forms:
 
-.. image:: https://raw.githubusercontent.com/snakypy/assets/main/images/donate.svg
+.. image:: https://raw.githubusercontent.com/snakypy/assets/refs/heads/main/snakypy/images/donate.svg
     :width: 160 px
     :height: 100px
     :target: https://williamcanin.github.io/donate/
