@@ -110,10 +110,10 @@ Donation
 
 Click on the image below to be redirected the donation forms:
 
-.. image:: https://raw.githubusercontent.com/snakypy/donations/main/svg/donate/donate-hand.svg
+.. image:: https://raw.githubusercontent.com/snakypy/assets/main/images/donate.svg
     :width: 160 px
     :height: 100px
-    :target: https://github.com/snakypy/donations/blob/main/README.md
+    :target: https://williamcanin.github.io/donate/
 
 License
 -------
