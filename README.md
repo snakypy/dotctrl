@@ -1,3 +1,10 @@
+> NOTE: THIS PROJECT HAS BEEN DISCONTINUED!
+
+> If you want a modern, fast, efficient, simple, and feature-rich dotfiles manager, use [Tildr](https://orbitbits.github.io/tildr/).
+
+
+<br><br><br>
+
 Languages: [Português Brasileiro](https://github.com/snakypy/dotctrl/blob/main/.github/readme/pt_BR.md)
 
 <h1 align="center">
