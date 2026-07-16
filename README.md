@@ -3,7 +3,7 @@
 > 
 > If you want a modern, fast, efficient, simple, and feature-rich dotfiles manager, use: **Tildr**
 > 
-> **Tildr Website:** [https://orbitbits.github.io/tildr](https://orbitbits.github.io/tildr/).
+> **Tildr Website:** [https://orbitbits.github.io/tildr](https://orbitbits.github.io/tildr/)
 > 
 > **Tildr GitHub:** [https://github.com/orbitbits/tildr/](https://github.com/orbitbits/tildr/)
 > 
