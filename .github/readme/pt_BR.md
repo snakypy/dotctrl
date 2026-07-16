@@ -5,7 +5,7 @@
 > 
 > **Tildr Website:** [https://orbitbits.github.io/tildr](https://orbitbits.github.io/tildr/)
 > 
-> **Tildr GitHub:** [https://github.com/orbitbits/tildr/](https://github.com/orbitbits/tildr/)
+> **Tildr GitHub:** [https://github.com/orbitbits/tildr](https://github.com/orbitbits/tildr/)
 > 
 
 <br><br><br>
