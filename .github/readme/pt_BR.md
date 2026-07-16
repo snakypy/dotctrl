@@ -1,8 +1,15 @@
-> NOTA: ESTE PROJETO FOI DESCONTINUADO!
+> [!WARNING]
+> **ESTE PROJETO FOI DESCONTINUADO!**
 > 
-> Se quiser um gerenciador de dotfiles moderno, rápido, eficiente, simples e cheio de recursos. Use o [Tildr](https://orbitbits.github.io/tildr/).
+> Se quiser um gerenciador de dotfiles moderno, rápido, eficiente, simples e cheio de recursos, use o: **Tildr**
+> 
+> **Tildr Website:** [https://orbitbits.github.io/tildr](https://orbitbits.github.io/tildr/)
+> 
+> **Tildr GitHub:** [https://github.com/orbitbits/tildr/](https://github.com/orbitbits/tildr/)
+> 
 
 <br><br><br>
+
 <h1 align="center">
   <a href="https://github.com/snakypy/dotctrl">
     <img alt="Dotctrl" src="https://raw.githubusercontent.com/snakypy/assets/main/dotctrl/images/dotctrl-transparent.png" width="auto">
